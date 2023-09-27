@@ -5,5 +5,5 @@ export interface ProductUseCases {
   findOne(id: string): Promise<Product>;
   findAll(): Promise<Product[]>;
   delete(id: string): Promise<void>;
-  update(data: Product): Promise<void>;
+  update(data: Product, id: string): Promise<void>;
 }
