@@ -1,6 +1,7 @@
 import { Product } from "../../../../domain/entities/product";
 import { ProductUseCases } from "../../../../domain/usecases/product/product";
 import { IProductRepository } from "../../contracts/product-repository";
+import { MissingParamError, NotFoundError } from "../../errors";
 
 export class ProductServices implements ProductUseCases {
   constructor(private productRepository: IProductRepository) {}
@@ -10,7 +11,7 @@ export class ProductServices implements ProductUseCases {
 
     for (const field of requiredFields) {
       if (!product[field]) {
-        throw new Error(`Missing Param: ${field}`);
+        throw new MissingParamError(field);
       }
     }
 
@@ -25,7 +26,7 @@ export class ProductServices implements ProductUseCases {
     const product = await this.productRepository.findUnique(id);
 
     if (!product) {
-      throw new Error("Product doesn't exists. Please, send a valid id!");
+      throw new NotFoundError("product");
     }
 
     return product;
@@ -45,13 +46,13 @@ export class ProductServices implements ProductUseCases {
 
   async delete(id: string): Promise<void> {
     if (!id) {
-      throw new Error("Missing Param: id");
+      throw new MissingParamError("id");
     }
 
     const product = await this.productRepository.findUnique(id);
 
     if (!product) {
-      throw new Error("Product doesn't exists. Please, send a valid id!");
+      throw new NotFoundError("product");
     }
 
     await this.productRepository.delete(id);
@@ -59,7 +60,7 @@ export class ProductServices implements ProductUseCases {
 
   async update(data: Product, id: string): Promise<void> {
     if (!id) {
-      throw new Error("Missing Param: id");
+      throw new MissingParamError("id");
     }
 
     const checkFields = ["name", "description", "stock", "price", "images"];
