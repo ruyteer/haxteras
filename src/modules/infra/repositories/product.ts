@@ -1,10 +1,10 @@
 import { prisma } from "../../../config/prisma-client";
-import { Product } from "../../../domain/entities/product";
 import { IProductRepository } from "../../data/contracts/product-repository";
+import { ProductModel } from "../../data/models/product";
 import { UpdateProductModel } from "../../data/models/update-product";
 
 export class ProductRepository implements IProductRepository {
-  async save(data: Product, categoryId: string): Promise<void> {
+  async save(data: ProductModel, categoryId: string): Promise<void> {
     await prisma.product.create({
       data: {
         name: data.name,
@@ -21,11 +21,11 @@ export class ProductRepository implements IProductRepository {
     await prisma.product.delete({ where: { id } });
   }
 
-  async findMany(): Promise<Product[]> {
+  async findMany(): Promise<ProductModel[]> {
     return await prisma.product.findMany();
   }
 
-  async findUnique(id: string): Promise<Product> {
+  async findUnique(id: string): Promise<ProductModel> {
     return await prisma.product.findUnique({ where: { id } });
   }
 
