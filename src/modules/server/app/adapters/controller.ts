@@ -6,6 +6,7 @@ export function controller(method: Controller) {
     const response = await method.handle({
       body: req.body,
       params: req.params,
+      files: req.files,
     });
     res.status(response.status).json(response.body);
   };
