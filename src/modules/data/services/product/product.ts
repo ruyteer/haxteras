@@ -1,12 +1,12 @@
-import { Product } from "../../../../domain/entities/product";
 import { ProductUseCases } from "../../../../domain/usecases/product/product";
 import { IProductRepository } from "../../contracts/product-repository";
 import { MissingParamError, NotFoundError } from "../../errors";
+import { ProductModel } from "../../models/product";
 
 export class ProductServices implements ProductUseCases {
   constructor(private productRepository: IProductRepository) {}
 
-  async create(product: Product): Promise<void> {
+  async create(product: ProductModel): Promise<void> {
     const requiredFields = ["name", "stock", "price"];
 
     for (const field of requiredFields) {
@@ -18,7 +18,7 @@ export class ProductServices implements ProductUseCases {
     await this.productRepository.save(product);
   }
 
-  async findOne(id: string): Promise<Product> {
+  async findOne(id: string): Promise<ProductModel> {
     if (!id) {
       throw new Error("Missing Param: id");
     }
@@ -32,7 +32,7 @@ export class ProductServices implements ProductUseCases {
     return product;
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(): Promise<ProductModel[]> {
     const products = await this.productRepository.findMany();
 
     if (!products) {
@@ -58,7 +58,7 @@ export class ProductServices implements ProductUseCases {
     await this.productRepository.delete(id);
   }
 
-  async update(data: Product, id: string): Promise<void> {
+  async update(data: ProductModel, id: string): Promise<void> {
     if (!id) {
       throw new MissingParamError("id");
     }
