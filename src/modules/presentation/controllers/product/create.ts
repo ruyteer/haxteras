@@ -10,8 +10,15 @@ export class CreateProductController implements Controller {
     try {
       const data: ProductModel = req.body;
       const { id } = req.params;
+      const files = req.files.firebaseUrl;
 
-      await this.productServices.create(id, data);
+      await this.productServices.create(id, {
+        name: data.name,
+        price: data.price,
+        stock: data.stock,
+        description: data.description,
+        images: files,
+      });
 
       return okResponse();
     } catch (error) {
