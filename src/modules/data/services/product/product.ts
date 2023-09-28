@@ -7,7 +7,7 @@ export class ProductServices implements ProductUseCases {
   constructor(private productRepository: IProductRepository) {}
 
   async create(product: Product): Promise<void> {
-    const requiredFields = ["name", "description", "stock", "price", "images"];
+    const requiredFields = ["name", "stock", "price"];
 
     for (const field of requiredFields) {
       if (!product[field]) {
