@@ -1,0 +1,13 @@
+version: "3.4"
+services:
+  postgres:
+    container_name: haxteras
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ruyter99
+      POSTGRES_DB: haxteras
+    volumes:
+      - ./data:/data/postgres
+    ports:
+      - "5432:5432"
