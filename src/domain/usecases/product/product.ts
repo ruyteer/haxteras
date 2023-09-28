@@ -1,7 +1,7 @@
 import { Product } from "../../entities/product";
 
 export interface ProductUseCases {
-  create(product: Product): Promise<void>;
+  create(categoryId: string, product: Product): Promise<void>;
   findOne(id: string): Promise<Product>;
   findAll(): Promise<Product[]>;
   delete(id: string): Promise<void>;

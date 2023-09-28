@@ -6,7 +6,11 @@ import { ProductModel } from "../../models/product";
 export class ProductServices implements ProductUseCases {
   constructor(private productRepository: IProductRepository) {}
 
-  async create(product: ProductModel): Promise<void> {
+  async create(categoryId: string, product: ProductModel): Promise<void> {
+    if (!categoryId) {
+      throw new MissingParamError("categoryId");
+    }
+
     const requiredFields = ["name", "stock", "price"];
 
     for (const field of requiredFields) {
@@ -15,7 +19,7 @@ export class ProductServices implements ProductUseCases {
       }
     }
 
-    await this.productRepository.save(product);
+    await this.productRepository.save(product, categoryId);
   }
 
   async findOne(id: string): Promise<ProductModel> {
