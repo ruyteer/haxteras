@@ -8,11 +8,16 @@ import {
   FindUniqueProductController,
   UpdateProductController,
 } from "../../../presentation/controllers";
+import { upload } from "../../../infra/services/multer/multer-config";
+import { middleware } from "../adapters/middleware";
+import { makeUploadFile } from "../factories/middlewares/upload-file";
 
 const productRoutes = Router();
 
 productRoutes.post(
   "/create/:id",
+  upload.array("file"),
+  middleware(makeUploadFile()),
   controller(makeProductController(CreateProductController))
 );
 
