@@ -2,6 +2,7 @@ import { CategoryUseCases } from "../../../../domain/usecases/category/category"
 import { ICategoryRepository } from "../../contracts/category-repository";
 import { MissingParamError, NotFoundError } from "../../errors";
 import { CategoryModel } from "../../models/category";
+import { ProductModel } from "../../models/product";
 
 export class CategoryServices implements CategoryUseCases {
   constructor(private categoryRepository: ICategoryRepository) {}
@@ -46,6 +47,22 @@ export class CategoryServices implements CategoryUseCases {
     }
 
     return categories;
+  }
+
+  async findAllProducts(id: string): Promise<ProductModel[]> {
+    if (!id) {
+      throw new MissingParamError("id");
+    }
+
+    const products = await this.categoryRepository.findManyProducts(id);
+
+    if (!products) {
+      throw new Error(
+        "We don't have products on this category. Please, try again later!"
+      );
+    }
+
+    return products;
   }
 
   async findOne(id: string): Promise<CategoryModel> {
