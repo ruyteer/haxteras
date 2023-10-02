@@ -9,3 +9,9 @@ export * from "./category/delete";
 export * from "./category/find-all-products";
 export * from "./category/find-many";
 export * from "./category/find-unique";
+
+export * from "./coupon/create";
+export * from "./coupon/delete";
+export * from "./coupon/find-many";
+export * from "./coupon/find-unique";
+export * from "./coupon/update";
