@@ -27,3 +27,9 @@ model Category {
   description String?
   products Product[]
 }
+
+model Coupon {
+  id String @id @default(uuid())
+  code String
+  discount Int
+}
