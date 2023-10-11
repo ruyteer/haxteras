@@ -5,5 +5,4 @@ export interface UserUseCases {
   findOne(id: string): Promise<User>;
   findAll(): Promise<User[]>;
   delete(id: string): Promise<void>;
-  update(data: User, id: string): Promise<void>;
 }
