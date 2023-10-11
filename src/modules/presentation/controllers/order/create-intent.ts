@@ -9,7 +9,9 @@ export class CreateIntentController implements Controller {
     try {
       const { amount } = req.body;
 
-      const clientSecret = await this.createIntent.create(amount);
+      const amountInCent = Math.round(amount * 100);
+
+      const clientSecret = await this.createIntent.create(amountInCent);
 
       return okResponse(clientSecret);
     } catch (error) {

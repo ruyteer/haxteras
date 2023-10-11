@@ -1,7 +1,7 @@
 import { ICreateIntent } from "../../../presentation/contracts/create-intent";
 import { Stripe } from "stripe";
 const stripe = new Stripe(
-  "pk_test_51NOmpNIRbkxCjPq7BY4L1E7CzVhvF5eOxPdwJTBYDMZhPuNKh7MIjCWJGCsCmaZGt80w8a801PWwCkvW84J6vQNw00ThyuQ1HC",
+  "sk_test_51NOmpNIRbkxCjPq71D3jc44UcCuhTib6x7mcDb2KxaT2Gm6cHqOPuo67ICyPuQE5Mco9IOOwrDBVghyaFEuW3YEn00AWHaKBl1",
   { apiVersion: "2023-08-16" }
 );
 
@@ -11,9 +11,7 @@ export class CreateIntent implements ICreateIntent {
       const paymentIntent = await stripe.paymentIntents.create({
         currency: "brl",
         amount,
-        automatic_payment_methods: {
-          enabled: true,
-        },
+        payment_method_types: ["card"],
       });
 
       return paymentIntent.client_secret;
