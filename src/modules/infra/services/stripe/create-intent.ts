@@ -8,7 +8,11 @@ const stripe = new Stripe(
 export class CreateIntent implements ICreateIntent {
   async create(amount: number): Promise<string> {
     try {
+      const customer = await stripe.customers.create();
+
       const paymentIntent = await stripe.paymentIntents.create({
+        customer: customer.id,
+        setup_future_usage: "off_session",
         currency: "brl",
         amount,
         payment_method_types: ["card"],
