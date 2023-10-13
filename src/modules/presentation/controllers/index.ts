@@ -15,3 +15,8 @@ export * from "./coupon/delete";
 export * from "./coupon/find-many";
 export * from "./coupon/find-unique";
 export * from "./coupon/update";
+
+export * from "./user/create";
+export * from "./user/delete";
+export * from "./user/find-many";
+export * from "./user/find-unique";
