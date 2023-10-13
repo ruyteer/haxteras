@@ -17,24 +17,4 @@ app.use("/coupon", couponRoutes);
 app.use("/order", orderRoutes);
 app.use("/user", userRoutes);
 
-app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  async (req, res) => {
-    const event = req.body;
-
-    switch (event.type) {
-      case "payment_intent.created":
-        break;
-      case "payment_intent.succeeded":
-        console.log("deu certo");
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
-    }
-
-    res.json({ received: true });
-  }
-);
-
 export { app };
