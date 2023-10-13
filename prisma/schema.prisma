@@ -33,3 +33,30 @@ model Coupon {
   code String
   discount Int
 }
+
+model Address {
+  id String @id @default(uuid())
+  country String
+  cep String
+  address String
+  number Int
+  state String
+  city String
+  neighborhood String
+  userId String
+
+  users User @relation(fields: [userId], references: [id])
+  
+}
+
+model User {
+  id String @id @default(uuid())
+ name String
+  surname String
+  email String
+  phone String
+  cpf String
+
+
+  address Address[]
+}
