@@ -5,6 +5,7 @@ import {
   couponRoutes,
   orderRoutes,
   productRoutes,
+  userRoutes,
 } from "./routes";
 const app = express();
 
@@ -14,6 +15,7 @@ app.use("/product", productRoutes);
 app.use("/category", categoryRoutes);
 app.use("/coupon", couponRoutes);
 app.use("/order", orderRoutes);
+app.use("/user", userRoutes);
 
 app.post(
   "/webhook",
