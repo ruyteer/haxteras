@@ -6,13 +6,14 @@ type Address = {
   state: string;
   city: string;
   neighborhood: string;
+  userId: string;
 };
 
 export type User = {
   name: string;
   surname: string;
   email: string;
-  address: Address;
+  address: Address[];
   phone: string;
   cpf: string;
 };
