@@ -16,7 +16,18 @@ export class CreateUserController implements Controller {
         email,
         phone,
         cpf,
-        address,
+        address: [
+          {
+            address: address.address,
+            cep: address.cep,
+            city: address.city,
+            country: address.country,
+            neighborhood: address.neighborhood,
+            number: parseInt(address.number),
+            state: address.state,
+            userId: address.userId,
+          },
+        ],
       });
 
       return okResponse();
