@@ -19,8 +19,8 @@ model Product {
   images String[]
   categoryId String
   category Category @relation(fields: [categoryId], references: [id])
-  orderId String
-  order Order @relation(fields: [orderId], references: [id])
+  orderId String?
+  order Order? @relation(fields: [orderId], references: [id])
 }
 
 model Category {
