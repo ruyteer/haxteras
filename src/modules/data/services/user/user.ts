@@ -6,7 +6,7 @@ import { UserModel } from "../../models/user";
 export class UserServices implements UserUseCases {
   constructor(private userRepository: IUserRepository) {}
 
-  async create(user: UserModel): Promise<void> {
+  async create(user: UserModel): Promise<string> {
     const requiredFields = [
       "name",
       "surname",
@@ -22,7 +22,7 @@ export class UserServices implements UserUseCases {
       }
     }
 
-    await this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   async findOne(id: string): Promise<UserModel> {

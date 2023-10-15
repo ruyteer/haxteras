@@ -3,8 +3,8 @@ import { User } from "../../../domain/entities/user";
 import { IUserRepository } from "../../data/contracts/user-repository";
 
 export class UserRepository implements IUserRepository {
-  async save(data: User): Promise<void> {
-    await prisma.user.create({
+  async save(data: User): Promise<string> {
+    const user = await prisma.user.create({
       data: {
         cpf: data.cpf,
         email: data.email,
@@ -16,6 +16,8 @@ export class UserRepository implements IUserRepository {
         },
       },
     });
+
+    return user.id;
   }
 
   async delete(id: string): Promise<void> {
