@@ -19,6 +19,8 @@ model Product {
   images String[]
   categoryId String
   category Category @relation(fields: [categoryId], references: [id])
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
 }
 
 model Category {
@@ -57,6 +59,21 @@ model User {
   phone String
   cpf String
 
-
+  orders Order[]
   address Address[]
+}
+
+model Order {
+  id String @id @default(uuid())
+  date String
+  status String
+  amount Float
+  paymentMethod String
+  voucher String
+  paymentIntent String
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  products Product[]
+
+
 }
