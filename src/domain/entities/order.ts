@@ -5,4 +5,5 @@ export type Order = {
   paymentMethod: "card" | "pix";
   voucher: string;
   paymentIntent: string;
+  quantity: number;
 };

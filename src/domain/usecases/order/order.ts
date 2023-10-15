@@ -7,6 +7,7 @@ type OrderModel = {
   paymentMethod: "card" | "pix" | string;
   voucher: string;
   paymentIntent: string;
+  quantity: number;
 };
 
 export interface OrderUseCases {

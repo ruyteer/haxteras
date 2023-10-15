@@ -25,6 +25,7 @@ export class OrderRepository implements IOrderRepository {
         paymentMethod: order.paymentMethod,
         status: order.status,
         voucher: order.voucher,
+        quantity: order.quantity,
       },
     });
   }

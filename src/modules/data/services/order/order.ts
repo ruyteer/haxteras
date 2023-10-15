@@ -19,6 +19,7 @@ export class OrderServices implements OrderUseCases {
       "voucher",
       "status",
       "date",
+      "quantity",
     ];
 
     for (const field of requiredFields) {
