@@ -10,7 +10,7 @@ export class CreateUserController implements Controller {
       const { name, surname, email, phone, cpf } = req.body;
       const address: AddressView = req.body.address;
 
-      await this.userServices.create({
+      const userId = await this.userServices.create({
         name,
         surname,
         email,
@@ -30,7 +30,7 @@ export class CreateUserController implements Controller {
         ],
       });
 
-      return okResponse();
+      return okResponse(userId);
     } catch (error) {
       return badResponse(error);
     }
