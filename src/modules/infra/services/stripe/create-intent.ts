@@ -6,9 +6,13 @@ const stripe = new Stripe(
 );
 
 export class CreateIntent implements ICreateIntent {
-  async create(amount: number): Promise<string> {
+  async create(amount: number, userId: string): Promise<string> {
     try {
-      const customer = await stripe.customers.create();
+      const customer = await stripe.customers.create({
+        metadata: {
+          userId,
+        },
+      });
 
       const paymentIntent = await stripe.paymentIntents.create({
         customer: customer.id,

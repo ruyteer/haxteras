@@ -1,3 +1,3 @@
 export interface ICreateIntent {
-  create(amount: number): Promise<string>;
+  create(amount: number, userId: string): Promise<string>;
 }

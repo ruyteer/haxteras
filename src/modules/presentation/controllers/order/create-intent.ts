@@ -7,11 +7,11 @@ export class CreateIntentController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { amount } = req.body;
+      const { amount, userId } = req.body;
 
       const amountInCent = Math.round(amount * 100);
 
-      const clientSecret = await this.createIntent.create(amountInCent);
+      const clientSecret = await this.createIntent.create(amountInCent, userId);
 
       return okResponse(clientSecret);
     } catch (error) {
