@@ -1,6 +1,6 @@
 export type Order = {
   date: string;
-  status: "approved" | "canceled" | "refused" | "incomplete";
+  status: "succeeded" | "failed" | "pending";
   amount: number;
   paymentMethod: "card" | "pix";
   voucher: string;
