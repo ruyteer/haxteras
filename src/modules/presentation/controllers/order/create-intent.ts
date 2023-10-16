@@ -7,11 +7,19 @@ export class CreateIntentController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { amount, userId } = req.body;
+      const { amount, userId, date, paymentMethod, quantity, products } =
+        req.body;
 
       const amountInCent = Math.round(amount * 100);
 
-      const clientSecret = await this.createIntent.create(amountInCent, userId);
+      const clientSecret = await this.createIntent.create({
+        amount: amountInCent,
+        userId,
+        date,
+        paymentMethod,
+        quantity,
+        products,
+      });
 
       return okResponse(clientSecret);
     } catch (error) {

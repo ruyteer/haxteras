@@ -1,3 +1,12 @@
+export type IntentData = {
+  amount: number;
+  userId: string;
+  date: string;
+  paymentMethod: string;
+  quantity: number;
+  products: string[];
+};
+
 export interface ICreateIntent {
-  create(amount: number, userId: string): Promise<string>;
+  create(data: IntentData): Promise<string>;
 }

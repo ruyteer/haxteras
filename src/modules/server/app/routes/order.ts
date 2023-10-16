@@ -13,7 +13,7 @@ orderRoutes.post(
   controller(makeIntent(CreateIntentController))
 );
 
-orderRoutes.post("/webhook", controller(new WebhookController()));
+orderRoutes.post("/webhook", controller(makeStripe(WebhookController)));
 
 orderRoutes.post("/create/card", controller(makeStripe(CreateOrderController)));
 

@@ -11,7 +11,7 @@ export class CreateOrderController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { paymentIntent, date, paymentMethod, products, quantity } =
+      const { paymentIntent, date, paymentMethod, products, quantity, userId } =
         req.body;
 
       const data = await this.stripeServices.findIntent(paymentIntent);
@@ -24,14 +24,15 @@ export class CreateOrderController implements Controller {
           paymentMethod,
           status: data.status,
           voucher: data.voucher,
-          quantity,
+          quantity: parseInt(quantity),
         },
         products,
-        data.userId
+        userId
       );
 
       return okResponse();
     } catch (error) {
+      console.log(error);
       return badResponse(error);
     }
   }
