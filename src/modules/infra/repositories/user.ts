@@ -45,12 +45,14 @@ export class UserRepository implements IUserRepository {
     });
   }
 
-  async findByCpf(cpf: string): Promise<User> {
-    return await prisma.user.findFirst({
+  async findByCpf(cpf: string): Promise<string> {
+    const user = await prisma.user.findFirst({
       where: { cpf },
       include: {
         address: true,
       },
     });
+
+    return user.id;
   }
 }

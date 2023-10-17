@@ -5,5 +5,5 @@ export interface IUserRepository {
   findUnique(id: string): Promise<UserModel>;
   findMany(): Promise<UserModel[]>;
   delete(id: string): Promise<void>;
-  findByCpf(cpf: string): Promise<UserModel>;
+  findByCpf(cpf: string): Promise<string>;
 }
