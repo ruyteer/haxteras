@@ -18,27 +18,22 @@ export class WebhookController implements Controller {
           break;
         case "payment_intent.payment_failed":
           const paymentFailedData = event.data.object;
-          const metadata = event.data.object.metadata;
-          const failedIntentData = await this.stripeServices.findIntent(
-            paymentFailedData.id
-          );
+          const stripeMetadata = event.data.object.metadata;
 
-          const { userId, products, quantity, paymentMethod, date } = metadata;
-
-          const productsList = products.split(", ");
+          const productsList = stripeMetadata.products.split(", ");
 
           await this.orderServices.create(
             {
               amount: paymentFailedData.amount / 100,
-              date,
-              paymentMethod,
+              date: stripeMetadata.date,
+              paymentMethod: stripeMetadata.paymentMethod,
               paymentIntent: paymentFailedData.id,
-              quantity: parseInt(quantity),
-              status: paymentFailedData.status,
+              quantity: parseInt(stripeMetadata.quantity),
+              status: "failed",
               voucher: "Payment failed",
             },
             productsList,
-            userId
+            stripeMetadata.userId
           );
 
           break;
