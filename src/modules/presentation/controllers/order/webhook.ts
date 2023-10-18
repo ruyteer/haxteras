@@ -1,12 +1,16 @@
 import { OrderServices } from "../../../data/services/order/order";
+import { UserServices } from "../../../data/services/user/user";
 import { IStripeServices } from "../../contracts/find-intent";
+import { INodemailerServices } from "../../contracts/nodemailer-services";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
 
 export class WebhookController implements Controller {
   constructor(
     private orderServices: OrderServices,
-    private stripeServices: IStripeServices
+    private stripeServices: IStripeServices,
+    private userServices: UserServices,
+    private nodemailerServices: INodemailerServices
   ) {}
 
   async handle(req: httpRequest): Promise<httpResponse> {
@@ -48,19 +52,25 @@ export class WebhookController implements Controller {
 
           const productsArray = metaData.products.split(", ");
 
+          const orderData = {
+            amount: responseData.amount / 100,
+            date: metaData.date,
+            paymentMethod: metaData.paymentMethod,
+            paymentIntent: responseData.id,
+            quantity: parseInt(metaData.quantity),
+            status: responseData.status,
+            voucher: intentData.voucher,
+          };
+
           await this.orderServices.create(
-            {
-              amount: responseData.amount / 100,
-              date: metaData.date,
-              paymentMethod: metaData.paymentMethod,
-              paymentIntent: responseData.id,
-              quantity: parseInt(metaData.quantity),
-              status: responseData.status,
-              voucher: intentData.voucher,
-            },
+            orderData,
             productsArray,
             metaData.userId
           );
+
+          const user = await this.userServices.findOne(metaData.userId);
+
+          await this.nodemailerServices.sendMail(user, orderData);
 
           break;
 
