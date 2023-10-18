@@ -28,10 +28,14 @@ export class NodemailerServices implements INodemailerServices {
         
         /* Estilos CSS para o cabeçalho */
         header {
-          background-color: #2e86de;
+          background-color: #333;
           color: #fff;
           padding: 10px;
           border-radius: 10px 10px 0 0;
+        }
+
+        header h1 {
+          margin-left: 30px;
         }
         
         /* Estilos CSS para o conteúdo principal */
@@ -46,11 +50,11 @@ export class NodemailerServices implements INodemailerServices {
           <h1>Compra Efetuada com Sucesso!</h1>
         </header>
         <div class="content">
-          <p>Olá, ${user.name}</p>
+          <p>Olá, ${user.name}!</p>
           <p>Sua compra foi efetuada com sucesso. Agradecemos por escolher nossos produtos/serviços.</p>
           <p>Detalhes da compra:</p>
           <ul>
-            <li>Valor: ${order.amount}</li>
+            <li>Valor: R$ ${order.amount}</li>
             <li>Data da Compra: ${order.date}</li>
             <li>CPF do Comprador: ${user.cpf}</li>
             <li>Comprovante de compra: ${order.voucher}<li/>
@@ -63,20 +67,11 @@ export class NodemailerServices implements INodemailerServices {
     </html>
     `;
 
-    await transporter.sendMail(
-      {
-        from: "Suporte Haxteras <haxteras@gmail.com>",
-        to: user.email,
-        subject: "Compra efetuada com sucesso!",
-        html,
-      },
-      (error) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("foi");
-        }
-      }
-    );
+    transporter.sendMail({
+      from: "Suporte Haxteras <haxteras@gmail.com>",
+      to: user.email,
+      subject: "Compra efetuada com sucesso!",
+      html,
+    });
   }
 }
