@@ -11,22 +11,28 @@ export class CreateOrderController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { paymentIntent, date, paymentMethod, products, quantity, userId } =
-        req.body;
-
-      const data = await this.stripeServices.findIntent(paymentIntent);
+      const {
+        date,
+        paymentMethod,
+        paymentIntent,
+        products,
+        quantity,
+        userId,
+        amount,
+      } = req.body;
+      const voucher = req.files.firebaseUrl;
 
       await this.orderServices.create(
         {
-          amount: data.amount,
+          amount: parseFloat(amount),
           date,
           paymentIntent,
           paymentMethod,
-          status: data.status,
-          voucher: data.voucher,
+          status: "succeeded",
+          voucher: voucher[0],
           quantity: parseInt(quantity),
         },
-        products,
+        JSON.parse(products),
         userId
       );
 
