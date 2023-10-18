@@ -53,6 +53,10 @@ export class UserRepository implements IUserRepository {
       },
     });
 
-    return user.id;
+    if (user) {
+      return user.id;
+    } else {
+      return null;
+    }
   }
 }
