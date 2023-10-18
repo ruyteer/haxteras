@@ -5,6 +5,7 @@ import { controller } from "../adapters/controller";
 import { WebhookController } from "../../../presentation/controllers/order/webhook";
 import { makeStripe } from "../factories/order/make-stripe";
 import { CreateOrderController } from "../../../presentation/controllers/order/create";
+import { makeWebhook } from "../factories/order/make-webhook";
 
 const orderRoutes = Router();
 
@@ -13,7 +14,7 @@ orderRoutes.post(
   controller(makeIntent(CreateIntentController))
 );
 
-orderRoutes.post("/webhook", controller(makeStripe(WebhookController)));
+orderRoutes.post("/webhook", controller(makeWebhook()));
 
 orderRoutes.post("/create/card", controller(makeStripe(CreateOrderController)));
 
