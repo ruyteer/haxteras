@@ -20,3 +20,8 @@ export * from "./user/create";
 export * from "./user/delete";
 export * from "./user/find-many";
 export * from "./user/find-unique";
+
+export * from "./bot/create";
+export * from "./bot/delete";
+export * from "./bot/find-many";
+export * from "./bot/find-unique";
