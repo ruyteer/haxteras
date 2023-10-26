@@ -3,6 +3,7 @@ import cors from "cors";
 import {
   categoryRoutes,
   couponRoutes,
+  nenbotRoutes,
   orderRoutes,
   productRoutes,
   userRoutes,
@@ -16,5 +17,6 @@ app.use("/category", categoryRoutes);
 app.use("/coupon", couponRoutes);
 app.use("/order", orderRoutes);
 app.use("/user", userRoutes);
+app.use("/nenbot", nenbotRoutes);
 
 export { app };
