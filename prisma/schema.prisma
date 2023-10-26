@@ -57,7 +57,7 @@ model User {
   email String
   phone String
   cpf String
-
+  nickname String?
   orders Order[]
   address Address[]
 }
@@ -74,4 +74,11 @@ model Order {
   userId String
   user User @relation(fields: [userId], references: [id])
   products String[]
+}
+
+model Nenbot {
+  id String @id @default(uuid())
+  name String
+  screen Int
+  key String
 }
