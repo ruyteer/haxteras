@@ -7,7 +7,7 @@ export class CreateUserController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { name, surname, email, phone, cpf } = req.body;
+      const { name, surname, email, phone, cpf, nickname } = req.body;
       const address: AddressView = req.body.address;
 
       const userId = await this.userServices.create({
@@ -28,6 +28,7 @@ export class CreateUserController implements Controller {
             userId: address.userId,
           },
         ],
+        nickname,
       });
 
       return okResponse(userId);

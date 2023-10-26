@@ -16,4 +16,5 @@ export type User = {
   address: Address[];
   phone: string;
   cpf: string;
+  nickname?: string;
 };
