@@ -9,16 +9,10 @@ export class OrderRepository implements IOrderRepository {
     products: string[],
     userId: string
   ): Promise<void> {
-    const productConnections = products.map((productId) => {
-      return { id: productId };
-    });
-
     await prisma.order.create({
       data: {
         userId,
-        products: {
-          connect: productConnections,
-        },
+        products,
         amount: order.amount,
         date: order.date,
         paymentIntent: order.paymentIntent,

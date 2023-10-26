@@ -19,8 +19,7 @@ model Product {
   images String[]
   categoryId String
   category Category @relation(fields: [categoryId], references: [id])
-  orderId String?
-  order Order? @relation(fields: [orderId], references: [id])
+  
 }
 
 model Category {
@@ -74,7 +73,5 @@ model Order {
   quantity Int
   userId String
   user User @relation(fields: [userId], references: [id])
-  products Product[]
-
-
+  products String[]
 }
