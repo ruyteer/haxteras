@@ -1,5 +1,7 @@
+import { NenbotServices } from "../../../../data/services/bot/nenbot";
 import { OrderServices } from "../../../../data/services/order/order";
 import { UserServices } from "../../../../data/services/user/user";
+import { NenbotRepository } from "../../../../infra/repositories/nenbot";
 import { OrderRepository } from "../../../../infra/repositories/order";
 import { UserRepository } from "../../../../infra/repositories/user";
 import { NodemailerServices } from "../../../../infra/services/email/nodemailer-services";
@@ -14,5 +16,13 @@ export function makeWebhook(): Controller {
   const services = new OrderServices(repository);
   const stripe = new StripeServices();
   const nodemailer = new NodemailerServices();
-  return new WebhookController(services, stripe, userServices, nodemailer);
+  const nenbotRepository = new NenbotRepository();
+  const nenbot = new NenbotServices(nenbotRepository);
+  return new WebhookController(
+    services,
+    stripe,
+    userServices,
+    nenbot,
+    nodemailer
+  );
 }

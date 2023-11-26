@@ -2,7 +2,7 @@ import { OrderServices } from "../../../data/services/order/order";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
 
-export class nome implements Controller {
+export class FindUniqueOrderController implements Controller {
   constructor(private orderServices: OrderServices) {}
 
   async handle(req: httpRequest): Promise<httpResponse> {

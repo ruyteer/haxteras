@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import {
+  avaibleBotsRouter,
   categoryRoutes,
   couponRoutes,
   nenbotRoutes,
@@ -18,5 +19,6 @@ app.use("/coupon", couponRoutes);
 app.use("/order", orderRoutes);
 app.use("/user", userRoutes);
 app.use("/nenbot", nenbotRoutes);
+app.use("/avaiable-bots", avaibleBotsRouter);
 
 export { app };

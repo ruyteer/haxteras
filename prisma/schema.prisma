@@ -79,6 +79,12 @@ model Order {
 model Nenbot {
   id String @id @default(uuid())
   name String
-  screen Int
   key String
+  days Int
+}
+
+model AvaibleBots {
+  id String @id @default(uuid())
+  dashbot Boolean
+  nenbot Boolean
 }

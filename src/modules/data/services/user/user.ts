@@ -24,7 +24,11 @@ export class UserServices implements UserUseCases {
 
     const userExists = await this.userRepository.findByCpf(user.cpf);
 
-    if (userExists) {
+    if (userExists && user.nickname) {
+      await this.userRepository.update(userExists, { nickname: user.nickname });
+
+      return userExists;
+    } else if (userExists && !user.nickname) {
       return userExists;
     }
 

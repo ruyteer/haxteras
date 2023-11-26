@@ -7,9 +7,9 @@ export class CreateNenbotController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { name, screen, key } = req.body;
-
-      await this.nenbotServices.create({ name, screen, key });
+      const { name, days, key } = req.body;
+      console.log(req);
+      await this.nenbotServices.create({ name, days: parseInt(days), key });
 
       return okResponse();
     } catch (error) {

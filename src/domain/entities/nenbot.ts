@@ -1,5 +1,6 @@
 export type Nenbot = {
+  id?: string;
   name: string;
-  screen: number;
   key: string;
+  days: number;
 };

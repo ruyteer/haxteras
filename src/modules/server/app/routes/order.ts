@@ -8,6 +8,9 @@ import { makeWebhook } from "../factories/order/make-webhook";
 import { upload } from "../../../infra/services/multer/multer-config";
 import { middleware } from "../adapters/middleware";
 import { makeUploadFile } from "../factories/middlewares/upload-file";
+import { makeOrderController } from "../factories/order/make-order";
+import { FindManyOrdersController } from "../../../presentation/controllers/order/find-many";
+import { FindUniqueOrderController } from "../../../presentation/controllers/order/find-unique";
 
 const orderRoutes = Router();
 
@@ -26,4 +29,9 @@ orderRoutes.post(
   controller(makeStripe(CreateOrderController))
 );
 
+orderRoutes.get("/", controller(makeOrderController(FindManyOrdersController)));
+orderRoutes.get(
+  "/:id",
+  controller(makeOrderController(FindUniqueOrderController))
+);
 export { orderRoutes };

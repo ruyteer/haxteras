@@ -8,6 +8,7 @@ export function controller(method: Controller) {
       params: req.params,
       files: req.files,
     });
+
     res.status(response.status).json(response.body);
   };
 }

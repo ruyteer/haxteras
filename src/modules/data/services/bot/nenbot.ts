@@ -7,7 +7,7 @@ export class NenbotServices implements NenbotUseCases {
   constructor(private nenbotRepository: INenbotRepository) {}
 
   async create(data: NenbotModel): Promise<void> {
-    const requiredFields = ["name", "screen", "key"];
+    const requiredFields = ["name", "key", "days"];
 
     for (const field of requiredFields) {
       if (!data[field]) {

@@ -60,4 +60,22 @@ export class UserRepository implements IUserRepository {
       return null;
     }
   }
+
+  async update(
+    id: string,
+    data?: {
+      name?: string;
+      surname?: string;
+      email?: string;
+      phone?: string;
+      cpf?: string;
+      nickname?: string;
+    }
+  ): Promise<User> {
+    return await prisma.user.update({
+      where: { id },
+      data,
+      include: { address: true },
+    });
+  }
 }

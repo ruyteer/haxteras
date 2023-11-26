@@ -1,3 +1,4 @@
+import { NenbotServices } from "../../../data/services/bot/nenbot";
 import { OrderServices } from "../../../data/services/order/order";
 import { UserServices } from "../../../data/services/user/user";
 import { IStripeServices } from "../../contracts/find-intent";
@@ -10,6 +11,7 @@ export class WebhookController implements Controller {
     private orderServices: OrderServices,
     private stripeServices: IStripeServices,
     private userServices: UserServices,
+    private nenbotServices: NenbotServices,
     private nodemailerServices: INodemailerServices
   ) {}
 
@@ -50,27 +52,83 @@ export class WebhookController implements Controller {
 
           const metaData = event.data.object.metadata;
 
-          const productsArray = metaData.products.split(", ");
+          if (
+            metaData.products.includes("Dashbot") ||
+            metaData.products.includes("Nenbot")
+          ) {
+            const orderData = {
+              amount: responseData.amount / 100,
+              date: metaData.date,
+              paymentMethod: metaData.paymentMethod,
+              paymentIntent: responseData.id,
+              quantity: parseInt(metaData.quantity),
+              status: responseData.status,
+              voucher: intentData.voucher,
+            };
 
-          const orderData = {
-            amount: responseData.amount / 100,
-            date: metaData.date,
-            paymentMethod: metaData.paymentMethod,
-            paymentIntent: responseData.id,
-            quantity: parseInt(metaData.quantity),
-            status: responseData.status,
-            voucher: intentData.voucher,
-          };
+            await this.orderServices.create(
+              orderData,
+              [metaData.products],
+              metaData.userId
+            );
 
-          await this.orderServices.create(
-            orderData,
-            productsArray,
-            metaData.userId
-          );
+            const user = await this.userServices.findOne(metaData.userId);
 
-          const user = await this.userServices.findOne(metaData.userId);
+            if (metaData.products.includes("Nenbot")) {
+              const nenbots = await this.nenbotServices.findAll();
 
-          await this.nodemailerServices.sendMail(user, orderData);
+              const splittedStr = metaData.products.split(" ")[1];
+              const filteredNenbots = nenbots.filter(
+                (result) => result.days === parseInt(splittedStr)
+              );
+
+              let nenbotsFinallyArray = [];
+
+              if (filteredNenbots.length < 1) {
+                console.error("No have nenbots");
+              } else {
+                for (
+                  let index = 0;
+                  index < parseInt(metaData.quantity);
+                  index++
+                ) {
+                  nenbotsFinallyArray.push(filteredNenbots[0]);
+                  await this.nenbotServices.delete(filteredNenbots[0].id);
+                  filteredNenbots.shift();
+                }
+              }
+
+              await this.nodemailerServices.sendNenbotMail(
+                nenbotsFinallyArray,
+                user,
+                orderData
+              );
+            } else {
+              await this.nodemailerServices.sendMail(user, orderData);
+            }
+          } else {
+            const productsArray = metaData.products.split(", ");
+
+            const orderData = {
+              amount: responseData.amount / 100,
+              date: metaData.date,
+              paymentMethod: metaData.paymentMethod,
+              paymentIntent: responseData.id,
+              quantity: parseInt(metaData.quantity),
+              status: responseData.status,
+              voucher: intentData.voucher,
+            };
+
+            await this.orderServices.create(
+              orderData,
+              productsArray,
+              metaData.userId
+            );
+
+            const user = await this.userServices.findOne(metaData.userId);
+
+            await this.nodemailerServices.sendMail(user, orderData);
+          }
 
           break;
 

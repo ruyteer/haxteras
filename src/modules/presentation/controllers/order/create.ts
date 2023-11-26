@@ -20,21 +20,39 @@ export class CreateOrderController implements Controller {
         userId,
         amount,
       } = req.body;
+      const data = req.body;
+
       const voucher = req.files.firebaseUrl;
 
-      await this.orderServices.create(
-        {
-          amount: parseFloat(amount),
-          date,
-          paymentIntent,
-          paymentMethod,
-          status: "succeeded",
-          voucher: voucher[0],
-          quantity: parseInt(quantity),
-        },
-        JSON.parse(products),
-        userId
-      );
+      if (products.includes("Dashbot") || products.includes("Nenbot")) {
+        await this.orderServices.create(
+          {
+            amount: parseFloat(amount),
+            date,
+            paymentIntent,
+            paymentMethod,
+            status: "succeeded",
+            voucher: voucher[0],
+            quantity: parseInt(quantity),
+          },
+          [products],
+          userId
+        );
+      } else {
+        await this.orderServices.create(
+          {
+            amount: parseFloat(amount),
+            date,
+            paymentIntent,
+            paymentMethod,
+            status: "succeeded",
+            voucher: voucher[0],
+            quantity: parseInt(quantity),
+          },
+          JSON.parse(products),
+          userId
+        );
+      }
 
       return okResponse();
     } catch (error) {

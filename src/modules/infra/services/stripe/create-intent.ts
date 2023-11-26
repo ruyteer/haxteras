@@ -17,24 +17,46 @@ export class CreateIntent implements ICreateIntent {
         },
       });
 
-      const productsAsString = data.products.join(", ");
+      if (
+        data.products[0].includes("Dashbot") ||
+        data.products[0].includes("Nenbot")
+      ) {
+        const paymentIntent = await stripe.paymentIntents.create({
+          customer: customer.id,
+          setup_future_usage: "off_session",
+          currency: "brl",
+          amount: data.amount,
+          payment_method_types: ["card"],
+          metadata: {
+            paymentMethod: data.paymentMethod,
+            date: data.date,
+            quantity: data.quantity,
+            userId: data.userId,
+            products: data.products[0],
+          },
+        });
 
-      const paymentIntent = await stripe.paymentIntents.create({
-        customer: customer.id,
-        setup_future_usage: "off_session",
-        currency: "brl",
-        amount: data.amount,
-        payment_method_types: ["card"],
-        metadata: {
-          paymentMethod: data.paymentMethod,
-          date: data.date,
-          quantity: data.quantity,
-          userId: data.userId,
-          products: productsAsString,
-        },
-      });
+        return paymentIntent.client_secret;
+      } else {
+        const productsAsString = data.products.join(", ");
 
-      return paymentIntent.client_secret;
+        const paymentIntent = await stripe.paymentIntents.create({
+          customer: customer.id,
+          setup_future_usage: "off_session",
+          currency: "brl",
+          amount: data.amount,
+          payment_method_types: ["card"],
+          metadata: {
+            paymentMethod: data.paymentMethod,
+            date: data.date,
+            quantity: data.quantity,
+            userId: data.userId,
+            products: productsAsString,
+          },
+        });
+
+        return paymentIntent.client_secret;
+      }
     } catch (error) {
       throw new Error(error);
     }
