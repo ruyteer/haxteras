@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Poppins, sans-serif;
+}
+
+body {
+  background-color: #1c1427;
+}
+
+:root {
+  --amarelo: rgba(251, 169, 1, 1);
+  --branco: rgba(255, 255, 255, 1);
+  --pretopreto-10: rgba(232, 231, 233, 1);
+  --preto: rgba(28, 20, 39, 1);
+  --pretopreto-20: rgba(210, 208, 212, 1);
+  --pretopreto-30: rgba(187, 185, 190, 1);
+  --pretopreto-40: rgba(164, 161, 169, 1);
+  --pretopreto-5: rgba(244, 243, 244, 1);
+  --pretopreto-60: rgba(119, 114, 125, 1);
+  --pretopreto-80: rgba(73, 67, 82, 1);
+}
+
+.input-control {
+  border: transparent;
+  transition: ease-in-out 500ms;
+}
+
+.input-control:focus {
+  outline: none;
+  border: black 1px solid;
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+  }
+  .home {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    background-position: right !important;
+  }
+
+  .home .box-card {
+    margin-left: -70px;
+  }
+
+  .home .box-news {
+    margin-left: -70px;
+  }
+  .home .left-section .title {
+    margin-left: -70px;
+  }
+  .home .box-news {
+    margin-left: -70px;
+  }
+
+  .home .items {
+    margin-left: -70px;
+    max-width: 300px;
+    overflow-x: scroll;
+  }
+
+  .bot-title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bot-title p {
+    margin-top: -50px;
+  }
+
+  .choose-bot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .choose-bot .prev-button,
+  .choose-bot .next-button {
+    position: absolute;
+    top: 145%;
+  }
+  .choose-bot .next-button {
+    margin-left: 100px;
+  }
+  .choose-bot .prev-button {
+    margin-right: 100px;
+  }
+
+  .bot-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bot-section .bot-card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .bot-card img {
+    max-width: 80%;
+  }
+
+  .bot-card .bot-info ul {
+    display: flex;
+    margin-left: 0px;
+    gap: 20px;
+  }
+
+  .bot-card .bot-info ul li p,
+  .bot-card .bot-info ul li h2 {
+    font-size: 15px;
+  }
+
+  .bot-card .bot-quantity {
+    display: flex;
+    margin-left: -10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bot-card .bot-quantity p {
+    display: none;
+  }
+
+  .bot-card .quantity-input {
+    margin-left: 15px;
+  }
+
+  .bot-card .buy-buttons {
+    display: flex;
+    flex-direction: row;
+    margin-left: -8px;
+  }
+
+  .bot-card .buy-buttons button {
+    width: 110px;
+    margin-left: 15px;
+  }
+
+  .shop-info {
+    overflow-x: scroll;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 100%;
+    gap: 25px;
+  }
+
+  .teras-section {
+    height: 300vh;
+  }
+
+  .card-section {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .menu-section-title {
+    margin-left: -40px;
+    width: 100% !important;
+  }
+  .menu-section-title h1 {
+    font-size: 15px;
+    width: 80%;
+  }
+}

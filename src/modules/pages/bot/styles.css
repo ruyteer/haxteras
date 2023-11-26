@@ -1,0 +1,97 @@
+.dashbot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+  margin-top: 100px;
+  color: white;
+  margin-bottom: 70px;
+}
+
+.dashbot .image img {
+  width: 480px;
+}
+
+.dashbot .dashbot-card {
+  background-color: white;
+  border-radius: 15px;
+  color: var(--preto);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+}
+
+.dashbot .dashbot-card h1 {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.dashbot-card .offer {
+  margin-top: 30px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.dashbot-card .offer .price {
+  font-size: 35px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-weight: 600;
+  color: var(--preto);
+}
+
+.dashbot-card .offer span {
+  font-size: 15px;
+  font-weight: 500;
+  color: gray;
+}
+
+.dashbot-card .installments {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+}
+
+.dashbot-card .installments img {
+  margin-right: 10px;
+}
+
+.dashbot-card form {
+  margin-top: 50px;
+}
+
+.dashbot-card form p {
+  font-size: 15px;
+}
+
+.dashbot-card form .username-input {
+  margin-top: 15px;
+  width: 80%;
+  padding: 15px;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  transition: ease-in-out 300ms;
+  border-radius: 8px;
+}
+
+.dashbot-card form .username-input:focus {
+  outline: none;
+  border: 1px solid black;
+}
+
+.dashbot-card .submit-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.dashbot-card .submit-buttons .submit {
+  width: 60%;
+  background-color: var(--amarelo);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}

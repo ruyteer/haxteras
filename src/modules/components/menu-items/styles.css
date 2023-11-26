@@ -1,0 +1,117 @@
+.menu-items-section {
+  height: 200vh;
+  background-color: var(--amarelo);
+}
+
+.menu-section-title h1 {
+  margin: 50px;
+  margin-top: 80px;
+  background-color: white;
+  font-weight: 600;
+  width: 400px;
+  padding: 10px;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0 100%);
+  text-align: center;
+}
+
+.menu-content {
+  position: relative;
+  top: 400px;
+}
+
+.menu-content p {
+  text-align: right;
+  margin-right: 70px;
+}
+
+table {
+  margin: 100px auto;
+  width: 90%;
+  border-collapse: collapse;
+  font-weight: 600;
+}
+
+th,
+td {
+  border: none;
+  padding: 20px;
+  text-align: left;
+  border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+th {
+  font-weight: 500;
+}
+
+td {
+  font-size: 18px;
+}
+
+thead {
+  background-color: rgba(28, 20, 39, 1);
+  color: whitesmoke;
+}
+
+tbody {
+  color: rgba(28, 20, 39, 1);
+  background-color: #fff;
+}
+
+.quantity-input {
+  text-align: left;
+}
+
+.quantity-input input {
+  width: 47px;
+  height: 38px;
+  text-align: center;
+  color: var(--preto);
+  font-weight: 600;
+  border: none;
+  background-color: #f4f3f4;
+}
+
+.quantity-input .button {
+  height: 38px;
+  width: 30px;
+  background-color: var(--amarelo);
+  cursor: pointer;
+  border: 0;
+}
+
+.quantity-input .decrease-button {
+  border-radius: 8px 0 0 8px;
+}
+.quantity-input .increase-button {
+  border-radius: 0 8px 8px 0;
+}
+
+.menu-content .button-table {
+  background-color: var(--amarelo);
+  border: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 10px;
+  width: 149px;
+  height: 42px;
+  cursor: pointer;
+  transition: 300ms;
+}
+
+.menu-content .button-table:hover {
+  opacity: 0.9;
+}
+
+.cart-button {
+  height: 42px;
+  width: 46px;
+  border-radius: 13px;
+  border: none;
+  cursor: pointer;
+  transition: 300ms;
+  margin-left: -50px;
+}
+
+.cart-button img {
+  margin-top: 5px;
+}

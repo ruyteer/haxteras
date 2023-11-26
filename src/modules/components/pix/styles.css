@@ -1,0 +1,199 @@
+.pix-body {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 50px;
+}
+
+.pix-body .content {
+  background-color: white;
+  color: black;
+  margin-top: 100px;
+  padding: 50px;
+  border-radius: 13px;
+  width: 750px;
+}
+
+.pix-body .content .titles {
+  text-align: center;
+}
+
+.pix-body .content .titles h1 {
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.pix-body .content .titles .paragraf {
+  margin-top: 30px;
+}
+
+.pix-body .content .titles p {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.pix-body .content .voucher-buttons {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.pix-body .content .voucher-buttons button {
+  padding: 13px;
+  width: 40%;
+  border: none;
+  border-radius: 13px;
+  background-color: var(--amarelo);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pix-body .content .copy-key {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pix-body .content .copy-key label {
+  margin-top: 10px;
+}
+
+.pix-body .content .copy-key p {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.pix-body .content .copy-key p span {
+  font-size: 20px;
+}
+
+.pix-body .content .copy-key input {
+  width: 200px;
+  margin-top: 5px;
+  background-color: #e8e7e9;
+  color: #77727d;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+.pix-body .content .copy-key input:focus {
+  outline: none;
+}
+
+.pix-body .content .copy-key button {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #25d366;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.pix-body .resum .line {
+  width: 100%;
+  background-color: white;
+  height: 1px;
+  margin-top: 15px;
+}
+
+.pix-body .content .qrcode {
+  text-align: center;
+  margin-top: 45px;
+}
+.pix-body .content img {
+  width: 250px;
+}
+
+.pix-body .resum {
+  background-color: #77727d;
+  padding: 35px;
+  margin-top: 100px;
+  color: white;
+  text-align: left;
+  width: 220px;
+  border-radius: 10px;
+  height: 100%;
+}
+.pix-body .resum h1 {
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.pix-body.resum .line {
+  width: 100%;
+  background-color: white;
+  height: 1px;
+  margin-top: 15px;
+}
+.pix-body.resum .details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.pix-body .resum .total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.pix-body .resum .total .total-price {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.pix-body .resum .finaly {
+  text-align: center;
+}
+
+.pix-body .resum button {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: var(--amarelo);
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pix-body .resum form {
+  display: flex;
+  margin-left: 150px;
+  margin-top: 30px;
+}
+
+.pix-body.resum form input {
+  width: 150px;
+  height: 35px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+.pix-body.resum form button {
+  padding: 10px;
+  background-color: #77727d;
+  border: none;
+  color: white;
+  font-weight: 600;
+  width: 80px;
+  border-radius: 8px;
+  margin-left: 20px;
+}
+
+.pix-body.resum .discount {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.pix-body .resum .details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}

@@ -1,0 +1,159 @@
+.home {
+  background-image: url(/public/1025782\ 2.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.box-card {
+  background-color: var(--preto);
+  border-radius: 50px;
+  height: 21px;
+  width: 165px;
+  display: flex;
+  color: white;
+  padding: 25px;
+  align-items: center;
+  text-align: left;
+  margin-right: 50px;
+}
+
+.right-section {
+  margin-bottom: 30%;
+}
+
+.box-card img {
+  width: 40px;
+  height: 40px;
+}
+
+.box-card p {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.box-news {
+  background-color: var(--amarelo);
+  width: 230px;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0 100%);
+  text-align: center;
+}
+
+.box-news h2 {
+  font-weight: 600;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+}
+
+.left-section .title {
+  margin-top: 30px;
+  color: whitesmoke;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.items {
+  display: flex;
+}
+
+.items a {
+  display: flex;
+  text-decoration: none;
+}
+
+.items .item-price {
+  background-color: #1c1427;
+  padding: 6px;
+  width: 67px;
+  height: 39px;
+  color: whitesmoke;
+  text-decoration: none;
+  border-radius: 10px;
+  margin-left: -40px;
+  z-index: 1;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 600;
+}
+
+.items .sigle {
+  font-size: 13px;
+  margin-left: -40px;
+}
+
+.items .item-price .price-number {
+  margin-left: 10px;
+  margin-top: -10px;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+.items .item-price .price-number span {
+  font-size: 14px;
+  margin-left: -4px;
+}
+
+.items img {
+  margin-top: 50px;
+  transition: 500ms;
+}
+
+.items img:hover {
+  transform: scale(1.05);
+}
+
+.bot-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bot-title h1 {
+  font-size: 20px;
+  color: white;
+  margin: 70px;
+  font-weight: 500;
+}
+
+.bot-title p {
+  margin: 70px;
+  color: white;
+}
+
+.bot-title span {
+  color: var(--amarelo);
+}
+
+.choose-bot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.choose-bot button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  transition: opacity 0.3s ease;
+}
+
+.choose-bot button:hover {
+  opacity: 0.7;
+}
+
+.prev-button {
+  margin-right: 50px;
+}
+
+.next-button {
+  margin-left: 50px;
+}

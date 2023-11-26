@@ -1,0 +1,44 @@
+.payment-success .message {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  color: white;
+  margin-top: 100px;
+}
+
+.payment-success .message h1 {
+  font-weight: 600;
+}
+
+.payment-success .message p {
+  margin-top: 15px;
+}
+
+.payment-success .message p span {
+  color: var(--amarelo);
+}
+
+.payment-success .message .buttons {
+  margin-top: 50px;
+}
+.payment-success .message button {
+  margin-left: 15px;
+  width: 160px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--amarelo);
+  cursor: pointer;
+  transition: 700ms;
+}
+
+.payment-success .message button:hover {
+  opacity: 0.7;
+}
+
+.payment-success .infos-p {
+  margin-top: 50px;
+}

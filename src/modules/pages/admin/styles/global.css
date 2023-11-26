@@ -1,0 +1,178 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login form .form-control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--preto);
+  text-align: start;
+}
+
+.login form .form-control label {
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.login form .form-control input {
+  background-color: white;
+  margin-top: 10px;
+  width: 100%;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(159, 155, 155);
+  transition: ease-in-out 300ms;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.login form .form-control input:focus {
+  outline: none;
+  border: 1px solid black;
+}
+
+.admin-button {
+  background-color: var(--amarelo);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+.admin-button-2 {
+  background-color: var(--preto);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.dashboard nav {
+  width: 100%;
+}
+
+.login nav a {
+  cursor: pointer;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.methods {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 40px;
+}
+
+.methods input {
+  background-color: white;
+  margin-top: 10px;
+  width: 100%;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(159, 155, 155);
+  transition: ease-in-out 300ms;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.methods input:focus {
+  outline: none;
+  border: 1px solid black;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-content {
+  margin-top: 70px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 13px;
+}
+
+.user-content p {
+  margin-top: 8px;
+}
+
+.user-content h1 {
+  font-weight: 600;
+  font-size: 22px;
+  text-align: center;
+}
+
+.user-content span {
+  color: var(--amarelo);
+  font-weight: 600;
+}
+
+.dashbots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  color: white;
+}
+.gerentment {
+  display: flex;
+  margin-top: 50px;
+  flex-direction: column;
+  background-color: white;
+  padding: 30px;
+  border-radius: 13px;
+  color: black;
+}
+
+.gerentment p {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.gerentment form {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.gerentment form .dash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gerentment form label {
+  font-size: 18px;
+}
+.gerentment form input[type="radio"] {
+  padding: 20px;
+  margin-top: 15px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}

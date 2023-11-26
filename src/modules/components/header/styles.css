@@ -1,0 +1,56 @@
+.all-header {
+  background-color: #494352;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  background-color: #1c1427;
+  align-items: center;
+  height: 80px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav li {
+  margin-left: 53px;
+}
+
+nav li a {
+  color: whitesmoke;
+  font-size: 15px;
+  text-decoration: none;
+  transition: 350ms;
+}
+
+nav li a:hover {
+  color: #fba901;
+}
+
+.header-cart {
+  display: flex;
+  color: #fba901;
+}
+
+header a {
+  text-decoration: none;
+}
+
+.header-cart .cart-quantity {
+  background-color: #ff0000;
+  color: white;
+  border-radius: 100%;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  font-size: 13px;
+  margin-left: -3px;
+  margin-top: -5px;
+}
+
+.header-cart p {
+  margin-left: 10px;
+}

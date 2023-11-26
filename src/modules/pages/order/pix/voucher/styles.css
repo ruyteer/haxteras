@@ -1,0 +1,65 @@
+.send-voucher {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.send-voucher .content {
+  margin-top: 70px;
+  background-color: white;
+  border-radius: 13px;
+  padding: 40px;
+  text-align: center;
+}
+
+.send-voucher .content h1 {
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.send-voucher .content p {
+  margin-top: 15px;
+}
+
+.send-voucher .content form {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.send-voucher .content form input {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #fff;
+  color: black;
+  cursor: pointer;
+}
+
+.send-voucher .content form input[type="file"]::-webkit-file-upload-button {
+  padding: 15px;
+  background-color: #2e86de;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.send-voucher .content form button {
+  margin-top: 20px;
+  background-color: var(--amarelo);
+  padding: 13px;
+  width: 40%;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}

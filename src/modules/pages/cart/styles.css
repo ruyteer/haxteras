@@ -1,0 +1,103 @@
+.cart {
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.cart-left .titles h1 {
+  margin-top: 50px;
+  color: white;
+  font-weight: 600;
+}
+.cart-left .titles p {
+  margin-left: 70px;
+  margin-top: 10px;
+  color: white;
+}
+
+.cart-right .resum {
+  background-color: #77727d;
+  padding: 35px;
+  color: white;
+  text-align: left;
+  margin-left: 150px;
+  width: 200px;
+  margin-top: 230px;
+  border-radius: 10px;
+}
+
+.cart-right .resum h1 {
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.cart-right .resum .line {
+  width: 100%;
+  background-color: white;
+  height: 1px;
+  margin-top: 15px;
+}
+
+.cart-right .resum .details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.cart-right .resum .total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.cart-right .resum .total .total-price {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.cart-right .resum .finaly {
+  text-align: center;
+}
+
+.cart-right .resum button {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: var(--amarelo);
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cart-right form {
+  display: flex;
+  margin-left: 150px;
+  margin-top: 30px;
+}
+
+.cart-right form input {
+  width: 150px;
+  height: 35px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.cart-right form button {
+  padding: 10px;
+  background-color: #77727d;
+  border: none;
+  color: white;
+  font-weight: 600;
+  width: 80px;
+  border-radius: 8px;
+  margin-left: 20px;
+}
+
+.error {
+  color: red;
+  margin-left: 150px;
+  margin-top: 10px;
+}
