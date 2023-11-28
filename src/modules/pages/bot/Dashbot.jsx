@@ -2,6 +2,7 @@ import "./styles.css";
 import { AllHeader } from "../../components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
 function Dashbot() {
@@ -14,6 +15,7 @@ function Dashbot() {
   const handleGetPrice = async () => {
     const response = await fetch(`${url}/product/${day}`);
     const responseJson = await response.json();
+    console.log(responseJson);
     setPrice(responseJson.price);
     setDashbot(responseJson);
   };
