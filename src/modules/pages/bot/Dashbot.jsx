@@ -10,16 +10,10 @@ function Dashbot() {
   const [username, setUsername] = useState("");
   const [price, setPrice] = useState(0);
 
-  const handleGetPrice = () => {
-    if (day === "30") {
-      setPrice(45);
-    } else if (day === "15") {
-      setPrice(25);
-    } else if (day === "7") {
-      setPrice(15);
-    } else {
-      alert("Ocorreu um erro!");
-    }
+  const handleGetPrice = async () => {
+    const response = await fetch(`${url}/product/${day}`);
+    const responseJson = await response.json();
+    setPrice(responseJson.price);
   };
 
   useEffect(() => {

@@ -91,11 +91,7 @@ function BotSection({ effectClass }) {
             {dashbotAvaiable ? (
               <>
                 {bot.map((result) => (
-                  <Link
-                    to={`/dashbot/${result.name
-                      .split(" ")[1]
-                      .replace("D", "")}`}
-                  >
+                  <Link to={`/dashbot/${result.id}`}>
                     <button>Comprar</button>
                   </Link>
                 ))}
