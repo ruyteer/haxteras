@@ -9,11 +9,13 @@ function Dashbot() {
   const [mcdValue, setMcdValue] = useState(1);
   const [username, setUsername] = useState("");
   const [price, setPrice] = useState(0);
+  const [dashbot, setDashbot] = useState({ name: "A AD" });
 
   const handleGetPrice = async () => {
     const response = await fetch(`${url}/product/${day}`);
     const responseJson = await response.json();
     setPrice(responseJson.price);
+    setDashbot(responseJson);
   };
 
   useEffect(() => {
@@ -44,7 +46,7 @@ function Dashbot() {
     e.preventDefault();
 
     const data = {
-      day,
+      day: dashbot.name.split(" ")[1].replace("D", ""),
       screen: mcdValue,
       username,
       price,
@@ -64,7 +66,7 @@ function Dashbot() {
         </div>
 
         <div className="dashbot-card">
-          <h1>Dash BOT {day}D</h1>
+          <h1>{dashbot.name}</h1>
 
           <p className="offer">
             por <span className="price">R$ {price}, 00</span>{" "}
