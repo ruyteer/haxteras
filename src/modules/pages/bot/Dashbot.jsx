@@ -19,7 +19,7 @@ function Dashbot() {
     setPrice(responseJson.price);
     setDashbot(responseJson);
   };
-
+  //a
   useEffect(() => {
     handleGetPrice();
   }, []);
