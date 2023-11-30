@@ -62,25 +62,30 @@ function MenuItems() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productExists = cart.find((item) => item.id === id);
 
-    if (quantity[0].quantity > product.stock) {
-      toast("Não há essa quantia no estoque!", {
-        type: "error",
-        theme: "dark",
-        pauseOnHover: false,
-      });
-      return;
-    }
-
-    if (quantity[0]) {
-      if (productExists && quantity[0].quantity) {
-        productExists.quantity += quantity[0].quantity;
-      } else if (!productExists && quantity[0].quantity) {
-        product.quantity = quantity[0].quantity;
-        cart.push(product);
-      }
-    } else {
+    if (!quantity[0]) {
       product.quantity = 1;
       cart.push(product);
+    } else {
+      if (quantity[0].quantity > product.stock) {
+        toast("Não há essa quantia no estoque!", {
+          type: "error",
+          theme: "dark",
+          pauseOnHover: false,
+        });
+        return;
+      }
+
+      if (quantity[0]) {
+        if (productExists && quantity[0].quantity) {
+          productExists.quantity += quantity[0].quantity;
+        } else if (!productExists && quantity[0].quantity) {
+          product.quantity = quantity[0].quantity;
+          cart.push(product);
+        }
+      } else {
+        product.quantity = 1;
+        cart.push(product);
+      }
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -123,18 +128,41 @@ function MenuItems() {
                 </td>
                 <td>{result.stock} em estoque</td>
                 <td>
-                  <Link to={`/product/${result.id}`}>
-                    <button className="button-table">Comprar</button>
-                  </Link>
+                  {result.stock > 0 ? (
+                    <Link to={`/product/${result.id}`}>
+                      <button className="button-table">Comprar</button>
+                    </Link>
+                  ) : (
+                    <button className="button-table" style={{ color: "red" }}>
+                      Indisponível
+                    </button>
+                  )}
                 </td>
                 <td>
-                  <button
-                    type="submit"
-                    className="cart-button"
-                    onClick={() => handleAddToCart(result.id)}
-                  >
-                    <img src="/cart.svg" alt="Cart" />
-                  </button>
+                  {result.stock > 0 ? (
+                    <button
+                      type="submit"
+                      className="cart-button"
+                      onClick={() => handleAddToCart(result.id)}
+                    >
+                      <img src="/cart.svg" alt="Cart" />
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="submit"
+                        className="cart-button"
+                        onClick={() =>
+                          toast("Indisponível no estoque!", {
+                            theme: "dark",
+                            type: "error",
+                          })
+                        }
+                      >
+                        <img src="/cart.svg" alt="Cart" />
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

@@ -39,15 +39,31 @@ function TerasSection() {
                 <img src={result.images[0]} alt="Omegamon" />
               </div>
               <div className="card-title">
-                <h1>{result.description}</h1>
+                {result.stock > 0 ? (
+                  <>
+                    <h1> {result.description}</h1>
+                  </>
+                ) : (
+                  <>
+                    <h1 style={{ color: "red" }}>Indisponível</h1>
+                  </>
+                )}
               </div>
               <div className="card-content">
                 <p className="description">{result.name}</p>
                 <p className="price">R$ {result.price}</p>
                 <p className="unity-price">Preço da unidade</p>
-                <Link to={`/product/${result.id}`}>
-                  <button>COMPRAR</button>
-                </Link>
+                {result.stock > 0 ? (
+                  <>
+                    <Link to={`/product/${result.id}`}>
+                      <button>COMPRAR</button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <button style={{ color: "red" }}>INDISPONÍVEL</button>
+                  </>
+                )}
               </div>
             </div>
           </>
@@ -66,15 +82,31 @@ function TerasSection() {
                 <img src={result.images[0]} alt="Omegamon" />
               </div>
               <div className="card-title">
-                <h1>{result.description}</h1>
+                {result.stock > 0 ? (
+                  <>
+                    <h1> {result.description}</h1>
+                  </>
+                ) : (
+                  <>
+                    <h1 style={{ color: "red" }}>Indisponível</h1>
+                  </>
+                )}
               </div>
               <div className="card-content">
                 <p className="description">{result.name}</p>
                 <p className="price">R$ {result.price}</p>
                 <p className="unity-price">Preço da unidade</p>
-                <Link to={`/product/${result.id}`}>
-                  <button>COMPRAR</button>
-                </Link>
+                {result.stock > 0 ? (
+                  <>
+                    <Link to={`/product/${result.id}`}>
+                      <button>COMPRAR</button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <button style={{ color: "red" }}>INDISPONÍVEL</button>
+                  </>
+                )}
               </div>
             </div>
           </>
