@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as Scroll } from "react-scroll";
 import "./styles.css";
 
 function Header() {
   const items = JSON.parse(localStorage.getItem("cart")) || [];
+  const [visible, setVisible] = useState(false);
 
   const handleGetPriceSoum = () => {
     let price = 0;
@@ -72,7 +73,50 @@ function Header() {
             </Scroll>
           </li>
           <li>
-            <Link to={"/"}>Discord e Whatsapp</Link>
+            <Link
+              to={"/"}
+              onPointerOver={() => {
+                setVisible(true);
+              }}
+            >
+              Discord e Whatsapp
+            </Link>
+            {visible ? (
+              <>
+                <div
+                  className="discord-container"
+                  id="discord-container"
+                  onPointerLeave={() => {
+                    setVisible(false);
+                  }}
+                >
+                  <div className="links-a">
+                    <img
+                      loading="lazy"
+                      width="18"
+                      height="18"
+                      src="https://haxtera.com/wp-content/uploads/2023/06/10481-1.png"
+                      class="attachment-large size-large wp-image-11139"
+                      alt=""
+                    />{" "}
+                    <a href="">Whatsapp</a>
+                  </div>
+                  <div className="links-a">
+                    <img
+                      loading="lazy"
+                      width="18"
+                      height="18"
+                      src="https://haxtera.com/wp-content/uploads/2023/06/10480-1.png"
+                      class="attachment-large size-large wp-image-11140"
+                      alt=""
+                    />{" "}
+                    <a href="">Discord</a>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </li>
           <li>
             <Link to={"/vendas"}>Vendas</Link>

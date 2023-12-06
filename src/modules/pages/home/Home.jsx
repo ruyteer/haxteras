@@ -9,6 +9,7 @@ import {
 } from "../../components";
 import { Link } from "react-router-dom";
 import Footer from "../../components/footer/Footer";
+import ScrollAnimation from "./Test";
 
 const url = import.meta.env.VITE_URL;
 
@@ -44,6 +45,7 @@ function Home() {
 
   return (
     <>
+      <ScrollAnimation />
       <Header />
 
       <div className="home">

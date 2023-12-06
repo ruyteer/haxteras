@@ -1,0 +1,25 @@
+.animated-div {
+  display: flex;
+  max-width: 100%;
+  width: 100%;
+  height: 30px;
+  background-color: #494352;
+  position: relative;
+  overflow: hidden; /* Evitar overflow horizontal */
+  white-space: nowrap; /* Impedir que o texto quebre para uma nova linha */
+  text-align: center; /* Centralizar o texto */
+  align-items: center;
+  will-change: transform, opacity;
+  transition: transform 0.1s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.recados {
+  width: 100%;
+  color: white;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  animation: rolling 13s infinite ease-in-out;
+  font-weight: 400;
+  font-size: 14px;
+}

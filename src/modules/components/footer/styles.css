@@ -1,5 +1,5 @@
 footer {
-  height: 50vh;
+  height: 100vh;
   background-image: url("../../../../public/footer.png");
   background-position: center;
   background-repeat: no-repeat;
@@ -11,7 +11,46 @@ footer {
   padding: 20px;
 }
 
-footer img {
+.infos-detail {
+  display: flex;
+  margin-top: 50px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.messages img {
+  margin-left: 15px;
+  margin-top: 30px;
+}
+
+.two {
+  margin-left: 60px;
+}
+
+.messages p {
+  background-color: white;
+  font-weight: 500;
+  color: black;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  border-radius: 15px 15px 15px 0px;
+}
+
+footer .logo-footer {
   margin-top: 50px;
   width: 100px;
 }
@@ -39,7 +78,7 @@ footer li a:hover {
 }
 
 footer p {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 footer span {
