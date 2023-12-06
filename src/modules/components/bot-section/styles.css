@@ -101,6 +101,7 @@
 
 .buy-buttons button:hover {
   background-color: rgb(209, 140, 3);
+  transform: scale(1.05);
 }
 
 .cart-buttons {

@@ -2,7 +2,7 @@
   background-color: white;
   border-radius: 10px;
   color: #464646;
-  max-width: 800px;
+  width: 850px;
 }
 
 .cart-list table {
@@ -13,6 +13,13 @@
 .cart-list table img {
   border-radius: 20px;
   margin-top: 15px;
+  position: relative;
+  overflow: hidden;
+  transition: 300ms;
+}
+
+.cart-list table img:hover {
+  transform: scale(1.1);
 }
 
 .cart-list .title {

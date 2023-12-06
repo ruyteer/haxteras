@@ -52,6 +52,7 @@ function TerasSection() {
               <div className="card-content">
                 <p className="description">{result.name}</p>
                 <p className="price">R$ {result.price}</p>
+
                 <p className="unity-price">Preço da unidade</p>
                 {result.stock > 0 ? (
                   <>
@@ -64,6 +65,11 @@ function TerasSection() {
                     <button style={{ color: "red" }}>INDISPONÍVEL</button>
                   </>
                 )}
+                <p style={{ marginTop: "10px", fontSize: "13px" }}>
+                  {" "}
+                  Em estoque:{" "}
+                  <span style={{ fontWeight: 600 }}>{result.stock}</span>{" "}
+                </p>
               </div>
             </div>
           </>
@@ -107,6 +113,12 @@ function TerasSection() {
                     <button style={{ color: "red" }}>INDISPONÍVEL</button>
                   </>
                 )}
+
+                <p style={{ marginTop: "10px", fontSize: "13px" }}>
+                  {" "}
+                  Em estoque:{" "}
+                  <span style={{ fontWeight: 600 }}>{result.stock}</span>{" "}
+                </p>
               </div>
             </div>
           </>

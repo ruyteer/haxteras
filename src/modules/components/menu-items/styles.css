@@ -77,6 +77,11 @@ tbody {
   background-color: var(--amarelo);
   cursor: pointer;
   border: 0;
+  transition: 300ms;
+}
+
+.quantity-input .button:hover {
+  transform: scale(1.055);
 }
 
 .quantity-input .decrease-button {
@@ -100,6 +105,7 @@ tbody {
 
 .menu-content .button-table:hover {
   opacity: 0.9;
+  transform: scale(1.1);
 }
 
 .cart-button {
@@ -110,6 +116,10 @@ tbody {
   cursor: pointer;
   transition: 300ms;
   margin-left: -50px;
+}
+
+.cart-button:hover {
+  transform: scale(1.1);
 }
 
 .cart-button img {
