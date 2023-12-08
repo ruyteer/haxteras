@@ -25,7 +25,6 @@ function Painel() {
       }}
     >
       <p>Online</p>
-      <Link to={"/admin/dashboard/home"}>Dashboard</Link>
     </div>
   );
 }

@@ -60,7 +60,10 @@ function NenBot({ effectClass }) {
 
   return (
     <>
-      <section className={`bot-section ${effectClass} `}>
+      <section
+        className={`bot-section ${effectClass} `}
+        data-aos="fade-up-left"
+      >
         <div className="bot-card">
           <img src="/digimon2.jpeg" alt="Bot Image" />
 

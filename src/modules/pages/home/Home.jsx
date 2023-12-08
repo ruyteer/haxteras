@@ -11,11 +11,36 @@ import {
 } from "../../components";
 
 import ScrollAnimation from "./Test";
+import { handleFindProduct } from "../../helpers/find-product";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import PopupCart from "../cart/PopupCart";
 
 const url = import.meta.env.VITE_URL;
 
 function NewsProduct({ result }) {
   const [hovered, setHovered] = useState(false);
+
+  const handleAddToCart = async (id) => {
+    const product = await handleFindProduct(id);
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const productExists = cart.find((item) => item.id === id);
+    const productExistsIndex = cart.findIndex((item) => item.id === id);
+
+    if (productExists) {
+      cart[productExistsIndex].quantity += 1;
+    } else {
+      product.quantity = 1;
+      cart.push(product);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    toast("Produto adicionado ao carrinho!", {
+      type: "success",
+      theme: "dark",
+      pauseOnHover: false,
+    });
+  };
 
   const buttonAnimations = useSpring({
     opacity: hovered ? 1 : 0,
@@ -33,8 +58,13 @@ function NewsProduct({ result }) {
         {hovered ? (
           <>
             <animated.div style={buttonAnimations} className={"buttons-buy"}>
-              <button className="news-button">Comprar</button>
-              <button className="cart-button">
+              <Link to={`/product/${result.id}`}>
+                <button className="news-button">Comprar</button>
+              </Link>
+              <button
+                className="cart-button"
+                onClick={() => handleAddToCart(result.id)}
+              >
                 <img src="/cart.svg" alt="Carrinho" />
               </button>
             </animated.div>
@@ -85,6 +115,7 @@ function Home() {
     <>
       <ScrollAnimation />
       <Header />
+      <PopupCart />
 
       <div className="home">
         <div className="left-section">
