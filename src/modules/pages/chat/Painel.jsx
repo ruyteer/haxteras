@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Painel() {
   return (
@@ -24,6 +25,7 @@ function Painel() {
       }}
     >
       <p>Online</p>
+      <Link to={"/admin/dashboard/home"}>Dashboard</Link>
     </div>
   );
 }
