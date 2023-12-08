@@ -64,7 +64,7 @@ function BotSection({ effectClass }) {
 
   return (
     <>
-      <section className={`bot-section ${effectClass}`}>
+      <section className={`bot-section ${effectClass}`} data-aos="fade-up-left">
         <div className="bot-card">
           <img src="/bot-image.png" alt="Bot Image" />
 

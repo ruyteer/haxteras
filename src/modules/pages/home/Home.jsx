@@ -1,5 +1,7 @@
 import "./styles.css";
 import React, { useEffect, useState } from "react";
+import { animated, useSpring } from "react-spring";
+import ScrollReveal from "scrollreveal";
 import {
   Header,
   BotSection,
@@ -7,11 +9,47 @@ import {
   TerasSection,
   MenuItems,
 } from "../../components";
-import { Link } from "react-router-dom";
-import Footer from "../../components/footer/Footer";
+
 import ScrollAnimation from "./Test";
 
 const url = import.meta.env.VITE_URL;
+
+function NewsProduct({ result }) {
+  const [hovered, setHovered] = useState(false);
+
+  const buttonAnimations = useSpring({
+    opacity: hovered ? 1 : 0,
+    transform: `translanteY(${hovered ? 0 : 10}px)`,
+  });
+
+  return (
+    <>
+      <div
+        className="news-product"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <img src={result.images[0]} alt="Items" />
+        {hovered ? (
+          <>
+            <animated.div style={buttonAnimations} className={"buttons-buy"}>
+              <button className="news-button">Comprar</button>
+              <button className="cart-button">
+                <img src="/cart.svg" alt="Carrinho" />
+              </button>
+            </animated.div>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className="item-price">
+        <p className="sigle">R$</p>
+        <p className="price-number">{result.price}</p>
+      </div>
+    </>
+  );
+}
 
 function Home() {
   const [botType, setBotType] = useState(true);
@@ -60,13 +98,7 @@ function Home() {
           <div className="items">
             {newsProduct.map((result) => (
               <>
-                <Link>
-                  <img src={result.images[0]} alt="Items" />
-                  <div className="item-price">
-                    <p className="sigle">R$</p>
-                    <p className="price-number">{result.price}</p>
-                  </div>
-                </Link>
+                <NewsProduct result={result} />
               </>
             ))}
           </div>
@@ -115,8 +147,6 @@ function Home() {
       </div>
 
       <TerasSection />
-      <MenuItems />
-      <Footer />
     </>
   );
 }

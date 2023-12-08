@@ -3,7 +3,7 @@ import "./styles.css";
 
 function ShopInfos() {
   return (
-    <div className="shop-info">
+    <div className="shop-info" data-aos="zoom-in">
       <div className="infos">
         <div className="infos-title">
           <img src="/delivery_dining.svg" alt="Delivery Dinning" />

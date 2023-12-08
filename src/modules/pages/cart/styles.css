@@ -69,6 +69,11 @@
   width: 100%;
   cursor: pointer;
   font-weight: 600;
+  transition: 300ms ease-in-out;
+}
+
+.cart-right .resum button:hover {
+  transform: scale(1.1);
 }
 
 .cart-right form {
@@ -83,6 +88,13 @@
   border: none;
   border-radius: 8px;
   padding: 10px;
+  transition: 300ms ease-in-out;
+
+  outline: 1px solid transparent;
+}
+
+.cart-right form input:focus {
+  outline: 3px solid green;
 }
 
 .cart-right form button {
@@ -93,7 +105,13 @@
   font-weight: 600;
   width: 80px;
   border-radius: 8px;
+  cursor: pointer;
   margin-left: 20px;
+  transition: ease-in-out 300ms;
+}
+
+.cart-right form button:hover {
+  transform: scale(1.1);
 }
 
 .error {

@@ -36,6 +36,7 @@ function ProductCartList() {
                     <p>Unid.: R$ {result.price}</p>
                   </div>
                 </td>
+
                 <td>
                   <p className="quantity">
                     Quantidade: <span>{result.quantity}</span>

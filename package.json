@@ -12,6 +12,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.3.1",
     "@stripe/stripe-js": "^2.1.7",
+    "aos": "^2.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-jwt": "^1.2.0",
@@ -19,7 +20,8 @@
     "react-scroll": "^1.8.9",
     "react-spring": "^9.7.3",
     "react-toastify": "^9.1.3",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "scrollreveal": "^4.0.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",

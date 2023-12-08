@@ -9,6 +9,7 @@ function Footer() {
 
         <div className="infos-detail">
           <img
+            data-aos="flip-right"
             fetchpriority="high"
             src="https://haxtera.com/wp-content/uploads/2023/06/10408-1.png"
             class="attachment-large size-large wp-image-11141"
@@ -17,11 +18,11 @@ function Footer() {
             srcset="https://haxtera.com/wp-content/uploads/2023/06/10408-1.png 285w, https://haxtera.com/wp-content/uploads/2023/06/10408-1-274x300.png 274w"
           />
 
-          <div className="list-messages">
-            <div className="messages">
+          <div className="list-messages" data-aos="fade-down-left">
+            <div className="messages" data-aos="flip-left">
               <p>Tem alguma dúvida? Entre em contato!</p>
             </div>
-            <div className="messages two">
+            <div className="messages two" data-aos="flip-left">
               <p>Entre no nosso grupo do whatsapp!</p>
               <a href="">
                 {" "}
@@ -35,7 +36,7 @@ function Footer() {
                 />
               </a>
             </div>
-            <div className="messages">
+            <div className="messages" data-aos="flip-left">
               <p>
                 Entre no nosso discord e veja <br /> nossas referências!
               </p>

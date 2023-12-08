@@ -1,5 +1,4 @@
 .menu-items-section {
-  height: 200vh;
   background-color: var(--amarelo);
 }
 
@@ -9,14 +8,15 @@
   background-color: white;
   font-weight: 600;
   width: 400px;
+  font-size: 23px;
   padding: 10px;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0 100%);
   text-align: center;
 }
 
 .menu-content {
-  position: relative;
-  top: 400px;
+  margin-top: 200px;
+  padding: 40px;
 }
 
 .menu-content p {

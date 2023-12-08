@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as Scroll } from "react-scroll";
 import "./styles.css";
+import { useSpring, animated } from "react-spring";
 
 function Header() {
   const items = JSON.parse(localStorage.getItem("cart")) || [];
@@ -16,6 +17,11 @@ function Header() {
 
     return price;
   };
+
+  const transitionDiv = useSpring({
+    opacity: visible ? 1 : 0,
+    transform: `translateY(${visible ? 0 : 10}px)`,
+  });
 
   return (
     <header>
@@ -83,7 +89,8 @@ function Header() {
             </Link>
             {visible ? (
               <>
-                <div
+                <animated.div
+                  style={transitionDiv}
                   className="discord-container"
                   id="discord-container"
                   onPointerLeave={() => {
@@ -112,7 +119,7 @@ function Header() {
                     />{" "}
                     <a href="">Discord</a>
                   </div>
-                </div>
+                </animated.div>
               </>
             ) : (
               <></>

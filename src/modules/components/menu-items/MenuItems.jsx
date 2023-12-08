@@ -33,7 +33,22 @@ export function QuantityInput({ onQuantityChange, itemId }) {
       <button className="decrease-button button" onClick={handleDecrease}>
         -
       </button>
-      <input type="text" value={mcdValue} />
+      <input
+        type="number"
+        value={mcdValue}
+        onChange={(e) => {
+          if (e.target.value < 1) {
+            toast("Você deve selecionar ao menos um!", {
+              theme: "dark",
+              pauseOnHover: false,
+              type: "error",
+            });
+          } else {
+            setMcdValue(e.target.value);
+            onQuantityChange(e.target.value, itemId);
+          }
+        }}
+      />
       <button className="increase-button button" onClick={handleIncrease}>
         +
       </button>
@@ -44,7 +59,7 @@ export function QuantityInput({ onQuantityChange, itemId }) {
 function MenuItems() {
   const [item, setItem] = useState([{}]);
 
-  const [quantityMcd, setQuantity] = useState([{}]);
+  const [quantityMcd, setQuantity] = useState({});
 
   useEffect(() => {
     handleGetItem();
@@ -56,17 +71,24 @@ function MenuItems() {
   };
 
   const handleAddToCart = async (id) => {
-    const quantity = quantityMcd.filter((result) => result.itemId === id);
-
     const product = await handleFindProduct(id);
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productExists = cart.find((item) => item.id === id);
+    const productExistsIndex = cart.findIndex((item) => item.id === id);
 
-    if (!quantity[0]) {
-      product.quantity = 1;
-      cart.push(product);
-    } else {
-      if (quantity[0].quantity > product.stock) {
+    if (quantityMcd.itemId === id) {
+      // se eu tiver selecionado a quantidade
+      if (quantityMcd.quantity <= product.stock) {
+        // se a quantidade tem no estoque
+        if (productExists) {
+          // se o produto existe
+          cart[productExistsIndex].quantity =
+            parseInt(productExists.quantity) + parseInt(quantityMcd.quantity);
+        } else {
+          product.quantity = quantityMcd.quantity;
+          cart.push(product);
+        }
+      } else {
         toast("Não há essa quantia no estoque!", {
           type: "error",
           theme: "dark",
@@ -74,14 +96,10 @@ function MenuItems() {
         });
         return;
       }
-
-      if (quantity[0]) {
-        if (productExists && quantity[0].quantity) {
-          productExists.quantity += quantity[0].quantity;
-        } else if (!productExists && quantity[0].quantity) {
-          product.quantity = quantity[0].quantity;
-          cart.push(product);
-        }
+    } else {
+      // se não tiver selecionado quantidade
+      if (productExists) {
+        cart[productExistsIndex].quantity += 1;
       } else {
         product.quantity = 1;
         cart.push(product);
@@ -97,12 +115,12 @@ function MenuItems() {
   };
 
   return (
-    <section className="menu-items-section">
+    <section className="menu-items-section" data-aos="fade-right">
       <div className="menu-content">
-        <div className="menu-section-title">
+        <div className="menu-section-title" data-aos="fade-up">
           <h1>Itens servidores LADMO</h1>
         </div>
-        <table>
+        <table data-aos="flip-left">
           <thead>
             <tr>
               <th>Itens</th>
@@ -121,7 +139,7 @@ function MenuItems() {
                 <td>
                   <QuantityInput
                     onQuantityChange={(quantity, itemId) => {
-                      setQuantity([{ quantity, itemId }]);
+                      setQuantity({ quantity, itemId });
                     }}
                     itemId={result.id}
                   />

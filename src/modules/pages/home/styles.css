@@ -9,6 +9,45 @@
   align-items: center;
 }
 
+.buttons-buy {
+  position: fixed;
+  display: flex;
+  margin-left: 10px;
+  gap: 20px;
+  z-index: 1;
+  transition: 300ms;
+  background-color: var(--amarelo);
+
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.buttons-buy button {
+  padding: 10px;
+  height: 40px;
+  font-weight: 500;
+  text-align: center;
+  background-color: #f7f7f7f7;
+  border-radius: 8px;
+  border: 1px transparent solid;
+  cursor: pointer;
+
+  transition: 300ms ease-in-out;
+}
+
+.buttons-buy button:hover {
+  border: 1px var(--preto) solid;
+  transform: scale(1.05);
+}
+
+.buttons-buy .cart-button {
+  margin-left: 0px;
+}
+
+.buttons-buy .cart-button img {
+  margin-top: 0px;
+}
+
 .box-card {
   background-color: var(--preto);
   border-radius: 50px;

@@ -1,9 +1,10 @@
 footer {
+  margin-top: 200px;
   height: 100vh;
   background-image: url("../../../../public/footer.png");
   background-position: center;
   background-repeat: no-repeat;
-
+  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,6 +34,11 @@ footer {
 .messages img {
   margin-left: 15px;
   margin-top: 30px;
+  transition: 300ms;
+}
+
+.messages img:hover {
+  transform: scale(1.2);
 }
 
 .two {
