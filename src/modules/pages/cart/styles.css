@@ -144,3 +144,92 @@
 .cart-stick-button:hover {
   background-color: var(--amarelo);
 }
+
+.cart-popup {
+  position: fixed;
+  bottom: 0;
+  width: 300px;
+  background-color: #f7f7f7;
+  left: 30px;
+  padding: 20px;
+  z-index: 1;
+  border-radius: 5px 5px 0 0;
+  border-top: 10px solid red;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-popup .close-button {
+  text-align: center;
+  background-color: none;
+  border: none;
+  padding: 5px;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.item-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-title button {
+  text-align: center;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.item-title p {
+  font-weight: 500;
+}
+
+.item-total-price {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.item-price-paragraf {
+  color: red;
+  font-size: 18px;
+  font-weight: 500;
+}
+.item-total-price form {
+  display: flex;
+  align-items: center;
+}
+
+.item-total-price form p {
+  font-size: 13px;
+}
+
+.item-total-price form input {
+  width: 50px;
+  margin-left: 5px;
+}
+
+.subtotal {
+  display: flex;
+}
+
+.line {
+  width: 100%;
+  background-color: #77727d;
+  height: 1px;
+  margin-top: 15px;
+}
+
+.cart-popup-buttons {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
