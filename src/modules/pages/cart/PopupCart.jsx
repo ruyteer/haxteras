@@ -133,7 +133,16 @@ function PopupCart() {
         <>
           <button
             className="cart-stick-button"
-            onClick={() => setModal(!modal)}
+            onClick={() => {
+              if (items.length < 1) {
+                toast("Adicione um item ao carrinho primeiro!", {
+                  theme: "dark",
+                  type: "warning",
+                });
+              } else {
+                setModal(!modal);
+              }
+            }}
           >
             <img
               src="/cart.svg"
