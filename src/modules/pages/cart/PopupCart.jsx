@@ -6,17 +6,23 @@ import { useSpring, animated } from "react-spring";
 
 function PopupCart() {
   const [modal, setModal] = useState(false);
-  const items = JSON.parse(localStorage.getItem("cart"));
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
 
   const handleGetPrice = () => {
-    const totalPrice = items.reduce((accumulator, currentItem) => {
+    return cartItems.reduce((accumulator, currentItem) => {
       if (currentItem && currentItem.price && currentItem.quantity) {
         return accumulator + currentItem.price * currentItem.quantity;
       } else {
         return accumulator;
       }
     }, 0);
-    return totalPrice;
+  };
+
+  const updateCart = (newCartItems) => {
+    setCartItems(newCartItems);
+    localStorage.setItem("cart", JSON.stringify(newCartItems));
   };
 
   const divAnimation = useSpring({
@@ -42,18 +48,21 @@ function PopupCart() {
             </div>
 
             <div className="items-list">
-              {items.map((result) => (
+              {cartItems.map((result) => (
                 <>
                   <div className="item-section">
                     <div className="item-title">
                       <p>{result.name}</p>
                       <button
                         onClick={(e) => {
-                          const index = items.findIndex(
+                          const index = cartItems.findIndex(
                             (index) => index.id === result.id
                           );
-                          items.splice(index, 1);
-                          localStorage.setItem("cart", JSON.stringify(items));
+                          cartItems.splice(index, 1);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify(cartItems)
+                          );
                           toast("Deletado com sucesso!", {
                             theme: "dark",
                             type: "success",
@@ -73,11 +82,15 @@ function PopupCart() {
                           type="number"
                           defaultValue={result.quantity}
                           onChange={(e) => {
-                            const index = items.findIndex(
-                              (index) => index.id === result.id
+                            const updatedCart = cartItems.map((item) =>
+                              item.id === result.id
+                                ? {
+                                    ...item,
+                                    quantity: parseInt(e.target.value, 10),
+                                  }
+                                : item
                             );
-                            items[index].quantity = e.target.value;
-                            localStorage.setItem("cart", JSON.stringify(items));
+                            updateCart(updatedCart);
                           }}
                         />
                       </form>
@@ -134,7 +147,7 @@ function PopupCart() {
           <button
             className="cart-stick-button"
             onClick={() => {
-              if (items.length < 1) {
+              if (cartItems.length < 1) {
                 toast("Adicione um item ao carrinho primeiro!", {
                   theme: "dark",
                   type: "warning",
