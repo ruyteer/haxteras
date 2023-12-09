@@ -126,7 +126,7 @@ function PopupCart() {
                 <Link to={"/buy/cart"}>
                   <button
                     style={{
-                      backgroundColor: "red",
+                      backgroundColor: "var(--amarelo)",
                       color: "white",
                       fontWeight: 600,
                       padding: "8px",
