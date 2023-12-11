@@ -1,24 +1,26 @@
 import React from "react";
 import "./styles.css";
 import { QuantityInput } from "../../menu-items/MenuItems";
+import { useCart } from "../../../../CartProvider";
 
 function ProductCartList() {
-  const products = JSON.parse(localStorage.getItem("cart")) || [];
+  const { cartItems, updateCart } = useCart();
 
   const handleDeleteItem = (id) => {
-    const selectedProduct = products.filter((result) => result.id === id);
+    const selectedProduct = cartItems.filter((result) => result.id === id);
 
-    const newArray = products.filter((result) => result !== selectedProduct[0]);
+    const newArray = cartItems.filter(
+      (result) => result !== selectedProduct[0]
+    );
 
-    localStorage.setItem("cart", JSON.stringify(newArray));
-    window.location.reload();
+    updateCart(newArray);
   };
 
   return (
     <div className="cart-list">
-      {products.length > 0 ? (
+      {cartItems.length > 0 ? (
         <table>
-          {products.map((result) => (
+          {cartItems.map((result) => (
             <>
               <tbody>
                 <td>
@@ -39,7 +41,42 @@ function ProductCartList() {
 
                 <td>
                   <p className="quantity">
-                    Quantidade: <span>{result.quantity}</span>
+                    Quantidade:{" "}
+                    <input
+                      type="number"
+                      className="cart-quantity"
+                      defaultValue={result.quantity}
+                      onChange={(e) => {
+                        const newQuantity = parseInt(e.target.value, 10);
+
+                        if (newQuantity <= result.stock) {
+                          const updatedCart = cartItems.map((item) =>
+                            item.id === result.id
+                              ? { ...item, quantity: newQuantity }
+                              : item
+                          );
+                          updateCart(updatedCart);
+                        } else {
+                          if (result.stock < e.target.value) {
+                            e.target.value = result.stock;
+                            const updatedCart = cartItems.map((item) =>
+                              item.id === result.id
+                                ? { ...item, quantity: result.stock }
+                                : item
+                            );
+                            updateCart(updatedCart);
+                          } else if (e.target.value < 1) {
+                            e.target.value = 1;
+                            const updatedCart = cartItems.map((item) =>
+                              item.id === result.id
+                                ? { ...item, quantity: 1 }
+                                : item
+                            );
+                            updateCart(updatedCart);
+                          }
+                        }
+                      }}
+                    />
                   </p>
                 </td>
                 <td>

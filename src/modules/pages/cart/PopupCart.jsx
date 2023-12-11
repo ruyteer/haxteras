@@ -77,15 +77,29 @@ function PopupCart() {
                           type="number"
                           defaultValue={result.quantity}
                           onChange={(e) => {
-                            const updatedCart = cartItems.map((item) =>
-                              item.id === result.id
-                                ? {
-                                    ...item,
-                                    quantity: parseInt(e.target.value, 10),
-                                  }
-                                : item
-                            );
-                            updateCartLocal(updatedCart);
+                            const newQuantity = parseInt(e.target.value, 10);
+
+                            if (newQuantity <= result.stock) {
+                              const updatedCart = cartItems.map((item) =>
+                                item.id === result.id
+                                  ? { ...item, quantity: newQuantity }
+                                  : item
+                              );
+                              updateCartLocal(updatedCart);
+                            } else {
+                              e.target.value = 1;
+                              const updatedCart = cartItems.map((item) =>
+                                item.id === result.id
+                                  ? { ...item, quantity: 1 }
+                                  : item
+                              );
+                              updateCartLocal(updatedCart);
+
+                              toast("Essa quantidade não existe no estoque!", {
+                                theme: "dark",
+                                type: "error",
+                              });
+                            }
                           }}
                         />
                       </form>
@@ -118,7 +132,7 @@ function PopupCart() {
                     IR PARA O CARRINHO
                   </button>
                 </Link>
-                <Link to={"/buy/cart"}>
+                <Link to={"/buy/cart/0"}>
                   <button
                     style={{
                       backgroundColor: "var(--amarelo)",

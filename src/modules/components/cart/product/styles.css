@@ -5,6 +5,18 @@
   width: 900px;
 }
 
+.quantity .cart-quantity {
+  width: 50px;
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid var(--preto);
+}
+
+.quantity {
+  align-items: center;
+}
+
 .cart-list table {
   align-items: center;
   font-weight: 500;
