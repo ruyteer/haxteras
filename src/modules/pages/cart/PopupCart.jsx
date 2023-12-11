@@ -3,12 +3,12 @@ import "./styles.css";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
+import { useCart } from "../../../CartProvider";
 
 function PopupCart() {
   const [modal, setModal] = useState(false);
-  const [cartItems, setCartItems] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
+  const { cartItems } = useCart();
+  const { updateCart } = useCart();
 
   const handleGetPrice = () => {
     return cartItems.reduce((accumulator, currentItem) => {
@@ -20,9 +20,8 @@ function PopupCart() {
     }, 0);
   };
 
-  const updateCart = (newCartItems) => {
-    setCartItems(newCartItems);
-    localStorage.setItem("cart", JSON.stringify(newCartItems));
+  const updateCartLocal = (newCartItems) => {
+    updateCart(newCartItems);
   };
 
   const divAnimation = useSpring({
@@ -55,14 +54,10 @@ function PopupCart() {
                       <p>{result.name}</p>
                       <button
                         onClick={(e) => {
-                          const index = cartItems.findIndex(
-                            (index) => index.id === result.id
+                          const updatedCart = cartItems.filter(
+                            (item) => item.id !== result.id
                           );
-                          cartItems.splice(index, 1);
-                          localStorage.setItem(
-                            "cart",
-                            JSON.stringify(cartItems)
-                          );
+                          updateCartLocal(updatedCart);
                           toast("Deletado com sucesso!", {
                             theme: "dark",
                             type: "success",
@@ -90,7 +85,7 @@ function PopupCart() {
                                   }
                                 : item
                             );
-                            updateCart(updatedCart);
+                            updateCartLocal(updatedCart);
                           }}
                         />
                       </form>

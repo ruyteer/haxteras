@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { Link as Scroll } from "react-scroll";
 import "./styles.css";
 import { useSpring, animated } from "react-spring";
+import { useCart } from "../../../CartProvider";
 
 function Header() {
-  const items = JSON.parse(localStorage.getItem("cart")) || [];
+  const { cartItems } = useCart();
   const [visible, setVisible] = useState(false);
 
   const handleGetPriceSoum = () => {
     let price = 0;
 
-    items.map((result) => {
+    cartItems.map((result) => {
       price += result.price * result.quantity;
     });
 
@@ -134,7 +135,7 @@ function Header() {
       <Link to={"/cart"}>
         <div className="header-cart">
           <img src="/shopping_cart.svg" alt="Carrinho Svg" />
-          <div className="cart-quantity">{items.length}</div>
+          <div className="cart-quantity">{cartItems.length}</div>
           <p style={{ textDecoration: "none" }}>
             R$ {handleGetPriceSoum().toFixed(2)}
           </p>

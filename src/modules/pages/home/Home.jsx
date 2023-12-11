@@ -15,11 +15,13 @@ import { handleFindProduct } from "../../helpers/find-product";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import PopupCart from "../cart/PopupCart";
+import { useCart } from "../../../CartProvider";
 
 const url = import.meta.env.VITE_URL;
 
 function NewsProduct({ result }) {
   const [hovered, setHovered] = useState(false);
+  const { updateCart } = useCart();
 
   const handleAddToCart = async (id) => {
     const product = await handleFindProduct(id);
@@ -34,7 +36,8 @@ function NewsProduct({ result }) {
       cart.push(product);
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart(cart);
+
     toast("Produto adicionado ao carrinho!", {
       type: "success",
       theme: "dark",

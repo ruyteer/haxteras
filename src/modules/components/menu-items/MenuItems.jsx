@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { handleGetProductOfCategory } from "../../helpers/get-product-category";
 import { handleFindProduct } from "../../helpers/find-product";
 import { Link } from "react-router-dom";
+import { useCart } from "../../../CartProvider";
 const url = import.meta.env.VITE_URL;
 
 export function QuantityInput({ onQuantityChange, itemId }) {
@@ -58,6 +59,7 @@ export function QuantityInput({ onQuantityChange, itemId }) {
 
 function MenuItems() {
   const [item, setItem] = useState([{}]);
+  const { updateCart } = useCart();
 
   const [quantityMcd, setQuantity] = useState({});
 
@@ -106,7 +108,7 @@ function MenuItems() {
       }
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart(cart);
     toast("Produto adicionado ao carrinho!", {
       type: "success",
       theme: "dark",
