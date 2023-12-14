@@ -210,3 +210,16 @@
 .next-button {
   margin-left: 50px;
 }
+
+@keyframes pisca {
+  0% {
+    color: red;
+  }
+  100% {
+    color: var(--amarelo);
+  }
+}
+
+.title-pisca {
+  animation: pisca infinite 1.2s;
+}

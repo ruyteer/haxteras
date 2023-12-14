@@ -1,11 +1,12 @@
 .crown-items {
   display: flex;
   justify-content: center;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .crown-item-image {
   width: 450px;
+
   margin-top: 80px;
 }
 

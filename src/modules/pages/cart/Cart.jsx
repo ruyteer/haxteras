@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { AllHeader, ProductCartList } from "../../components/";
 import { Link } from "react-router-dom";
+import { useCart } from "../../../CartProvider";
 const url = import.meta.env.VITE_URL;
 
 function Cart() {
-  const items = JSON.parse(localStorage.getItem("cart")) || [];
+  const { cartItems, updateCart } = useCart();
   const [discount, setDiscount] = useState(0);
   const [error, setError] = useState("");
 
   const handleGetTotalPrice = () => {
     let price = 0;
-    items.map((result) => (price += result.price * result.quantity));
+    cartItems.map((result) => (price += result.price * result.quantity));
 
     return price;
   };
@@ -20,7 +21,7 @@ function Cart() {
     if (discount > 0) {
       let price = 0;
 
-      items.map((result) => {
+      cartItems.map((result) => {
         const total = result.price * result.quantity;
         const percent = discount / 100;
         price += total * percent;
@@ -28,7 +29,7 @@ function Cart() {
       return price;
     } else {
       let price = 0;
-      items.map((result) => (price += result.price * result.quantity));
+      cartItems.map((result) => (price += result.price * result.quantity));
 
       return price;
     }
@@ -60,12 +61,12 @@ function Cart() {
         <div className="cart-left">
           <div className="titles">
             <h1>Carrinho de Compras</h1>
-            <p>Você selecionou {items.length} itens</p>
+            <p>Você selecionou {cartItems.length} itens</p>
           </div>
           <ProductCartList />
         </div>
 
-        {items.length === 0 ? (
+        {cartItems.length === 0 ? (
           <></>
         ) : (
           <>
@@ -75,7 +76,7 @@ function Cart() {
                 <div className="line"></div>
                 <div className="details">
                   <div className="name">
-                    <p>Itens({items.length})</p>
+                    <p>Itens({cartItems.length})</p>
                     <p>Desconto</p>
                   </div>
                   <div className="price">

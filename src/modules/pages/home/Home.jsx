@@ -147,7 +147,8 @@ function Home() {
 
       <div className="bot-title">
         <h1>
-          Disponível <span>GameKing</span> e <span>Steam</span>
+          Disponível <span className="title-pisca">GameKing</span> e{" "}
+          <span className="title-pisca">Steam</span>
         </h1>
 
         <p>
