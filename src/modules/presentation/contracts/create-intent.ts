@@ -3,8 +3,8 @@ export type IntentData = {
   userId: string;
   date: string;
   paymentMethod: string;
-  quantity: number;
   products: string[];
+  productType: string;
 };
 
 export interface ICreateIntent {

@@ -7,7 +7,7 @@ export class CreateIntentController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { amount, userId, date, paymentMethod, quantity, products } =
+      const { amount, userId, date, paymentMethod, products, productType } =
         req.body;
 
       const amountInCent = Math.round(amount * 100);
@@ -17,8 +17,8 @@ export class CreateIntentController implements Controller {
         userId,
         date,
         paymentMethod,
-        quantity,
         products,
+        productType,
       });
 
       return okResponse(clientSecret);

@@ -23,19 +23,24 @@ export class CreateOrderController implements Controller {
       const data = req.body;
 
       const voucher = req.files.firebaseUrl;
+      const productsParse = JSON.parse(products);
 
-      if (products.includes("Dashbot") || products.includes("Nenbot")) {
+      if (
+        productsParse[0].type === "Dashbot" ||
+        productsParse[0].type === "Nenbot"
+      ) {
+        const productId = `${productsParse[0].type} ${productsParse[0].day}`;
         await this.orderServices.create(
           {
             amount: parseFloat(amount),
             date,
             paymentIntent,
             paymentMethod,
-            status: "succeeded",
+            status: "pending",
             voucher: voucher[0],
             quantity: parseInt(quantity),
           },
-          [products],
+          [productId],
           userId
         );
       } else {
@@ -45,11 +50,11 @@ export class CreateOrderController implements Controller {
             date,
             paymentIntent,
             paymentMethod,
-            status: "succeeded",
+            status: "pending",
             voucher: voucher[0],
             quantity: parseInt(quantity),
           },
-          JSON.parse(products),
+          productsParse,
           userId
         );
       }

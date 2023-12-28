@@ -52,29 +52,53 @@ export class WebhookController implements Controller {
 
           const metaData = event.data.object.metadata;
 
-          if (
-            metaData.products.includes("Dashbot") ||
-            metaData.products.includes("Nenbot")
-          ) {
+          if (metaData.productType === "product") {
+            const productsObjectList = JSON.parse(metaData.products);
+
+            productsObjectList.map(async (result) => {
+              const orderData = {
+                amount: result.price * result.quantity,
+                date: metaData.date,
+                paymentMethod: metaData.paymentMethod,
+                paymentIntent: responseData.id,
+                quantity: parseInt(result.quantity),
+                status: responseData.status,
+                voucher: intentData.voucher,
+              };
+              return await this.orderServices.create(
+                orderData,
+                [result.id],
+                metaData.userId
+              );
+            });
+
+            const user = await this.userServices.findOne(metaData.userId);
+
+            // await this.nodemailerServices.sendMail(user, orderData);
+          } else {
+            const botProducts = JSON.parse(metaData.products);
+
             const orderData = {
               amount: responseData.amount / 100,
               date: metaData.date,
               paymentMethod: metaData.paymentMethod,
               paymentIntent: responseData.id,
-              quantity: parseInt(metaData.quantity),
+              quantity: parseInt(botProducts[0].mdc),
               status: responseData.status,
               voucher: intentData.voucher,
             };
 
+            const productId = `${botProducts[0].type} ${botProducts[0].day}`;
+
             await this.orderServices.create(
               orderData,
-              [metaData.products],
+              [productId],
               metaData.userId
             );
 
             const user = await this.userServices.findOne(metaData.userId);
 
-            if (metaData.products.includes("Nenbot")) {
+            if (metaData.productType === "Nenbot") {
               const nenbots = await this.nenbotServices.findAll();
 
               const splittedStr = metaData.products.split(" ")[1];
@@ -106,28 +130,6 @@ export class WebhookController implements Controller {
             } else {
               await this.nodemailerServices.sendMail(user, orderData);
             }
-          } else {
-            const productsArray = metaData.products.split(", ");
-
-            const orderData = {
-              amount: responseData.amount / 100,
-              date: metaData.date,
-              paymentMethod: metaData.paymentMethod,
-              paymentIntent: responseData.id,
-              quantity: parseInt(metaData.quantity),
-              status: responseData.status,
-              voucher: intentData.voucher,
-            };
-
-            await this.orderServices.create(
-              orderData,
-              productsArray,
-              metaData.userId
-            );
-
-            const user = await this.userServices.findOne(metaData.userId);
-
-            await this.nodemailerServices.sendMail(user, orderData);
           }
 
           break;
