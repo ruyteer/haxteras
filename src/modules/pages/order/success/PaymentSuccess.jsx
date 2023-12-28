@@ -17,13 +17,36 @@ function PaymentSuccess() {
       <AllHeader />
       <div className="payment-success">
         <div className="message">
-          <h1>Obrigado! Sua compra foi efetuada com sucesso.</h1>
-          <p>
-            Status da compra: <span>sucesso</span>
-          </p>
-          <p>
-            Código da compra: <span>{orderId}</span>
-          </p>
+          <div
+            className="title-congr"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <img
+              style={{
+                width: "200px",
+                marginLeft: "-50px",
+                marginRight: "20px",
+              }}
+              src="/digimon voando.png"
+              alt="Digimon Voando"
+            />
+            <h1>Obrigado! Sua compra foi efetuada com sucesso.</h1>
+          </div>
+          <div
+            className="infos"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "-20px",
+            }}
+          >
+            <p>
+              Status da compra: <span>sucesso</span>
+            </p>
+            <p>
+              Código da compra: <span>{orderId}</span>
+            </p>
+          </div>
           <div className="buttons">
             <Link to={"/"}>
               <button>Voltar</button>

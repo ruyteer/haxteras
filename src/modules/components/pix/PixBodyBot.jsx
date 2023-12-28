@@ -4,28 +4,10 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 function PixBodyBot({ botData, botType }) {
-  const [price, setPrice] = useState(0);
-
   const handleTotalPrice = () => {
     const price = botData.price * botData.screen;
 
     return price;
-  };
-
-  useEffect(() => {
-    handleGetPrice();
-  }, []);
-
-  const handleGetPrice = () => {
-    if (botData.day === "30") {
-      setPrice(45);
-    } else if (botData.day === "15") {
-      setPrice(25);
-    } else if (botData.day === "7") {
-      setPrice(15);
-    } else {
-      alert("Ocorreu um erro!");
-    }
   };
 
   const handleCopyKey = (e) => {
@@ -91,7 +73,7 @@ function PixBodyBot({ botData, botType }) {
             <p>Quantidade</p>
           </div>
           <div className="price">
-            <p>R$ {price}, 00</p>
+            <p>R$ {botData.price}, 00</p>
             <p> {botData.screen}</p>
           </div>
         </div>

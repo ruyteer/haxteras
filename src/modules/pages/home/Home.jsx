@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import PopupCart from "../cart/PopupCart";
 import { useCart } from "../../../CartProvider";
+import Painel from "../chat/Painel";
 
 const url = import.meta.env.VITE_URL;
 
@@ -119,6 +120,7 @@ function Home() {
       <ScrollAnimation />
       <Header />
       <PopupCart />
+      <Painel />
 
       <div className="home">
         <div className="left-section">

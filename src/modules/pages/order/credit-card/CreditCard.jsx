@@ -5,7 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
-import { useParams } from "react-router-dom";
+import { getNowDate } from "../../../helpers/get-date";
 const stripePromise = loadStripe(
   "pk_test_51NOmpNIRbkxCjPq7BY4L1E7CzVhvF5eOxPdwJTBYDMZhPuNKh7MIjCWJGCsCmaZGt80w8a801PWwCkvW84J6vQNw00ThyuQ1HC"
 );
@@ -21,26 +21,18 @@ function CreditCard() {
     const { price } = JSON.parse(sessionStorage.getItem("total-price"));
 
     try {
-      const now = new Date();
-
-      const day = String(now.getDate()).padStart(2, "0");
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const year = now.getFullYear();
-
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-
-      const date = `${day}/${month}/${year}:${hours}:${minutes}`;
+      const date = getNowDate();
       const items = JSON.parse(localStorage.getItem("cart"));
-      let listId = [];
-      let itemQuantity = 0;
-      items.map((result) => {
-        listId.push(result.id);
-        itemQuantity += result.quantity;
-      });
 
-      setItemIds(listId);
-      setQuantityItem(itemQuantity);
+      let productsList = [];
+
+      items.map((result) => {
+        productsList.push({
+          id: result.id,
+          quantity: result.quantity,
+          price: result.price,
+        });
+      });
 
       fetch(`${url}/order/create/intent`, {
         method: "POST",
@@ -48,10 +40,10 @@ function CreditCard() {
         body: JSON.stringify({
           amount: price,
           paymentMethod: "card",
-          products: listId,
-          quantity: itemQuantity,
+          products: productsList,
           date,
           userId,
+          productType: "product",
         }),
       })
         .then((res) => res.json())
@@ -127,7 +119,7 @@ function CreditCard() {
           <div className="line"></div>
           <div className="total">
             <p>Total</p>
-            <p className="total-price">R$ {itemPrice.price}</p>
+            <p className="total-price">R$ {itemPrice.price.toFixed(2)}</p>
           </div>
         </div>
       </div>

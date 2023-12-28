@@ -16,7 +16,6 @@ function App() {
     <>
       <ToastContainer />
       <Router />
-      <Painel />
       <Footer />
     </>
   );

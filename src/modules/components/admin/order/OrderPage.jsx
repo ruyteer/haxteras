@@ -7,34 +7,53 @@ function OrderPage() {
   const [orders, setOrders] = useState([{}]);
 
   const handleGetOrders = async () => {
-    const response = await fetch(`${url}/order`);
-    const responseJson = await response.json();
-    const sortedOrders = responseJson.sort((a, b) => {
-      const dateA = new Date(
-        a.date.replace(
-          /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
-          "$3-$2-$1T$4:$5"
-        )
-      );
+    try {
+      const response = await fetch(`${url}/order`);
+      const responseJson = await response.json();
+      const sortedOrders = responseJson.sort((a, b) => {
+        const dateA = new Date(
+          a.date.replace(
+            /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
+            "$3-$2-$1T$4:$5"
+          )
+        );
 
-      const dateB = new Date(
-        b.date.replace(
-          /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
-          "$3-$2-$1T$4:$5"
-        )
-      );
+        const dateB = new Date(
+          b.date.replace(
+            /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
+            "$3-$2-$1T$4:$5"
+          )
+        );
 
-      return dateB - dateA;
-    });
-    setOrders(sortedOrders);
+        return dateB - dateA;
+      });
+
+      const muPromises = sortedOrders.map(async (result) => {
+        const response = await fetch(`${url}/user`);
+        const users = await response.json();
+        const user = users.find((resul) => resul.id === result.userId);
+
+        return {
+          ...result,
+          username: user ? user.name : "Nome não encontrado",
+        };
+      });
+
+      const mu = await Promise.all(muPromises);
+
+      setOrders(mu);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
   };
 
   const handleToast = async (products) => {
     let productArray = [];
-
+    console.log(products);
     for (const product of products) {
       // Check if the product contains an ID (assuming an ID has a specific format)
       const isID = /^[a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}$/i.test(product);
+      console.log(isID);
 
       if (isID) {
         // If it's an ID, make a fetch request to get the product details
@@ -77,6 +96,7 @@ function OrderPage() {
         <table style={{ marginTop: "13px" }}>
           <thead>
             <tr>
+              <th>Nome Comprador</th>
               <th>Comprador</th>
               <th>Status</th>
               <th>Valor</th>
@@ -90,6 +110,9 @@ function OrderPage() {
           <tbody>
             {orders.map((result) => (
               <tr>
+                <td>
+                  <p style={{ textAlign: "center" }}>{result.username}</p>
+                </td>
                 <td>
                   <a href={`/admin/dashboard/user/${result.userId}`}>
                     Clique Aqui

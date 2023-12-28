@@ -132,21 +132,42 @@ function PopupCart() {
                     IR PARA O CARRINHO
                   </button>
                 </Link>
-                <Link to={"/buy/cart/0"}>
-                  <button
-                    style={{
-                      backgroundColor: "var(--amarelo)",
-                      color: "white",
-                      fontWeight: 600,
-                      padding: "8px",
-                      borderRadius: "10px ",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    FECHAR PEDIDO
-                  </button>
-                </Link>
+                {cartItems.length < 1 ? (
+                  <>
+                    {" "}
+                    <button
+                      style={{
+                        backgroundColor: "var(--amarelo)",
+                        color: "red",
+                        fontWeight: 600,
+                        padding: "8px",
+                        borderRadius: "10px ",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      FECHAR PEDIDO
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link to={"/buy/cart/0"}>
+                      <button
+                        style={{
+                          backgroundColor: "var(--amarelo)",
+                          color: "white",
+                          fontWeight: 600,
+                          padding: "8px",
+                          borderRadius: "10px ",
+                          border: "none",
+                          cursor: "pointer",
+                        }}
+                      >
+                        FECHAR PEDIDO
+                      </button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </animated.div>

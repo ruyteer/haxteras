@@ -6,6 +6,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
 import { useParams } from "react-router-dom";
+import { getNowDate } from "../../../helpers/get-date";
 const stripePromise = loadStripe(
   "pk_test_51NOmpNIRbkxCjPq7BY4L1E7CzVhvF5eOxPdwJTBYDMZhPuNKh7MIjCWJGCsCmaZGt80w8a801PWwCkvW84J6vQNw00ThyuQ1HC"
 );
@@ -18,70 +19,32 @@ function CreditCardBot({ botType }) {
   const handleGetClientSecret = async () => {
     const price = botData.price * botData.screen;
 
-    if (botType === "Dashbot") {
-      try {
-        const now = new Date();
+    try {
+      const date = getNowDate();
 
-        const day = String(now.getDate()).padStart(2, "0");
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const year = now.getFullYear();
+      const productData = {
+        type: botType,
+        day: botData.day,
+        mdc: botData.screen,
+      };
 
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-
-        const date = `${day}/${month}/${year}:${hours}:${minutes}`;
-
-        fetch(`${url}/order/create/intent`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            amount: price,
-            paymentMethod: "card",
-            products: [`Dashbot ${botData.day}`],
-            quantity: botData.screen,
-            date,
-            userId,
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            setClientSecret(data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    } else if (botType === "Nenbot") {
-      try {
-        const now = new Date();
-
-        const day = String(now.getDate()).padStart(2, "0");
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const year = now.getFullYear();
-
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-
-        const date = `${day}/${month}/${year}:${hours}:${minutes}`;
-
-        fetch(`${url}/order/create/intent`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            amount: price,
-            paymentMethod: "card",
-            products: [`Nenbot ${botData.day}`],
-            quantity: botData.screen,
-            date,
-            userId,
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            setClientSecret(data);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+      fetch(`${url}/order/create/intent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: price,
+          paymentMethod: "card",
+          products: [productData],
+          date,
+          userId,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setClientSecret(data);
+        });
+    } catch (error) {
+      console.log(error);
     }
   };
 

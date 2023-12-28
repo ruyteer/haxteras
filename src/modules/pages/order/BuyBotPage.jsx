@@ -12,24 +12,7 @@ function BuyBotPage({ botType }) {
   const [formVerify, setFormVerify] = useState(false);
   const [formData, setFormData] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [price, setPrice] = useState(0);
   const botData = JSON.parse(sessionStorage.getItem("dashbotData"));
-
-  const handleGetPrice = () => {
-    if (botData.day === "30") {
-      setPrice(45);
-    } else if (botData.day === "15") {
-      setPrice(25);
-    } else if (botData.day === "7") {
-      setPrice(15);
-    } else {
-      alert("Ocorreu um erro!");
-    }
-  };
-
-  useEffect(() => {
-    handleGetPrice();
-  }, []);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -54,90 +37,48 @@ function BuyBotPage({ botType }) {
 
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
 
-    if (botType === "dashbot") {
-      try {
-        const response = await fetch(`${url}/user/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+    try {
+      const response = await fetch(`${url}/user/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          cpf: formData.cpf,
+          email: emailValue,
+          phone: formData.phone,
+          surname: formData.surname,
+          nickname: botData.username,
+          address: {
+            city: formData.city,
+            address: formData.address,
+            cep: formData.cep,
+            neighborhood: formData.neighborhood,
+            state: formData.state,
+            country: formData.country,
+            number: formData.number,
           },
-          body: JSON.stringify({
-            name: formData.name,
-            cpf: formData.cpf,
-            email: emailValue,
-            phone: formData.phone,
-            surname: formData.surname,
-            nickname: botData.username,
-            address: {
-              city: formData.city,
-              address: formData.address,
-              cep: formData.cep,
-              neighborhood: formData.neighborhood,
-              state: formData.state,
-              country: formData.country,
-              number: formData.number,
-            },
-          }),
-        });
+        }),
+      });
 
-        const responseJson = await response.json();
+      const responseJson = await response.json();
 
-        localStorage.setItem("userId", responseJson);
-      } catch (error) {
-        alert(error);
-      }
-    } else if (botType === "nenbot") {
-      try {
-        const response = await fetch(`${url}/user/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            cpf: formData.cpf,
-            email: emailValue,
-            phone: formData.phone,
-            surname: formData.surname,
-            address: {
-              city: formData.city,
-              address: formData.address,
-              cep: formData.cep,
-              neighborhood: formData.neighborhood,
-              state: formData.state,
-              country: formData.country,
-              number: formData.number,
-            },
-          }),
-        });
-
-        const responseJson = await response.json();
-
-        localStorage.setItem("userId", responseJson);
-      } catch (error) {
-        alert(error);
-      }
+      localStorage.setItem("userId", responseJson);
+    } catch (error) {
+      alert(error);
     }
 
     if (botType === "dashbot") {
-      if (paymentMethod === "credit-card") {
-        window.location.href = `${local}/payment/credit-card/dashbot`;
-      } else if (paymentMethod === "pix") {
-        window.location.href = `${local}/payment/pix/dashbot`;
-      }
+      window.location.href = `${local}/payment/credit-card/dashbot`;
     } else if (botType === "nenbot") {
-      if (paymentMethod === "credit-card") {
-        window.location.href = `${local}/payment/credit-card/nenbot`;
-      } else if (paymentMethod === "pix") {
-        window.location.href = `${local}/payment/pix/nenbot`;
-      }
+      window.location.href = `${local}/payment/credit-card/nenbot`;
     }
   };
 
   const handleGetTotalPrice = () => {
     const mcdValue = botData.screen;
-    const unityPrice = price;
-    const result = mcdValue * unityPrice;
+    const result = mcdValue * botData.price;
     return result;
   };
 
@@ -177,174 +118,63 @@ function BuyBotPage({ botType }) {
     setFormData({ ...formData, cpf: formattedCPF });
   };
 
+  const handleFinishPixOrder = async (e) => {
+    e.preventDefault();
+
+    sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
+    const name = document.getElementById("pix-name").value;
+    const number = document.getElementById("pix-number").value;
+    const cpf = document.getElementById("pix-cpf").value;
+
+    try {
+      const response = await fetch(`${url}/user/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          cpf: cpf,
+          email: emailValue,
+          phone: number,
+          surname: name.split(" ")[1] || "vazio",
+          nickname: botData.username,
+          address: {
+            city: "-",
+            address: "-",
+            cep: "0",
+            neighborhood: "-",
+            state: "-",
+            country: "-",
+            number: 0,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const responseJson = await response.json();
+
+        localStorage.setItem("userId", responseJson);
+
+        if (botType === "dashbot") {
+          window.location.href = `${local}/payment/pix/dashbot`;
+        } else if (botType === "nenbot") {
+          window.location.href = `${local}/payment/pix/nenbot`;
+        }
+      } else {
+        const responseJson = await response.json();
+        alert(responseJson);
+      }
+    } catch (error) {
+      return alert(error);
+    }
+  };
+
   return (
     <>
       <AllHeader />
       <div className="buy-content">
         <div className="buy-page">
-          <div className={`email-container ${emailVerify ? "checked" : ""}`}>
-            <h1>Meu contato</h1>
-            <p className="email-value">{emailValue}</p>
-            <form onSubmit={handleEmailSubmit}>
-              <div className="content">
-                <p>Endereço de e-mail</p>
-                <input
-                  type="email"
-                  required
-                  placeholder="email@gmail.com"
-                  value={emailValue}
-                  onChange={(e) => setEmailValue(e.target.value)}
-                />
-                <p className="info">
-                  O número do pedido e o recibo serão enviados para esse
-                  endereço de email.
-                </p>
-              </div>
-
-              <button type="submit">
-                {emailVerify ? <>Alterar email</> : <>Salvar alterações</>}
-              </button>
-            </form>
-          </div>
-
-          <div className="ship-infos">
-            <form
-              onSubmit={handleInfoSubmit}
-              className={formVerify ? "form-checked" : ""}
-            >
-              <h1>Informações de faturamento</h1>
-              <div className="grid-columns">
-                <div className="form-content">
-                  <label htmlFor="name">Nome</label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    required
-                    placeholder="Lucas"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="surname">Sobrenome</label>
-                  <input
-                    type="text"
-                    name="surname"
-                    id="surname"
-                    required
-                    placeholder="Alves"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="country">País</label>
-                  <input
-                    type="text"
-                    name="country"
-                    id="country"
-                    required
-                    placeholder="Brasil"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="cep">CEP</label>
-                  <input
-                    type="text"
-                    name="cep"
-                    id="cep"
-                    onChange={handleCEPChange}
-                    value={formData.cep}
-                    maxLength={8}
-                    required
-                    placeholder="XXXXXX-XXX"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="address">Endereço</label>
-                  <input
-                    type="text"
-                    name="address"
-                    id="address"
-                    required
-                    placeholder="Rua do ouro 23"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="number">Número</label>
-                  <input
-                    type="text"
-                    name="number"
-                    id="number"
-                    required
-                    placeholder="1"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="state">Estado</label>
-                  <input
-                    type="text"
-                    name="state"
-                    id="state"
-                    required
-                    placeholder="Rio de Janeiro"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="city">Cidade</label>
-                  <input
-                    type="text"
-                    name="city"
-                    id="city"
-                    required
-                    placeholder="Rio de Janeiro"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="neighborhood">Bairro</label>
-                  <input
-                    type="text"
-                    name="neighborhood"
-                    id="neighborhood"
-                    required
-                    placeholder="Arapoangas"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="phone">Telefone</label>
-                  <input
-                    type="text"
-                    onChange={handlePhoneChange}
-                    value={formData.phone}
-                    maxLength={11}
-                    name="phone"
-                    id="phone"
-                    required
-                    placeholder="DDD 9 XXXX-XXXX"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="cpf">CPF</label>
-                  <input
-                    type="text"
-                    onChange={handleCPFChange}
-                    value={formData.cpf}
-                    name="cpf"
-                    id="cpf"
-                    maxLength={11}
-                    required
-                    placeholder="XXX.XXX.XXX-XX"
-                  />
-                </div>
-              </div>
-
-              <button className={formVerify ? "form-button" : ""} type="submit">
-                {formVerify ? (
-                  <>Alterar informações</>
-                ) : (
-                  <>Prosseguir para pagamento</>
-                )}
-              </button>
-            </form>
-          </div>
-
           <div className="payment-method">
             <h1>Formas de pagamento</h1>
 
@@ -360,17 +190,255 @@ function BuyBotPage({ botType }) {
               </div>
               <div className="form-radio">
                 <input
-                  onClick={() => setPaymentMethod("pix")}
                   type="radio"
+                  onClick={() => setPaymentMethod("pix")}
                   name="payment-method"
                   id="pix"
                 />
                 <p>Pix</p>
               </div>
-
-              <button type="submit">Finalizar pedido</button>
             </form>
           </div>
+          {paymentMethod === "credit-card" ? (
+            <>
+              <div
+                className={`email-container ${emailVerify ? "checked" : ""}`}
+              >
+                <h1>Meu contato</h1>
+                <p className="email-value">{emailValue}</p>
+                <form onSubmit={handleEmailSubmit}>
+                  <div className="content">
+                    <p>Endereço de e-mail</p>
+                    <input
+                      type="email"
+                      required
+                      placeholder="email@gmail.com"
+                      value={emailValue}
+                      onChange={(e) => setEmailValue(e.target.value)}
+                    />
+                    <p className="info">
+                      O número do pedido e o recibo serão enviados para esse
+                      endereço de email.
+                    </p>
+                  </div>
+
+                  <button type="submit">
+                    {emailVerify ? <>Alterar email</> : <>Salvar alterações</>}
+                  </button>
+                </form>
+              </div>
+
+              <div className="ship-infos">
+                <form
+                  onSubmit={handleInfoSubmit}
+                  className={formVerify ? "form-checked" : ""}
+                >
+                  <h1>Informações de faturamento</h1>
+                  <div className="grid-columns">
+                    <div className="form-content">
+                      <label htmlFor="name">Nome</label>
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        required
+                        placeholder="Lucas"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="surname">Sobrenome</label>
+                      <input
+                        type="text"
+                        name="surname"
+                        id="surname"
+                        required
+                        placeholder="Alves"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="country">País</label>
+                      <input
+                        type="text"
+                        name="country"
+                        id="country"
+                        required
+                        placeholder="Brasil"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="cep">CEP</label>
+                      <input
+                        type="text"
+                        name="cep"
+                        id="cep"
+                        onChange={handleCEPChange}
+                        value={formData.cep}
+                        maxLength={8}
+                        required
+                        placeholder="XXXXXX-XXX"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="address">Endereço</label>
+                      <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        required
+                        placeholder="Rua do ouro 23"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="number">Número</label>
+                      <input
+                        type="text"
+                        name="number"
+                        id="number"
+                        required
+                        placeholder="1"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="state">Estado</label>
+                      <input
+                        type="text"
+                        name="state"
+                        id="state"
+                        required
+                        placeholder="Rio de Janeiro"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="city">Cidade</label>
+                      <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        required
+                        placeholder="Rio de Janeiro"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="neighborhood">Bairro</label>
+                      <input
+                        type="text"
+                        name="neighborhood"
+                        id="neighborhood"
+                        required
+                        placeholder="Arapoangas"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="phone">Telefone</label>
+                      <input
+                        type="text"
+                        onChange={handlePhoneChange}
+                        value={formData.phone}
+                        maxLength={11}
+                        name="phone"
+                        id="phone"
+                        required
+                        placeholder="DDD 9 XXXX-XXXX"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="cpf">CPF</label>
+                      <input
+                        type="text"
+                        onChange={handleCPFChange}
+                        value={formData.cpf}
+                        name="cpf"
+                        id="cpf"
+                        maxLength={11}
+                        required
+                        placeholder="XXX.XXX.XXX-XX"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    className={formVerify ? "form-button" : ""}
+                    type="submit"
+                  >
+                    {formVerify ? (
+                      <>Alterar informações</>
+                    ) : (
+                      <>Prosseguir para pagamento</>
+                    )}
+                  </button>
+
+                  {formVerify ? (
+                    <>
+                      {" "}
+                      <button
+                        onClick={handleFinishOrder}
+                        style={{ marginBottom: "30px" }}
+                      >
+                        Prosseguir
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </form>
+              </div>
+            </>
+          ) : paymentMethod === "pix" ? (
+            <>
+              <div className={`email-container`}>
+                <h1>Meu contato</h1>
+                <p className="email-value">{emailValue}</p>
+                <form onSubmit={handleFinishPixOrder}>
+                  <div className="content">
+                    <p>Endereço de e-mail</p>
+                    <input
+                      type="email"
+                      required
+                      placeholder="email@gmail.com"
+                      value={emailValue}
+                      onChange={(e) => setEmailValue(e.target.value)}
+                    />
+                    <p className="info">
+                      O número do pedido e o recibo serão enviados para esse
+                      endereço de email.
+                    </p>
+
+                    <p>Nome</p>
+
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Joaquim"
+                      id="pix-name"
+                    />
+                    <p>CPF</p>
+
+                    <input
+                      type="text"
+                      name="cpf"
+                      placeholder="3531253464"
+                      id="pix-cpf"
+                    />
+
+                    <p>Número</p>
+
+                    <input
+                      type="text"
+                      name="number"
+                      placeholder="(61) 983532132"
+                      id="pix-number"
+                    />
+                  </div>
+
+                  <button type="submit">Prosseguir para pagamento</button>
+                </form>
+              </div>
+            </>
+          ) : (
+            <>
+              <p style={{ color: "gray" }}>Selecione o método de pagamento!</p>
+            </>
+          )}
         </div>
         <div className="resum">
           <h1>Resumo</h1>
@@ -381,7 +449,7 @@ function BuyBotPage({ botType }) {
               <p>Quantidade</p>
             </div>
             <div className="price">
-              <p>R$ {price}</p>
+              <p>R$ {botData.price}</p>
               <p> {botData.screen}</p>
             </div>
           </div>

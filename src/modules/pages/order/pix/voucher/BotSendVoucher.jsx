@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AllHeader } from "../../../../components/header/AllHeader";
 import "./styles.css";
+import { getNowDate } from "../../../../helpers/get-date";
 
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
@@ -12,24 +13,22 @@ function BotSendVoucher({ botType }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const now = new Date();
-
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const year = now.getFullYear();
-
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-
-    const date = `${day}/${month}/${year}:${hours}:${minutes}`;
+    const date = getNowDate();
 
     const price = botData.price * botData.screen;
 
     const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+
+    const dataBody = {
+      type: botType,
+      day: botData.day,
+      mdc: botData.screen,
+    };
+
     const formData = new FormData(e.target);
     formData.append("userId", userId);
     formData.append("quantity", botData.screen);
-    formData.append("products", [`${botType} ${botData.day}`]);
+    formData.append("products", JSON.stringify([dataBody]));
     formData.append("paymentMethod", "pix");
     formData.append("paymentIntent", orderId);
     formData.append("amount", price);

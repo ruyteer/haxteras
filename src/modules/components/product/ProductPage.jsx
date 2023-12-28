@@ -4,11 +4,13 @@ import { useParams } from "react-router-dom";
 import { handleFindProduct } from "../../helpers/find-product";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useCart } from "../../../CartProvider";
 
 function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState({ images: [], price: 0 });
   const [mcdValue, setMcdValue] = useState(1);
+  const { cartItems, updateCart } = useCart();
 
   const handleDecrease = () => {
     if (mcdValue > 1) {
@@ -57,7 +59,7 @@ function ProductPage() {
       cart.push(product);
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart(cart);
     toast("Produto adicionado ao carrinho!", {
       type: "success",
       theme: "dark",

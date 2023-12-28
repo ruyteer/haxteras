@@ -3,6 +3,7 @@ import { AllHeader } from "../../../../components/header/AllHeader";
 import "./styles.css";
 import { useParams } from "react-router-dom";
 import { handleFindProduct } from "../../../../helpers/find-product";
+import { getNowDate } from "../../../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
@@ -23,26 +24,16 @@ function SendVoucher() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const now = new Date();
+    const date = getNowDate();
 
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const year = now.getFullYear();
-
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-
-    const date = `${day}/${month}/${year}:${hours}:${minutes}`;
-    let idArray = [];
-    idArray.push(id);
     const orderId = Math.floor(Math.random() * 100000).toFixed(0);
     const formData = new FormData(e.target);
     formData.append("userId", userId);
     formData.append("quantity", quantity);
-    formData.append("products", idArray);
+    formData.append("products", JSON.stringify([id]));
     formData.append("paymentMethod", "pix");
     formData.append("paymentIntent", orderId);
-    formData.append("amount", product.price);
+    formData.append("amount", (product.price * quantity).toFixed(2));
     formData.append("date", date);
 
     try {

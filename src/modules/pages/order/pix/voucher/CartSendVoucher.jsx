@@ -1,67 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { AllHeader } from "../../../../components/header/AllHeader";
 import "./styles.css";
+import { getNowDate } from "../../../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
 function CartSendVoucher() {
   const userId = localStorage.getItem("userId");
-  const [products, setProducts] = useState([{}]);
-  const totalPrice = JSON.parse(sessionStorage.getItem("total-price"));
-
-  useEffect(() => {
-    handleGetProduct();
-  }, []);
-
-  const handleGetProduct = async () => {
-    const result = JSON.parse(localStorage.getItem("cart"));
-    setProducts(result);
-  };
+  const products = JSON.parse(localStorage.getItem("cart"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const now = new Date();
-
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const year = now.getFullYear();
-
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-
-    const date = `${day}/${month}/${year}:${hours}:${minutes}`;
-    let idArray = [];
-    let quantity = 0;
-    products.map((result) => {
-      idArray.push(result.id);
-      quantity += result.quantity;
-    });
-
-    console.log(idArray);
+    const date = getNowDate();
 
     const orderId = Math.floor(Math.random() * 100000).toFixed(0);
-    const formData = new FormData(e.target);
-    formData.append("userId", userId);
-    formData.append("quantity", quantity);
-    formData.append("products", JSON.stringify(idArray));
-    formData.append("paymentMethod", "pix");
-    formData.append("paymentIntent", orderId);
-    formData.append("amount", totalPrice.price);
-    formData.append("date", date);
 
-    try {
-      const response = await fetch(`${url}/order/create`, {
+    const fetchPromises = products.map(async (result) => {
+      const formData = new FormData(e.target);
+      formData.append("userId", userId);
+      formData.append("quantity", result.quantity);
+      formData.append("products", JSON.stringify([result.id]));
+      formData.append("paymentMethod", "pix");
+      formData.append("paymentIntent", orderId);
+      formData.append("amount", JSON.stringify(result.price * result.quantity));
+      formData.append("date", date);
+
+      return fetch(`${url}/order/create`, {
         method: "POST",
         body: formData,
       });
+    });
 
-      if (response.ok) {
+    Promise.all(fetchPromises)
+      .then(() => {
         window.location.href = `${local}/payment/success/${orderId}`;
-      }
-    } catch (error) {
-      alert(error);
-    }
+      })
+      .catch((error) => {
+        console.error("Erro ao processar as fetchs:", error);
+      });
   };
   return (
     <>

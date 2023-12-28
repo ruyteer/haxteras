@@ -89,23 +89,78 @@ function BuyCartPage() {
         }),
       });
 
-      const responseJson = await response.json();
+      if (response.ok) {
+        const responseJson = await response.json();
 
-      localStorage.setItem("userId", responseJson);
+        localStorage.setItem("userId", responseJson);
+
+        const total = handleTotalPrice();
+        sessionStorage.setItem(
+          "total-price",
+          JSON.stringify({ discount, price: total })
+        );
+
+        window.location.href = `${local}/payment/credit-card/cart`;
+      } else {
+        const responseJson = await response.json();
+        alert(responseJson);
+      }
     } catch (error) {
-      alert(error);
+      return alert(error);
     }
+  };
 
-    const total = handleTotalPrice();
-    sessionStorage.setItem(
-      "total-price",
-      JSON.stringify({ discount, price: total })
-    );
+  const handleFinishPixOrder = async (e) => {
+    e.preventDefault();
 
-    if (paymentMethod === "credit-card") {
-      window.location.href = `${local}/payment/credit-card/cart`;
-    } else if (paymentMethod === "pix") {
-      window.location.href = `${local}/payment/pix/cart`;
+    sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
+    const name = document.getElementById("pix-name").value;
+    const number = document.getElementById("pix-number").value;
+    const nickname = document.getElementById("pix-nick").value;
+    const cpf = document.getElementById("pix-cpf").value;
+
+    try {
+      const response = await fetch(`${url}/user/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          cpf: cpf,
+          email: emailValue,
+          phone: number,
+          surname: name.split(" ")[1] || "vazio",
+          nickname,
+          address: {
+            city: "-",
+            address: "-",
+            cep: "0",
+            neighborhood: "-",
+            state: "-",
+            country: "-",
+            number: 0,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const responseJson = await response.json();
+
+        localStorage.setItem("userId", responseJson);
+
+        const total = handleTotalPrice();
+        sessionStorage.setItem(
+          "total-price",
+          JSON.stringify({ discount, price: total })
+        );
+        window.location.href = `${local}/payment/pix/cart`;
+      } else {
+        const responseJson = await response.json();
+        alert(responseJson);
+      }
+    } catch (error) {
+      return alert(error);
     }
   };
 
@@ -150,169 +205,6 @@ function BuyCartPage() {
       <AllHeader />
       <div className="buy-content">
         <div className="buy-page">
-          <div className={`email-container ${emailVerify ? "checked" : ""}`}>
-            <h1>Meu contato</h1>
-            <p className="email-value">{emailValue}</p>
-            <form onSubmit={handleEmailSubmit}>
-              <div className="content">
-                <p>Endereço de e-mail</p>
-                <input
-                  type="email"
-                  required
-                  placeholder="email@gmail.com"
-                  value={emailValue}
-                  onChange={(e) => setEmailValue(e.target.value)}
-                />
-                <p className="info">
-                  O número do pedido e o recibo serão enviados para esse
-                  endereço de email.
-                </p>
-              </div>
-
-              <button type="submit">
-                {emailVerify ? <>Alterar email</> : <>Salvar alterações</>}
-              </button>
-            </form>
-          </div>
-
-          <div className="ship-infos">
-            <form
-              onSubmit={handleInfoSubmit}
-              className={formVerify ? "form-checked" : ""}
-            >
-              <h1>Informações de faturamento</h1>
-              <div className="grid-columns">
-                <div className="form-content">
-                  <label htmlFor="name">Nome</label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    required
-                    placeholder="Lucas"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="surname">Sobrenome</label>
-                  <input
-                    type="text"
-                    name="surname"
-                    id="surname"
-                    required
-                    placeholder="Alves"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="country">País</label>
-                  <input
-                    type="text"
-                    name="country"
-                    id="country"
-                    required
-                    placeholder="Brasil"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="cep">CEP</label>
-                  <input
-                    type="text"
-                    name="cep"
-                    id="cep"
-                    onChange={handleCEPChange}
-                    value={formData.cep}
-                    maxLength={8}
-                    required
-                    placeholder="XXXXXX-XXX"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="address">Endereço</label>
-                  <input
-                    type="text"
-                    name="address"
-                    id="address"
-                    required
-                    placeholder="Rua do ouro 23"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="number">Número</label>
-                  <input
-                    type="text"
-                    name="number"
-                    id="number"
-                    required
-                    placeholder="1"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="state">Estado</label>
-                  <input
-                    type="text"
-                    name="state"
-                    id="state"
-                    required
-                    placeholder="Rio de Janeiro"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="city">Cidade</label>
-                  <input
-                    type="text"
-                    name="city"
-                    id="city"
-                    required
-                    placeholder="Rio de Janeiro"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="neighborhood">Bairro</label>
-                  <input
-                    type="text"
-                    name="neighborhood"
-                    id="neighborhood"
-                    required
-                    placeholder="Arapoangas"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="phone">Telefone</label>
-                  <input
-                    type="text"
-                    onChange={handlePhoneChange}
-                    value={formData.phone}
-                    maxLength={11}
-                    name="phone"
-                    id="phone"
-                    required
-                    placeholder="DDD 9 XXXX-XXXX"
-                  />
-                </div>
-                <div className="form-content">
-                  <label htmlFor="cpf">CPF</label>
-                  <input
-                    type="text"
-                    onChange={handleCPFChange}
-                    value={formData.cpf}
-                    name="cpf"
-                    id="cpf"
-                    maxLength={11}
-                    required
-                    placeholder="XXX.XXX.XXX-XX"
-                  />
-                </div>
-              </div>
-
-              <button className={formVerify ? "form-button" : ""} type="submit">
-                {formVerify ? (
-                  <>Alterar informações</>
-                ) : (
-                  <>Prosseguir para pagamento</>
-                )}
-              </button>
-            </form>
-          </div>
-
           <div className="payment-method">
             <h1>Formas de pagamento</h1>
 
@@ -335,10 +227,255 @@ function BuyCartPage() {
                 />
                 <p>Pix</p>
               </div>
-
-              <button type="submit">Finalizar pedido</button>
             </form>
           </div>
+          {paymentMethod === "credit-card" ? (
+            <>
+              <div
+                className={`email-container ${emailVerify ? "checked" : ""}`}
+              >
+                <h1>Meu contato</h1>
+                <p className="email-value">{emailValue}</p>
+                <form onSubmit={handleEmailSubmit}>
+                  <div className="content">
+                    <p>Endereço de e-mail</p>
+                    <input
+                      type="email"
+                      required
+                      placeholder="email@gmail.com"
+                      value={emailValue}
+                      onChange={(e) => setEmailValue(e.target.value)}
+                    />
+                    <p className="info">
+                      O número do pedido e o recibo serão enviados para esse
+                      endereço de email.
+                    </p>
+                  </div>
+
+                  <button type="submit">
+                    {emailVerify ? <>Alterar email</> : <>Salvar alterações</>}
+                  </button>
+                </form>
+              </div>
+
+              <div className="ship-infos">
+                <form
+                  onSubmit={handleInfoSubmit}
+                  className={formVerify ? "form-checked" : ""}
+                >
+                  <h1>Informações de faturamento</h1>
+                  <div className="grid-columns">
+                    <div className="form-content">
+                      <label htmlFor="name">Nome</label>
+                      <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        required
+                        placeholder="Lucas"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="surname">Sobrenome</label>
+                      <input
+                        type="text"
+                        name="surname"
+                        id="surname"
+                        required
+                        placeholder="Alves"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="country">País</label>
+                      <input
+                        type="text"
+                        name="country"
+                        id="country"
+                        required
+                        placeholder="Brasil"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="cep">CEP</label>
+                      <input
+                        type="text"
+                        name="cep"
+                        id="cep"
+                        onChange={handleCEPChange}
+                        value={formData.cep}
+                        maxLength={8}
+                        required
+                        placeholder="XXXXXX-XXX"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="address">Endereço</label>
+                      <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        required
+                        placeholder="Rua do ouro 23"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="number">Número</label>
+                      <input
+                        type="text"
+                        name="number"
+                        id="number"
+                        required
+                        placeholder="1"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="state">Estado</label>
+                      <input
+                        type="text"
+                        name="state"
+                        id="state"
+                        required
+                        placeholder="Rio de Janeiro"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="city">Cidade</label>
+                      <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        required
+                        placeholder="Rio de Janeiro"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="neighborhood">Bairro</label>
+                      <input
+                        type="text"
+                        name="neighborhood"
+                        id="neighborhood"
+                        required
+                        placeholder="Arapoangas"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="phone">Telefone</label>
+                      <input
+                        type="text"
+                        onChange={handlePhoneChange}
+                        value={formData.phone}
+                        maxLength={11}
+                        name="phone"
+                        id="phone"
+                        required
+                        placeholder="DDD 9 XXXX-XXXX"
+                      />
+                    </div>
+                    <div className="form-content">
+                      <label htmlFor="cpf">CPF</label>
+                      <input
+                        type="text"
+                        onChange={handleCPFChange}
+                        value={formData.cpf}
+                        name="cpf"
+                        id="cpf"
+                        maxLength={11}
+                        required
+                        placeholder="XXX.XXX.XXX-XX"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    className={formVerify ? "form-button" : ""}
+                    type="submit"
+                  >
+                    {formVerify ? (
+                      <>Alterar informações</>
+                    ) : (
+                      <>Prosseguir para pagamento</>
+                    )}
+                  </button>
+
+                  {formVerify ? (
+                    <>
+                      {" "}
+                      <button
+                        onClick={handleFinishOrder}
+                        style={{ marginBottom: "30px" }}
+                      >
+                        Prosseguir
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </form>
+              </div>
+            </>
+          ) : paymentMethod === "pix" ? (
+            <>
+              <div className={`email-container`}>
+                <h1>Meu contato</h1>
+                <p className="email-value">{emailValue}</p>
+                <form onSubmit={handleFinishPixOrder}>
+                  <div className="content">
+                    <p>Endereço de e-mail</p>
+                    <input
+                      type="email"
+                      required
+                      placeholder="email@gmail.com"
+                      value={emailValue}
+                      onChange={(e) => setEmailValue(e.target.value)}
+                    />
+                    <p className="info">
+                      O número do pedido e o recibo serão enviados para esse
+                      endereço de email.
+                    </p>
+
+                    <p>Nome</p>
+
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Joaquim"
+                      id="pix-name"
+                    />
+                    <p>CPF</p>
+
+                    <input
+                      type="text"
+                      name="cpf"
+                      placeholder="3531253464"
+                      id="pix-cpf"
+                    />
+                    <p>Nick do jogo</p>
+
+                    <input
+                      type="text"
+                      name="nickname"
+                      placeholder="joaquimmm123"
+                      id="pix-nick"
+                    />
+                    <p>Número</p>
+
+                    <input
+                      type="text"
+                      name="number"
+                      placeholder="(61) 983532132"
+                      id="pix-number"
+                    />
+                  </div>
+
+                  <button type="submit">Prosseguir para pagamento</button>
+                </form>
+              </div>
+            </>
+          ) : (
+            <>
+              <p style={{ color: "gray" }}>Selecione o método de pagamento!</p>
+            </>
+          )}
         </div>
         <div className="resum">
           <h1>Resumo</h1>
