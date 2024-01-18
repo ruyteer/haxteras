@@ -101,7 +101,21 @@ function ProductPage() {
               >
                 -
               </button>
-              <input type="text" value={mcdValue} />
+              <input
+                type="number"
+                value={mcdValue}
+                onChange={(e) => {
+                  if (e.target.value < 1) {
+                    toast("Você deve selecionar ao menos um!", {
+                      theme: "dark",
+                      pauseOnHover: false,
+                      type: "error",
+                    });
+                  } else {
+                    setMcdValue(e.target.value);
+                  }
+                }}
+              />
               <button
                 className="increase-button button"
                 onClick={handleIncrease}
