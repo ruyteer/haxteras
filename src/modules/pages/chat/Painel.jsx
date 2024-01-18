@@ -14,7 +14,7 @@ function Painel() {
     <>
       {open ? (
         <>
-          <ChatBody />
+          <ChatBody setOpen={setOpen} />
         </>
       ) : (
         <>
