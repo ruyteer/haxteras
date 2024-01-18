@@ -4,7 +4,7 @@ import {
 } from "../../../presentation/contracts/create-intent";
 import { Stripe } from "stripe";
 const stripe = new Stripe(
-  "sk_test_51NOmpNIRbkxCjPq71D3jc44UcCuhTib6x7mcDb2KxaT2Gm6cHqOPuo67ICyPuQE5Mco9IOOwrDBVghyaFEuW3YEn00AWHaKBl1",
+  "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",
   { apiVersion: "2023-08-16" }
 );
 

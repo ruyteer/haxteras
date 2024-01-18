@@ -13,4 +13,9 @@ export function handleSockets(socket: Socket) {
     users.push({ socketId: socket.id, roomId });
     console.log(users);
   });
+
+  socket.on("send message", (args) => {
+    console.log(args);
+    socket.emit("listen messages", args);
+  });
 }
