@@ -7,7 +7,7 @@ import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
 import { getNowDate } from "../../../helpers/get-date";
 const stripePromise = loadStripe(
-  "pk_test_51NOmpNIRbkxCjPq7BY4L1E7CzVhvF5eOxPdwJTBYDMZhPuNKh7MIjCWJGCsCmaZGt80w8a801PWwCkvW84J6vQNw00ThyuQ1HC"
+  "pk_live_51N09qSCO5oq5CqAZFzFFzAztN59UukW2J6XAcGaECxJsBGlWyMXPPotwvnbUtxsvTwfUPW3QK7Q0Mpp1Te3Z65vv00DQdIINZv"
 );
 
 function CreditCard() {
