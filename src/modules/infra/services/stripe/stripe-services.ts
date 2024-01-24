@@ -7,12 +7,9 @@ import {
 export class StripeServices implements IStripeServices {
   async findIntent(paymentIntent: string): Promise<intentResponse> {
     try {
-      const stripe = new Stripe(
-        "sk_test_51NOmpNIRbkxCjPq71D3jc44UcCuhTib6x7mcDb2KxaT2Gm6cHqOPuo67ICyPuQE5Mco9IOOwrDBVghyaFEuW3YEn00AWHaKBl1",
-        {
-          apiVersion: "2023-08-16",
-        }
-      );
+      const stripe = new Stripe(process.env.STRIPE_KEY, {
+        apiVersion: "2023-08-16",
+      });
 
       const paymentData = await stripe.charges.list({
         payment_intent: paymentIntent,

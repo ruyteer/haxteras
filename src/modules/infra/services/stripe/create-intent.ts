@@ -3,10 +3,7 @@ import {
   IntentData,
 } from "../../../presentation/contracts/create-intent";
 import { Stripe } from "stripe";
-const stripe = new Stripe(
-  "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",
-  { apiVersion: "2023-08-16" }
-);
+const stripe = new Stripe(process.env.STRIPE_KEY, { apiVersion: "2023-08-16" });
 
 export class CreateIntent implements ICreateIntent {
   async create(data: IntentData): Promise<string> {
