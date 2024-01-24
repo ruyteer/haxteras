@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
 const url = import.meta.env.VITE_URL;
+const stripeKey = import.meta.env.VITE_STRIPE;
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
 import { useParams } from "react-router-dom";
 import { getNowDate } from "../../../helpers/get-date";
-const stripePromise = loadStripe(
-  "pk_live_51N09qSCO5oq5CqAZFzFFzAztN59UukW2J6XAcGaECxJsBGlWyMXPPotwvnbUtxsvTwfUPW3QK7Q0Mpp1Te3Z65vv00DQdIINZv"
-);
+const stripePromise = loadStripe(stripeKey);
 
 function CreditCardBot({ botType }) {
   const [clientSecret, setClientSecret] = useState("");
