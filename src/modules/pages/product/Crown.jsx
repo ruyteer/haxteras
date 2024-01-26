@@ -27,7 +27,9 @@ function Crown() {
   }, []);
 
   const handleGetProducts = async () => {
-    const result = await handleGetProductOfCategory("Itens de Crown");
+    const result = await handleGetProductOfCategory(
+      "Itens de Crown Omegamon LA"
+    );
 
     setProducts(result);
     setPreview(result.slice(0, 3));
@@ -186,7 +188,9 @@ function AlphaCrown() {
   }, []);
 
   const handleGetProducts = async () => {
-    const result = await handleGetProductOfCategory("Itens de Crown");
+    const result = await handleGetProductOfCategory(
+      "Itens de Crown Alphamon LA"
+    );
 
     setProducts(result);
     setPreview(result.slice(0, 3));
