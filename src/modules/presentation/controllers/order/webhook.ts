@@ -74,7 +74,7 @@ export class WebhookController implements Controller {
 
             const user = await this.userServices.findOne(metaData.userId);
 
-            // await this.nodemailerServices.sendMail(user, orderData);
+            await this.nodemailerServices.sendMail(user);
           } else {
             const botProducts = JSON.parse(metaData.products);
 
@@ -128,7 +128,7 @@ export class WebhookController implements Controller {
                 orderData
               );
             } else {
-              await this.nodemailerServices.sendMail(user, orderData);
+              await this.nodemailerServices.sendMail(user);
             }
           }
 

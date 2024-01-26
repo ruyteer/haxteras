@@ -88,3 +88,8 @@ model AvaibleBots {
   dashbot Boolean
   nenbot Boolean
 }
+
+model Newsletter {
+  id String @id @default(uuid())
+  text String
+}
