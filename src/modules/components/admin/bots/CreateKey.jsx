@@ -56,6 +56,10 @@ function CreateKey() {
         }}
       >
         <h1 style={{ marginTop: "70px", color: "white" }}>Criar Keys Nenbot</h1>
+        <p style={{ color: "white" }}>
+          Lembre-se: são os espaços que separam as keys. <br /> Exemplo: key1
+          key2 key3. <br /> Nunca dê mais de 1 espaço.
+        </p>
         <DashForm
           onSubmit={handleSubmit}
           style={{
@@ -74,9 +78,18 @@ function CreateKey() {
             type={"text"}
             id={"name"}
           />
-          <FormControl
+
+          <textarea
+            style={{
+              marginTop: "20px",
+              marginBottom: "10px",
+              width: "400px",
+              borderRadius: "10px",
+              height: "100px",
+              padding: "5px",
+            }}
             label={"Chave"}
-            placeholder={"Digite a key aqui"}
+            placeholder={"Cole as key aqui"}
             name={"key"}
             required={true}
             type={"text"}
