@@ -35,4 +35,13 @@ export const CardsObject = [
     buttonLink: "/admin/dashboard/nenbots",
     methodRefresh: true,
   },
+  {
+    type: "home",
+    buttonText: "Acessar",
+    title: "Avisos",
+    image: "/pedidos.jpg",
+    paragraf: <>Gerenciar os avisos da newsletter da navbar.</>,
+    buttonLink: "/admin/dashboard/newsletter",
+    methodRefresh: true,
+  },
 ];

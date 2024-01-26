@@ -17,12 +17,14 @@ import { Link } from "react-router-dom";
 import PopupCart from "../cart/PopupCart";
 import { useCart } from "../../../CartProvider";
 import Painel from "../chat/Painel";
+import { usePopup } from "../../../CartPopupModalContext";
 
 const url = import.meta.env.VITE_URL;
 
 function NewsProduct({ result }) {
   const [hovered, setHovered] = useState(false);
   const { updateCart } = useCart();
+  const { visible, showModal, closeModal } = usePopup();
 
   const handleAddToCart = async (id) => {
     const product = await handleFindProduct(id);
@@ -38,6 +40,7 @@ function NewsProduct({ result }) {
     }
 
     updateCart(cart);
+    showModal();
 
     toast("Produto adicionado ao carrinho!", {
       type: "success",
@@ -120,15 +123,14 @@ function Home() {
       <ScrollAnimation />
       <Header />
       <PopupCart />
-      <Painel />
 
       <div className="home">
         <div className="left-section">
           <div className="box-news">
-            <h2>Novos Itens</h2>
+            <h2>Teras em Geral</h2>
           </div>
           <h2 className="title">
-            Itens disponíveis até <br /> 12 de junho
+            Teras em promoções <br /> Aproveitem o desconto!
           </h2>
 
           <div className="items">

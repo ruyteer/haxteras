@@ -5,12 +5,14 @@ import { handleFindProduct } from "../../helpers/find-product";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCart } from "../../../CartProvider";
+import { usePopup } from "../../../CartPopupModalContext";
 
 function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState({ images: [], price: 0 });
   const [mcdValue, setMcdValue] = useState(1);
   const { cartItems, updateCart } = useCart();
+  const { showModal } = usePopup();
 
   const handleDecrease = () => {
     if (mcdValue > 1) {
@@ -60,6 +62,7 @@ function ProductPage() {
     }
 
     updateCart(cart);
+    showModal();
     toast("Produto adicionado ao carrinho!", {
       type: "success",
       theme: "dark",
@@ -83,7 +86,8 @@ function ProductPage() {
         <div className="info">
           <h1>{product.name}</h1>
           <p className="price">
-            R$ {product.price.toFixed(2)} <span>a unidade</span>
+            R$ {(product.price.toFixed(2) * mcdValue).toFixed(2)}{" "}
+            <span>a unidade</span>
           </p>
           <p className="installments">
             <img src="/Group.svg" alt="" />

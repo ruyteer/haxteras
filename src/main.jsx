@@ -4,13 +4,16 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./CartProvider.jsx";
+import { ModalProvider } from "./CartPopupModalContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <ModalProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </ModalProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

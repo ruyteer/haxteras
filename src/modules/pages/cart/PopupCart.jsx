@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import { useCart } from "../../../CartProvider";
+import { usePopup } from "../../../CartPopupModalContext";
 
 function PopupCart() {
-  const [modal, setModal] = useState(false);
+  const { visible, showModal, closeModal } = usePopup();
   const { cartItems } = useCart();
   const { updateCart } = useCart();
 
@@ -25,13 +26,13 @@ function PopupCart() {
   };
 
   const divAnimation = useSpring({
-    opacity: modal ? 1 : 0,
-    transform: `translateY(${modal ? 0 : 10}px)`,
+    opacity: visible ? 1 : 0,
+    transform: `translateY(${visible ? 0 : 10}px)`,
   });
 
   return (
     <>
-      {modal ? (
+      {visible ? (
         <>
           <animated.div style={divAnimation} className="cart-popup">
             <div
@@ -41,7 +42,7 @@ function PopupCart() {
               <h1 style={{ fontWeight: 500, fontSize: "18px" }}>
                 Resumo Carrinho
               </h1>
-              <button className="close-button" onClick={() => setModal(!modal)}>
+              <button className="close-button" onClick={() => closeModal()}>
                 X
               </button>
             </div>
@@ -183,7 +184,7 @@ function PopupCart() {
                   type: "warning",
                 });
               } else {
-                setModal(!modal);
+                showModal();
               }
             }}
           >

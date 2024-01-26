@@ -6,6 +6,7 @@ import { handleGetProductOfCategory } from "../../helpers/get-product-category";
 import { handleFindProduct } from "../../helpers/find-product";
 import { Link } from "react-router-dom";
 import { useCart } from "../../../CartProvider";
+import { usePopup } from "../../../CartPopupModalContext";
 const url = import.meta.env.VITE_URL;
 
 export function QuantityInput({ onQuantityChange, itemId }) {
@@ -62,6 +63,7 @@ function MenuItems() {
   const { updateCart } = useCart();
 
   const [quantityMcd, setQuantity] = useState({});
+  const { visible, showModal } = usePopup();
 
   useEffect(() => {
     handleGetItem();
@@ -109,6 +111,7 @@ function MenuItems() {
     }
 
     updateCart(cart);
+    showModal(true);
     toast("Produto adicionado ao carrinho!", {
       type: "success",
       theme: "dark",

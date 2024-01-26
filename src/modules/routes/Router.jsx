@@ -27,6 +27,8 @@ import KeysNenbot from "../components/admin/bots/KeysNenbot";
 import CreateKey from "../components/admin/bots/CreateKey";
 import CouponPage from "../components/admin/coupons/CouponPage";
 import CreateCoupon from "../components/admin/coupons/CreateCoupon";
+import PrivateRoutes from "../../private-route";
+import Newsletter from "../components/admin/Newsletter";
 
 function Router() {
   const location = useLocation();
@@ -95,30 +97,136 @@ function Router() {
         />
 
         <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin/dashboard/home" element={<Dashboard />} />
-        <Route path="/admin/dashboard/product" element={<ProductPage />} />
+        <Route
+          path="/admin/dashboard/home"
+          element={
+            <>
+              <PrivateRoutes>
+                <Dashboard />
+              </PrivateRoutes>
+            </>
+          }
+        />
+        <Route
+          path="/admin/dashboard/product"
+          element={
+            <>
+              <PrivateRoutes>
+                <ProductPage />
+              </PrivateRoutes>
+            </>
+          }
+        />
         <Route
           path="/admin/dashboard/product/create/"
-          element={<CreateProduct />}
+          element={
+            <>
+              <PrivateRoutes>
+                <CreateProduct />
+              </PrivateRoutes>
+            </>
+          }
         />
         <Route
           path="/admin/dashboard/product/edit/:id"
-          element={<UpdateProduct />}
+          element={
+            <>
+              <PrivateRoutes>
+                <UpdateProduct />
+              </PrivateRoutes>
+            </>
+          }
         />
 
-        <Route path="/admin/dashboard/order" element={<OrderPage />} />
-        <Route path="/admin/dashboard/user/:id" element={<UserPage />} />
-        <Route path="/admin/dashboard/dashbots" element={<DashbotPage />} />
-        <Route path="/admin/dashboard/nenbots" element={<NenbotPage />} />
-        <Route path="/admin/dashboard/nenbots/keys" element={<KeysNenbot />} />
+        <Route
+          path="/admin/dashboard/order"
+          element={
+            <>
+              <PrivateRoutes>
+                <OrderPage />
+              </PrivateRoutes>
+            </>
+          }
+        />
+        <Route
+          path="/admin/dashboard/user/:id"
+          element={
+            <>
+              <PrivateRoutes>
+                <UserPage />
+              </PrivateRoutes>
+            </>
+          }
+        />
+        <Route
+          path="/admin/dashboard/dashbots"
+          element={
+            <>
+              <PrivateRoutes>
+                <DashbotPage />
+              </PrivateRoutes>
+            </>
+          }
+        />
+        <Route
+          path="/admin/dashboard/nenbots"
+          element={
+            <>
+              <PrivateRoutes>
+                <NenbotPage />
+              </PrivateRoutes>
+            </>
+          }
+        />
+        <Route
+          path="/admin/dashboard/nenbots/keys"
+          element={
+            <>
+              <PrivateRoutes>
+                <KeysNenbot />
+              </PrivateRoutes>
+            </>
+          }
+        />
         <Route
           path="/admin/dashboard/nenbots/keys/create"
-          element={<CreateKey />}
+          element={
+            <>
+              <PrivateRoutes>
+                <CreateKey />
+              </PrivateRoutes>
+            </>
+          }
         />
-        <Route path="/admin/dashboard/coupons" element={<CouponPage />} />
+        <Route
+          path="/admin/dashboard/coupons"
+          element={
+            <>
+              <PrivateRoutes>
+                <CouponPage />
+              </PrivateRoutes>
+            </>
+          }
+        />
         <Route
           path="/admin/dashboard/coupons/create"
-          element={<CreateCoupon />}
+          element={
+            <>
+              <PrivateRoutes>
+                <CreateCoupon />
+              </PrivateRoutes>
+            </>
+          }
+        />
+        <Route
+          path="/admin/dashboard/newsletter"
+          element={
+            <>
+              <PrivateRoutes>
+                <Newsletter />
+              </PrivateRoutes>
+            </>
+          }
         />
       </Routes>
     </>

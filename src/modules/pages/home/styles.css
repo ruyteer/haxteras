@@ -80,10 +80,12 @@
   width: 230px;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0 100%);
   text-align: center;
+  padding: 5px;
 }
 
 .box-news h2 {
   font-weight: 600;
+  font-size: 22px;
 }
 
 .left-section {

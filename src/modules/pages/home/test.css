@@ -28,7 +28,7 @@
   max-width: 100%;
   overflow: hidden;
   position: relative;
-  animation: rolling 10s infinite ease-in-out;
+  animation: rolling 20s infinite ease-in-out;
   font-weight: 400;
   font-size: 14px;
 }
