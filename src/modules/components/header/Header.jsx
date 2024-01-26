@@ -107,7 +107,9 @@ function Header() {
                       class="attachment-large size-large wp-image-11139"
                       alt=""
                     />{" "}
-                    <a href="">Whatsapp</a>
+                    <a href="https://chat.whatsapp.com/KuGQsHQdmeCEc9Vet2RcNA">
+                      Whatsapp
+                    </a>
                   </div>
                   <div className="links-a">
                     <img
@@ -118,7 +120,7 @@ function Header() {
                       class="attachment-large size-large wp-image-11140"
                       alt=""
                     />{" "}
-                    <a href="">Discord</a>
+                    <a href="https://discord.com/invite/6d7MWsgkMQ">Discord</a>
                   </div>
                 </animated.div>
               </>

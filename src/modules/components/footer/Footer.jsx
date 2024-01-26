@@ -24,7 +24,7 @@ function Footer() {
             </div>
             <div className="messages two" data-aos="flip-left">
               <p>Entre no nosso grupo do whatsapp!</p>
-              <a href="">
+              <a href="https://chat.whatsapp.com/KuGQsHQdmeCEc9Vet2RcNA">
                 {" "}
                 <img
                   loading="lazy"
@@ -40,7 +40,7 @@ function Footer() {
               <p>
                 Entre no nosso discord e veja <br /> nossas referências!
               </p>
-              <a href="">
+              <a href="https://discord.com/invite/6d7MWsgkMQ">
                 <img
                   loading="lazy"
                   width="50"
@@ -60,7 +60,7 @@ function Footer() {
             fontWeight: "500",
           }}
         >
-          CPNJ: 3573857385
+          CPNJ: 41.632.917/0001-96
         </p>
 
         <span>Todos os direitos reservados à Haxteras.</span>
