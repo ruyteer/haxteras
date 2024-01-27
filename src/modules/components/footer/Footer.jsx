@@ -64,6 +64,8 @@ function Footer() {
         </p>
 
         <span>Todos os direitos reservados à Haxteras.</span>
+
+        <p>Made by Ruyter</p>
       </footer>
     </>
   );
