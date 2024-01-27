@@ -69,8 +69,13 @@ body {
     flex-direction: column;
   }
 
+  .bot-title h1 {
+    margin-left: 20px !important;
+  }
+
   .bot-title p {
     margin-top: -50px;
+    margin-left: 20px;
   }
 
   .choose-bot {
@@ -83,7 +88,7 @@ body {
   .choose-bot .prev-button,
   .choose-bot .next-button {
     position: absolute;
-    top: 145%;
+    top: 143%;
   }
   .choose-bot .next-button {
     margin-left: 100px;
@@ -155,14 +160,18 @@ body {
     gap: 25px;
   }
 
-  .teras-section {
-    height: 300vh;
-  }
-
   .card-section {
     display: flex;
     flex-direction: column;
     gap: 50px;
+    align-items: center;
+  }
+
+  .teras-section .titles h1 {
+    width: 220px;
+    height: 20px;
+    font-size: 15px;
+    margin-left: 20px;
   }
 
   .menu-section-title {
@@ -172,5 +181,22 @@ body {
   .menu-section-title h1 {
     font-size: 15px;
     width: 80%;
+  }
+
+  footer .infos-detail img {
+    width: 30px;
+    height: 100px;
+  }
+
+  footer .infos-detail .list-messages .messages p {
+    font-size: 13px;
+  }
+  footer .infos-detail .list-messages .messages img {
+    width: 30px;
+    height: 30px;
+  }
+  footer .infos-detail .list-messages .messages-two p {
+    height: 40px;
+    font-size: 13px;
   }
 }
