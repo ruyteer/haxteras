@@ -44,6 +44,7 @@ export class CreateOrderController implements Controller {
           userId
         );
       } else {
+        console.log(data);
         await this.orderServices.create(
           {
             amount: parseFloat(amount),
