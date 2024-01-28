@@ -140,6 +140,7 @@ export class WebhookController implements Controller {
 
       return okResponse({ received: true });
     } catch (error) {
+      console.log(error);
       return badResponse(error);
     }
   }
