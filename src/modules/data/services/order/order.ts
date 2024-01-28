@@ -22,6 +22,8 @@ export class OrderServices implements OrderUseCases {
       "quantity",
     ];
 
+    console.log(order);
+
     for (const field of requiredFields) {
       if (!order[field]) {
         throw new MissingParamError(field);

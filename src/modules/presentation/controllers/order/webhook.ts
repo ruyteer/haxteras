@@ -56,6 +56,8 @@ export class WebhookController implements Controller {
             const productsObjectList = JSON.parse(metaData.products);
 
             productsObjectList.map(async (result) => {
+              console.log(result);
+
               const orderData = {
                 amount: result.price * result.quantity,
                 date: metaData.date,
