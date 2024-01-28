@@ -61,7 +61,7 @@ function NewsProduct({ result }) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <img src={result.images[0]} alt="Items" />
+        <img src={result.images[0]} alt="Items" style={{ maxWidth: "190px" }} />
         {hovered ? (
           <>
             <animated.div style={buttonAnimations} className={"buttons-buy"}>

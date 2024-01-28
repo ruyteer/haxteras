@@ -7,6 +7,7 @@
 .product-page .product-image {
   margin-top: 100px;
   width: 400px;
+  max-height: 420px;
 }
 
 .product-page .details {
