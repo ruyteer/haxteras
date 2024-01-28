@@ -30,7 +30,7 @@ function Footer() {
                   loading="lazy"
                   width="50"
                   height="50"
-                  src="https://haxtera.com/wp-content/uploads/2023/06/10481-1.png"
+                  src="/whatsapp.png"
                   class="attachment-large size-large wp-image-11139"
                   alt=""
                 />
@@ -45,7 +45,7 @@ function Footer() {
                   loading="lazy"
                   width="50"
                   height="50"
-                  src="https://haxtera.com/wp-content/uploads/2023/06/10480-1.png"
+                  src="/discord.png"
                   class="attachment-large size-large wp-image-11140"
                   alt=""
                 />
