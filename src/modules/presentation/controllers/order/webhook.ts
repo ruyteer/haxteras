@@ -44,7 +44,6 @@ export class WebhookController implements Controller {
 
           break;
         case "payment_intent.succeeded":
-          console.log("chegou aqui");
           const responseData = event.data.object;
 
           const intentData = await this.stripeServices.findIntent(
@@ -56,11 +55,10 @@ export class WebhookController implements Controller {
 
           if (metaData.productType === "product") {
             const productsObjectList = JSON.parse(metaData.products);
-            console.log("chegou aqui");
+
             productsObjectList.map(async (result) => {
-              console.log(result);
-              console.log("chegou aqui");
-              console.log(result);
+              console.log(result.quantity);
+
               const orderData = {
                 amount: result.price * result.quantity,
                 date: metaData.date,
