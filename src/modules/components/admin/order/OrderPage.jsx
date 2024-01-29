@@ -97,7 +97,7 @@ function OrderPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          quantity: updatedStock,
+          stock: updatedStock,
         }),
       });
     } catch (error) {
