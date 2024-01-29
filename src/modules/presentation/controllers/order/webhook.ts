@@ -23,24 +23,91 @@ export class WebhookController implements Controller {
         case "payment_intent.created":
           break;
         case "payment_intent.payment_failed":
-          const paymentFailedData = event.data.object;
-          const stripeMetadata = event.data.object.metadata;
+          const responseDataFailed = event.data.object;
 
-          const productsList = stripeMetadata.products.split(", ");
-
-          await this.orderServices.create(
-            {
-              amount: paymentFailedData.amount / 100,
-              date: stripeMetadata.date,
-              paymentMethod: stripeMetadata.paymentMethod,
-              paymentIntent: paymentFailedData.id,
-              quantity: parseInt(stripeMetadata.quantity),
-              status: "failed",
-              voucher: "Payment failed",
-            },
-            productsList,
-            stripeMetadata.userId
+          const intentDataFailed = await this.stripeServices.findIntent(
+            responseDataFailed.id
           );
+
+          const metaDataFailed = event.data.object.metadata;
+
+          if (metaDataFailed.productType === "product") {
+            const productsObjectList = JSON.parse(metaDataFailed.products);
+
+            productsObjectList.map(async (result) => {
+              console.log(result.quantity);
+
+              const orderData = {
+                amount: result.price * result.quantity,
+                date: metaDataFailed.date,
+                paymentMethod: metaDataFailed.paymentMethod,
+                paymentIntent: responseDataFailed.id,
+                quantity: result.quantity,
+                status: responseDataFailed.status,
+                voucher: intentDataFailed.voucher,
+              };
+              return await this.orderServices.create(
+                orderData,
+                [result.id],
+                metaData.userId
+              );
+            });
+          } else {
+            const botProducts = JSON.parse(metaDataFailed.products);
+
+            const orderData = {
+              amount: responseDataFailed.amount / 100,
+              date: metaDataFailed.date,
+              paymentMethod: metaDataFailed.paymentMethod,
+              paymentIntent: responseDataFailed.id,
+              quantity: parseInt(botProducts[0].mdc),
+              status: responseDataFailed.status,
+              voucher: intentDataFailed.voucher,
+            };
+
+            const productId = `${botProducts[0].type} ${botProducts[0].day}`;
+
+            await this.orderServices.create(
+              orderData,
+              [productId],
+              metaDataFailed.userId
+            );
+
+            const user = await this.userServices.findOne(metaDataFailed.userId);
+
+            if (metaDataFailed.productType === "Nenbot") {
+              const nenbots = await this.nenbotServices.findAll();
+
+              const splittedStr = metaDataFailed.products.split(" ")[1];
+              const filteredNenbots = nenbots.filter(
+                (result) => result.days === parseInt(splittedStr)
+              );
+
+              let nenbotsFinallyArray = [];
+
+              if (filteredNenbots.length < 1) {
+                console.error("No have nenbots");
+              } else {
+                for (
+                  let index = 0;
+                  index < parseInt(metaDataFailed.quantity);
+                  index++
+                ) {
+                  nenbotsFinallyArray.push(filteredNenbots[0]);
+                  await this.nenbotServices.delete(filteredNenbots[0].id);
+                  filteredNenbots.shift();
+                }
+              }
+
+              await this.nodemailerServices.sendNenbotMail(
+                nenbotsFinallyArray,
+                user,
+                orderData
+              );
+            } else {
+              await this.nodemailerServices.sendMail(user);
+            }
+          }
 
           break;
         case "payment_intent.succeeded":
