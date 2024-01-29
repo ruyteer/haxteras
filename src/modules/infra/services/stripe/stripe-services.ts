@@ -17,6 +17,8 @@ export class StripeServices implements IStripeServices {
 
       const { amount, customer, receipt_url, status } = paymentData.data[0];
 
+      console.log("teste payment data", paymentData.data[0]);
+
       const convertedAmount = amount / 100;
 
       const customerList = await stripe.customers.list();
