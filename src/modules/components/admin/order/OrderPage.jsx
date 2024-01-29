@@ -82,16 +82,16 @@ function OrderPage() {
       },
     });
 
-    const response = await fetch(`${url}/product/${id}`);
+    const response = await fetch(`${url}/product/${products}`);
     const responseJson = await response.json();
 
-    await fetch(`${url}/product/update/${id}`, {
+    await fetch(`${url}/product/update/${products}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        quantity: responseJson.stock - quantity,
+        quantity: responseJson.stock - parseInt(quantity),
       }),
     });
   };
