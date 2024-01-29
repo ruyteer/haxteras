@@ -40,7 +40,12 @@ function OneProductCreditCard() {
           userId,
           date,
           paymentMethod: "card",
-          products: [id],
+          products: [
+            {
+              id,
+              quantity,
+            },
+          ],
           quantity,
         }),
       })
