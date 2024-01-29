@@ -10,7 +10,10 @@ export class UpdateOrdersController implements Controller {
     try {
       const { id } = req.params;
 
-      prisma.order.update({ where: { id }, data: { status: "succeeded" } });
+      await prisma.order.update({
+        where: { id },
+        data: { status: "succeeded" },
+      });
 
       return okResponse();
     } catch (error) {
