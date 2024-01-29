@@ -44,6 +44,7 @@ function OneProductCreditCard() {
             {
               id,
               quantity: parseInt(quantity),
+              price: response.price,
             },
           ],
           quantity,
