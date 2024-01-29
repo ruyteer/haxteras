@@ -11,6 +11,7 @@ import { makeUploadFile } from "../factories/middlewares/upload-file";
 import { makeOrderController } from "../factories/order/make-order";
 import { FindManyOrdersController } from "../../../presentation/controllers/order/find-many";
 import { FindUniqueOrderController } from "../../../presentation/controllers/order/find-unique";
+import { UpdateOrdersController } from "../../../presentation/controllers/order/update";
 
 const orderRoutes = Router();
 
@@ -27,6 +28,11 @@ orderRoutes.post(
   upload.array("file"),
   middleware(makeUploadFile()),
   controller(makeStripe(CreateOrderController))
+);
+
+orderRoutes.post(
+  "/update/:id",
+  controller(makeOrderController(UpdateOrdersController))
 );
 
 orderRoutes.get("/", controller(makeOrderController(FindManyOrdersController)));
