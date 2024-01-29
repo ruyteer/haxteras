@@ -66,7 +66,7 @@ export class WebhookController implements Controller {
                 date: metaData.date,
                 paymentMethod: metaData.paymentMethod,
                 paymentIntent: responseData.id,
-                quantity: parseInt(result.quantity),
+                quantity: result.quantity,
                 status: responseData.status,
                 voucher: intentData.voucher,
               };
