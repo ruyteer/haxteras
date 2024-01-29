@@ -1,9 +1,15 @@
+interface ProductList {
+  id: string;
+  quantity: number;
+  price: number;
+}
+
 export type IntentData = {
   amount: number;
   userId: string;
   date: string;
   paymentMethod: string;
-  products: string[];
+  products: ProductList[];
   productType: string;
 };
 
