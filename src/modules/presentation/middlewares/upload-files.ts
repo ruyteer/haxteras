@@ -8,6 +8,8 @@ export class UploadFile implements Controller {
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
       const files = req.files;
+
+      console.log(files);
       if (!files) {
         console.log("nao enviado");
         req.files.firebaseUrl = "comprovante não enviado";
