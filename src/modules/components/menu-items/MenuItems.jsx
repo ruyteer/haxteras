@@ -191,7 +191,7 @@ function MenuItems() {
             ))}
             <tr>
               <td>Crown</td>
-              <td>R$ 0.28</td>
+              <td>R$ 0.18</td>
               <td>
                 <QuantityInput />
               </td>
