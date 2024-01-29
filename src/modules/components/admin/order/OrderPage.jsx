@@ -75,25 +75,34 @@ function OrderPage() {
   };
 
   const handleApprovePayment = async ({ id, products, quantity }) => {
-    await fetch(`${url}/order/update/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    try {
+      await fetch(`${url}/order/update/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const response = await fetch(`${url}/product/${products}`);
-    const responseJson = await response.json();
+      const response = await fetch(`${url}/product/${products}`);
+      const responseJson = await response.json();
 
-    await fetch(`${url}/product/update/${products}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        quantity: responseJson.stock - parseInt(quantity),
-      }),
-    });
+      console.log(responseJson.stock);
+      console.log(quantity);
+      const updatedStock = responseJson.stock - parseInt(quantity);
+      console.log(updatedStock);
+
+      await fetch(`${url}/product/update/${products}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          quantity: updatedStock,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
