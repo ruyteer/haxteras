@@ -1,3 +1,4 @@
+import { prisma } from "../../../../config/prisma-client";
 import { NenbotServices } from "../../../data/services/bot/nenbot";
 import { OrderServices } from "../../../data/services/order/order";
 import { UserServices } from "../../../data/services/user/user";
@@ -124,8 +125,6 @@ export class WebhookController implements Controller {
             const productsObjectList = JSON.parse(metaData.products);
 
             productsObjectList.map(async (result) => {
-              console.log(result.quantity);
-
               const orderData = {
                 amount: result.price * result.quantity,
                 date: metaData.date,
@@ -135,11 +134,22 @@ export class WebhookController implements Controller {
                 status: responseData.status,
                 voucher: intentData.voucher,
               };
-              return await this.orderServices.create(
+              await this.orderServices.create(
                 orderData,
                 [result.id],
                 metaData.userId
               );
+
+              const productStock = await prisma.product.findUnique({
+                where: { id: result.id },
+              });
+
+              await prisma.product.update({
+                where: { id: result.id },
+                data: {
+                  stock: productStock.stock - result.quantity,
+                },
+              });
             });
 
             const user = await this.userServices.findOne(metaData.userId);
