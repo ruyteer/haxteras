@@ -74,6 +74,28 @@ function OrderPage() {
     toast(productArray.join("\n"), { theme: "dark", type: "success" });
   };
 
+  const handleApprovePayment = async ({ id, products, quantity }) => {
+    await fetch(`${url}/order/update/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const response = await fetch(`${url}/product/${id}`);
+    const responseJson = await response.json();
+
+    await fetch(`${url}/product/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: responseJson.stock - quantity,
+      }),
+    });
+  };
+
   useEffect(() => {
     handleGetOrders();
   }, []);
@@ -105,6 +127,7 @@ function OrderPage() {
               <th>Produtos</th>
               <th>Quantidade</th>
               <th>Método de Pagamento</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +171,23 @@ function OrderPage() {
                     ? "PIX"
                     : ""}
                 </td>
+                {result.paymentMethod === "pix" ? (
+                  <>
+                    <button
+                      onClick={(e) =>
+                        handleApprovePayment({
+                          id: result.id,
+                          products: result.products[0],
+                          quantity: result.quantity,
+                        })
+                      }
+                    >
+                      Aprovar pagamento
+                    </button>
+                  </>
+                ) : (
+                  <></>
+                )}
               </tr>
             ))}
           </tbody>
