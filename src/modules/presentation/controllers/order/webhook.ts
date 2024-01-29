@@ -56,6 +56,7 @@ export class WebhookController implements Controller {
           console.log("metaData", metaData);
 
           if (metaData.productType === "product") {
+            console.log("stringify", metaData.products);
             const productsObjectList = JSON.parse(metaData.products);
 
             productsObjectList.map(async (result) => {
