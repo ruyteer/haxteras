@@ -42,7 +42,7 @@ function SendVoucher() {
 
     if (!file) {
       // If no file is selected, append a placeholder string
-      formData.append("file", "comprovante nao enviado");
+      formData.delete("file");
     }
 
     try {
