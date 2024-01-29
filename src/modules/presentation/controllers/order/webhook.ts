@@ -44,13 +44,16 @@ export class WebhookController implements Controller {
 
           break;
         case "payment_intent.succeeded":
+          console.log("chegou aqui");
           const responseData = event.data.object;
+          console.log("Response DATA", responseData);
 
           const intentData = await this.stripeServices.findIntent(
             responseData.id
           );
 
           const metaData = event.data.object.metadata;
+          console.log("metaData", metaData);
 
           if (metaData.productType === "product") {
             const productsObjectList = JSON.parse(metaData.products);
