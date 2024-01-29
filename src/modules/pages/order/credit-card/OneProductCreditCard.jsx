@@ -43,7 +43,7 @@ function OneProductCreditCard() {
           products: [
             {
               id,
-              quantity,
+              quantity: parseInt(quantity),
             },
           ],
           quantity,
