@@ -26,6 +26,15 @@ function CartSendVoucher() {
       formData.append("amount", JSON.stringify(result.price * result.quantity));
       formData.append("date", date);
 
+      // Check if a file is selected
+      const fileInput = e.target.querySelector('input[type="file"]');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        // If no file is selected, append a placeholder string
+        formData.delete("file");
+      }
+
       return fetch(`${url}/order/create`, {
         method: "POST",
         body: formData,

@@ -34,6 +34,15 @@ function BotSendVoucher({ botType }) {
     formData.append("amount", price);
     formData.append("date", date);
 
+    // Check if a file is selected
+    const fileInput = e.target.querySelector('input[type="file"]');
+    const file = fileInput.files[0];
+
+    if (!file) {
+      // If no file is selected, append a placeholder string
+      formData.delete("file");
+    }
+
     try {
       const response = await fetch(`${url}/order/create`, {
         method: "POST",
