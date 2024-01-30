@@ -3,6 +3,7 @@ import { AllHeader } from "../../components";
 import "./styles.css";
 import { handleFindProduct } from "../../helpers/find-product";
 import { useParams } from "react-router-dom";
+import { getNowDate } from "../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
