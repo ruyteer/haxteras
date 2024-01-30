@@ -11,7 +11,7 @@ function SendVoucher() {
   const userId = localStorage.getItem("userId");
   const { quantity, id } = useParams();
   const [product, setProduct] = useState({});
-  const orderId = JSON.parse(localStorage.getItem("orderPixId"));
+  const orderId = localStorage.getItem("orderPixId");
 
   useEffect(() => {
     handleGetProduct();
