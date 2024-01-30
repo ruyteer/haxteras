@@ -24,6 +24,8 @@ export class CreateOrderController implements Controller {
 
       const voucher = req.files.firebaseUrl;
       const productsParse = JSON.parse(products);
+      console.log(products);
+      console.log(productsParse);
 
       if (
         productsParse[0].type === "Dashbot" ||
