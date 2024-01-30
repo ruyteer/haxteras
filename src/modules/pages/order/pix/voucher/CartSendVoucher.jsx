@@ -15,8 +15,11 @@ function CartSendVoucher() {
 
     const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
 
-    const fetchPromises = orderIdList.map(async (result) => {
+    const fetchPromises = orderIdList.map(async (result, index) => {
       const formData = new FormData(e.target);
+
+      // Introduza um pequeno delay entre as requisições
+      await new Promise((resolve) => setTimeout(resolve, index * 100));
 
       return fetch(`${url}/order/update/voucher/${result}`, {
         method: "PUT",
