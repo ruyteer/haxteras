@@ -44,7 +44,7 @@ orderRoutes.get(
 
 orderRoutes.put(
   "/update/voucher",
-  upload.single("file"),
+  upload.array("file"),
   middleware(makeUploadFile()),
   controller(makeOrderController(SendOrderVoucherController))
 );
