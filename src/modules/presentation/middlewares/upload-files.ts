@@ -14,6 +14,10 @@ export class UploadFile implements Controller {
         return okResponse();
       }
       const fileUrl = await this.firebaseUpload.uploadFile(files);
+      if (!fileUrl) {
+        req.files.firebaseUrl = "comprovante não enviado";
+        return okResponse();
+      }
       req.files.firebaseUrl = fileUrl;
 
       return okResponse();
