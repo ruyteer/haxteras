@@ -8,14 +8,15 @@ export class SendOrderVoucherController implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { id } = req.params;
+      const { orderList } = req.body;
       const voucher = req.files.firebaseUrl;
 
-      await prisma.order.update({
-        where: { id },
-        data: { voucher },
+      orderList.map(async (result) => {
+        await prisma.order.update({
+          where: { id: result },
+          data: { voucher },
+        });
       });
-
       return okResponse();
     } catch (error) {
       return badResponse(error);
