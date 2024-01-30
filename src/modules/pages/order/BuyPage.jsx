@@ -162,30 +162,37 @@ function BuyPage() {
 
         localStorage.setItem("userId", responseJson);
 
-        const date = getNowDate();
-        const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+        try {
+          const date = getNowDate();
+          const orderId = Math.floor(Math.random() * 100000).toFixed(0);
 
-        const orderResponse = await fetch(`${url}/order/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: responseJson,
-            quantity: parseInt(quantity),
-            products: [id],
-            paymentMethod: "pix",
-            paymentIntent: orderId,
-            amount: (product.price * quantity).toFixed(2),
-            date,
-          }),
-        });
+          const orderResponse = await fetch(`${url}/order/create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: responseJson,
+              quantity: parseInt(quantity),
+              products: JSON.stringify([id]),
+              paymentMethod: "pix",
+              paymentIntent: orderId,
+              amount: (product.price * quantity).toFixed(2),
+              date,
+            }),
+          });
 
-        const orderResponseJson = await orderResponse.json();
+          const orderResponseJson = await orderResponse.json();
 
-        localStorage.setItem("orderPixId", JSON.stringify([orderResponseJson]));
+          localStorage.setItem(
+            "orderPixId",
+            JSON.stringify([orderResponseJson])
+          );
 
-        window.location.href = `${local}/payment/pix/${product.id}/${quantity}`;
+          window.location.href = `${local}/payment/pix/${product.id}/${quantity}`;
+        } catch (error) {
+          alert(error);
+        }
       } else {
         const responseJson = await response.json();
         alert(responseJson);
