@@ -9,20 +9,18 @@ export class UploadFile implements Controller {
     try {
       const files = req.files;
 
-      if (!files || !files[0]) {
+      console.log(files);
+      if (!files[0]) {
+        console.log("nao enviado");
         req.files.firebaseUrl = "comprovante não enviado";
         return okResponse();
       }
       const fileUrl = await this.firebaseUpload.uploadFile(files);
-      if (!fileUrl) {
-        req.files.firebaseUrl = "comprovante não enviado";
-        return okResponse();
-      }
       req.files.firebaseUrl = fileUrl;
 
       return okResponse();
     } catch (error) {
-      console.log("deu erro foi aqui");
+      console.log(error);
       return badResponse(error);
     }
   }
