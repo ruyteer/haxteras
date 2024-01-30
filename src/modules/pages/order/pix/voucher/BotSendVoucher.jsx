@@ -9,7 +9,7 @@ const local = import.meta.env.VITE_LOCAL;
 function BotSendVoucher({ botType }) {
   const userId = localStorage.getItem("userId");
   const botData = JSON.parse(sessionStorage.getItem("dashbotData"));
-  const orderId = JSON.parse(localStorage.getItem("orderPixId"));
+  const orderId = localStorage.getItem("orderPixId");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
