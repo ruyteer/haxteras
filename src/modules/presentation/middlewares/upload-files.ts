@@ -7,19 +7,13 @@ export class UploadFile implements Controller {
 
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      // Inicializa req.files como um objeto vazio se não estiver definido
-      req.files = req.files || {};
-
       const files = req.files;
 
       console.log(files);
       if (!Array.isArray(files) || files.length === 0) {
-        console.log("nao enviado");
-        req.files.firebaseUrl = "comprovante não enviado";
         return okResponse();
       }
 
-      console.log("passou pra ca");
       const fileUrl = await this.firebaseUpload.uploadFile(files);
       req.files.firebaseUrl = fileUrl;
 

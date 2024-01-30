@@ -22,7 +22,7 @@ export class CreateOrderController implements Controller {
       } = req.body;
       const data = req.body;
 
-      const voucher = req.files.firebaseUrl;
+      const voucher = req.files.firebaseUrl || "comprovante não enviado";
       const productsParse = JSON.parse(products);
       console.log(products);
       console.log(productsParse);
