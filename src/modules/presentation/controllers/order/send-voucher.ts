@@ -11,7 +11,9 @@ export class SendOrderVoucherController implements Controller {
       const { orderList } = req.body;
       const voucher = req.files.firebaseUrl;
 
-      orderList.map(async (result) => {
+      const orderListParse = JSON.parse(orderList);
+
+      orderListParse.map(async (result) => {
         await prisma.order.update({
           where: { id: result },
           data: { voucher },
