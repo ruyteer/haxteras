@@ -17,6 +17,7 @@ export class UploadFile implements Controller {
       req.files.firebaseUrl = fileUrl;
       return okResponse();
     } catch (error) {
+      console.log("deu erro aqui");
       return badResponse(error);
     }
   }
