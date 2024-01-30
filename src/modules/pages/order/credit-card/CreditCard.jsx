@@ -28,7 +28,7 @@ function CreditCard() {
       items.map((result) => {
         productsList.push({
           id: result.id,
-          quantity: result.quantity,
+          quantity: parseInt(result.quantity),
           price: result.price,
         });
       });
