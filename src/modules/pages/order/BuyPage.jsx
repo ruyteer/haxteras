@@ -3,6 +3,7 @@ import { AllHeader } from "../../components";
 import "./styles.css";
 import { handleFindProduct } from "../../helpers/find-product";
 import { useParams } from "react-router-dom";
+import { getNowDate } from "../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
@@ -160,6 +161,29 @@ function BuyPage() {
         const responseJson = await response.json();
 
         localStorage.setItem("userId", responseJson);
+
+        const date = getNowDate();
+        const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+
+        const orderResponse = await fetch(`${url}/order/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: responseJson,
+            quantity: parseInt(quantity),
+            products: JSON.stringify([id]),
+            paymentMethod: "pix",
+            paymentIntent: orderId,
+            amount: (product.price * quantity).toFixed(2),
+            date,
+          }),
+        });
+
+        const orderResponseJson = await orderResponse.json();
+
+        localStorage.setItem("orderPixId", JSON.stringify([orderResponseJson]));
 
         window.location.href = `${local}/payment/pix/${product.id}/${quantity}`;
       } else {

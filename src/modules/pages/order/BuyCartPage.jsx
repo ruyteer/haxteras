@@ -154,7 +154,41 @@ function BuyCartPage() {
           "total-price",
           JSON.stringify({ discount, price: total })
         );
-        window.location.href = `${local}/payment/pix/cart`;
+
+        const date = getNowDate();
+        const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+
+        const orderIdsList = [];
+
+        const fetchPromises = products.map(async (result) => {
+          const formData = new FormData();
+          formData.append("userId", responseJson);
+          formData.append("quantity", result.quantity);
+          formData.append("products", JSON.stringify([result.id]));
+          formData.append("paymentMethod", "pix");
+          formData.append("paymentIntent", orderId);
+          formData.append(
+            "amount",
+            JSON.stringify(result.price * result.quantity)
+          );
+          formData.append("date", date);
+
+          const orderResponse = await fetch(`${url}/order/create`, {
+            method: "POST",
+            body: formData,
+          });
+          const orderJson = await orderResponse.json();
+          return orderIdsList.push(orderJson);
+        });
+
+        Promise.all(fetchPromises)
+          .then(() => {
+            localStorage.setItem("orderPixId", orderIdsList);
+            window.location.href = `${local}/payment/pix/cart`;
+          })
+          .catch((error) => {
+            console.error("Erro ao processar as fetchs:", error);
+          });
       } else {
         const responseJson = await response.json();
         alert(responseJson);

@@ -156,6 +156,35 @@ function BuyBotPage({ botType }) {
 
         localStorage.setItem("userId", responseJson);
 
+        const date = getNowDate();
+        const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+
+        const dataBody = {
+          type: botType,
+          day: botData.day,
+          mdc: botData.screen,
+        };
+
+        const orderResponse = await fetch(`${url}/order/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: responseJson,
+            quantity: botData.screen,
+            products: JSON.stringify([dataBody]),
+            paymentMethod: "pix",
+            paymentIntent: orderId,
+            amount: (product.price * quantity).toFixed(2),
+            date,
+          }),
+        });
+
+        const orderResponseJson = await orderResponse.json();
+
+        localStorage.setItem("orderPixId", JSON.stringify([orderResponseJson]));
+
         if (botType === "dashbot") {
           window.location.href = `${local}/payment/pix/dashbot`;
         } else if (botType === "nenbot") {
