@@ -173,7 +173,7 @@ function BuyPage() {
           body: JSON.stringify({
             userId: responseJson,
             quantity: parseInt(quantity),
-            products: JSON.stringify([id]),
+            products: [id],
             paymentMethod: "pix",
             paymentIntent: orderId,
             amount: (product.price * quantity).toFixed(2),
