@@ -30,7 +30,7 @@ export class CreateOrderController implements Controller {
         productsParse[0].type === "Nenbot"
       ) {
         const productId = `${productsParse[0].type} ${productsParse[0].day}`;
-        await this.orderServices.create(
+        const orderId = await this.orderServices.create(
           {
             amount: parseFloat(amount),
             date,
@@ -43,9 +43,11 @@ export class CreateOrderController implements Controller {
           [productId],
           userId
         );
+
+        return okResponse(orderId);
       } else {
         console.log(data);
-        await this.orderServices.create(
+        const orderId = await this.orderServices.create(
           {
             amount: parseFloat(amount),
             date,
@@ -58,9 +60,8 @@ export class CreateOrderController implements Controller {
           productsParse,
           userId
         );
+        return okResponse(orderId);
       }
-
-      return okResponse();
     } catch (error) {
       console.log(error);
       return badResponse(error);

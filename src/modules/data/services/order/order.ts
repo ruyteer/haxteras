@@ -11,7 +11,7 @@ export class OrderServices implements OrderUseCases {
     order: Order,
     products: string[],
     userId: string
-  ): Promise<void> {
+  ): Promise<string> {
     const requiredFields = [
       "amount",
       "paymentIntent",
@@ -38,7 +38,7 @@ export class OrderServices implements OrderUseCases {
       throw new MissingParamError("user id");
     }
 
-    await this.orderRepository.create(order, products, userId);
+    return await this.orderRepository.create(order, products, userId);
   }
 
   async delete(id: string): Promise<void> {

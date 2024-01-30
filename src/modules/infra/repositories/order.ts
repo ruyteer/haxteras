@@ -8,8 +8,8 @@ export class OrderRepository implements IOrderRepository {
     order: Order,
     products: string[],
     userId: string
-  ): Promise<void> {
-    await prisma.order.create({
+  ): Promise<string> {
+    const orderCreated = await prisma.order.create({
       data: {
         userId,
         products,
@@ -22,6 +22,7 @@ export class OrderRepository implements IOrderRepository {
         quantity: order.quantity,
       },
     });
+    return orderCreated.id;
   }
 
   async delete(id: string): Promise<void> {

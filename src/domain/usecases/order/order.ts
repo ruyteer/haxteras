@@ -11,7 +11,7 @@ type OrderModel = {
 };
 
 export interface OrderUseCases {
-  create(order: Order, products: string[], userId: string): Promise<void>;
+  create(order: Order, products: string[], userId: string): Promise<string>;
   findOne(id: string): Promise<OrderModel>;
   findAll(): Promise<OrderModel[]>;
   delete(id: string): Promise<void>;
