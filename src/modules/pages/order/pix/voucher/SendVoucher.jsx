@@ -11,6 +11,7 @@ function SendVoucher() {
   const userId = localStorage.getItem("userId");
   const { quantity, id } = useParams();
   const [product, setProduct] = useState({});
+  const orderId = JSON.parse(localStorage.getItem("orderPixId"));
 
   useEffect(() => {
     handleGetProduct();
@@ -24,35 +25,21 @@ function SendVoucher() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const date = getNowDate();
-
-    const orderId = Math.floor(Math.random() * 100000).toFixed(0);
     const formData = new FormData(e.target);
-    formData.append("userId", userId);
-    formData.append("quantity", quantity);
-    formData.append("products", JSON.stringify([id]));
-    formData.append("paymentMethod", "pix");
-    formData.append("paymentIntent", orderId);
-    formData.append("amount", (product.price * quantity).toFixed(2));
-    formData.append("date", date);
-
-    // Check if a file is selected
-    const fileInput = e.target.querySelector('input[type="file"]');
-    const file = fileInput.files[0];
-
-    if (!file) {
-      // If no file is selected, append a placeholder string
-      formData.delete("file");
-    }
+    const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
 
     try {
-      const response = await fetch(`${url}/order/create`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${url}/order/update/voucher/${orderId[0]}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
-        window.location.href = `${local}/payment/success/${orderId}`;
+        localStorage.removeItem("orderPixId");
+        window.location.href = `${local}/payment/success/${orderIdGenerated}`;
       }
     } catch (error) {
       alert(error);
@@ -69,7 +56,7 @@ function SendVoucher() {
             abaixo:
           </p>
           <form onSubmit={handleSubmit}>
-            <input type="file" name="file" id="voucher" />
+            <input type="file" name="file" id="voucher" required />
             <button type="submit">Enviar comprovante</button>
           </form>
         </div>

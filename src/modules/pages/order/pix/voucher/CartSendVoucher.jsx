@@ -8,42 +8,26 @@ const local = import.meta.env.VITE_LOCAL;
 function CartSendVoucher() {
   const userId = localStorage.getItem("userId");
   const products = JSON.parse(localStorage.getItem("cart"));
+  const orderIdList = JSON.parse(localStorage.getItem("orderPixId"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const date = getNowDate();
+    const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
 
-    const orderId = Math.floor(Math.random() * 100000).toFixed(0);
-
-    const fetchPromises = products.map(async (result) => {
+    const fetchPromises = orderIdList.map(async (result) => {
       const formData = new FormData(e.target);
-      formData.append("userId", userId);
-      formData.append("quantity", result.quantity);
-      formData.append("products", JSON.stringify([result.id]));
-      formData.append("paymentMethod", "pix");
-      formData.append("paymentIntent", orderId);
-      formData.append("amount", JSON.stringify(result.price * result.quantity));
-      formData.append("date", date);
 
-      // Check if a file is selected
-      const fileInput = e.target.querySelector('input[type="file"]');
-      const file = fileInput.files[0];
-
-      if (!file) {
-        // If no file is selected, append a placeholder string
-        formData.delete("file");
-      }
-
-      return fetch(`${url}/order/create`, {
-        method: "POST",
+      return fetch(`${url}/order/update/voucher/${result}`, {
+        method: "PUT",
         body: formData,
       });
     });
 
     Promise.all(fetchPromises)
       .then(() => {
-        window.location.href = `${local}/payment/success/${orderId}`;
+        localStorage.removeItem("orderPixId");
+        window.location.href = `${local}/payment/success/${orderIdGenerated}`;
       })
       .catch((error) => {
         console.error("Erro ao processar as fetchs:", error);
