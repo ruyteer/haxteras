@@ -18,7 +18,7 @@ export class SendOrderVoucherController implements Controller {
       orderListParse.map(async (result) => {
         await prisma.order.update({
           where: { id: result },
-          data: { voucher },
+          data: { voucher: voucher[0] },
         });
       });
       return okResponse();
