@@ -184,7 +184,7 @@ function BuyCartPage() {
 
         Promise.all(fetchPromises)
           .then(() => {
-            localStorage.setItem("orderPixId", orderIdsList);
+            localStorage.setItem("orderPixId", JSON.stringify(orderIdsList));
             window.location.href = `${local}/payment/pix/cart`;
           })
           .catch((error) => {
