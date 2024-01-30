@@ -18,6 +18,7 @@ export class UploadFile implements Controller {
 
       return okResponse();
     } catch (error) {
+      console.log("deu erro foi aqui");
       return badResponse(error);
     }
   }
