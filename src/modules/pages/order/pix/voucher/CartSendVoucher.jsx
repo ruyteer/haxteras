@@ -15,26 +15,22 @@ function CartSendVoucher() {
 
     const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
 
-    const fetchPromises = orderIdList.map(async (result, index) => {
+    try {
       const formData = new FormData(e.target);
+      formData.append("orderList", orderIdList);
 
-      // Introduza um pequeno delay entre as requisições
-      await new Promise((resolve) => setTimeout(resolve, index * 100));
-
-      return fetch(`${url}/order/update/voucher/${result}`, {
+      const response = await fetch(`${url}/order/update/voucher`, {
         method: "PUT",
         body: formData,
       });
-    });
 
-    Promise.all(fetchPromises)
-      .then(() => {
+      if (response.ok) {
         localStorage.removeItem("orderPixId");
         window.location.href = `${local}/payment/success/${orderIdGenerated}`;
-      })
-      .catch((error) => {
-        console.error("Erro ao processar as fetchs:", error);
-      });
+      }
+    } catch (error) {
+      alert(error);
+    }
   };
   return (
     <>

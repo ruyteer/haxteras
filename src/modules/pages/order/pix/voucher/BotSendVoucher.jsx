@@ -18,9 +18,10 @@ function BotSendVoucher({ botType }) {
     const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
 
     const formData = new FormData(e.target);
+    formData.append("orderList", orderId);
 
     try {
-      const response = await fetch(`${url}/order/update/voucher/${orderId}`, {
+      const response = await fetch(`${url}/order/update/voucher/`, {
         method: "PUT",
         body: formData,
       });

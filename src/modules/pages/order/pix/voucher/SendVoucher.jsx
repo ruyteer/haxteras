@@ -26,16 +26,14 @@ function SendVoucher() {
     e.preventDefault();
 
     const formData = new FormData(e.target);
+    formData.append("orderList", orderId);
     const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
 
     try {
-      const response = await fetch(
-        `${url}/order/update/voucher/${orderId[0]}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${url}/order/update/voucher/`, {
+        method: "PUT",
+        body: formData,
+      });
 
       if (response.ok) {
         localStorage.removeItem("orderPixId");
