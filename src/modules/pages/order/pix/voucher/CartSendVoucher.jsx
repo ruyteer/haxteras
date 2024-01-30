@@ -8,7 +8,7 @@ const local = import.meta.env.VITE_LOCAL;
 function CartSendVoucher() {
   const userId = localStorage.getItem("userId");
   const products = JSON.parse(localStorage.getItem("cart"));
-  const orderIdList = JSON.parse(localStorage.getItem("orderPixId"));
+  const orderIdList = localStorage.getItem("orderPixId");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
