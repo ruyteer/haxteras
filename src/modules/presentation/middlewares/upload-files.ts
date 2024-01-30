@@ -9,9 +9,7 @@ export class UploadFile implements Controller {
     try {
       const files = req.files;
 
-      console.log(files);
-      if (!files[0]) {
-        console.log("nao enviado");
+      if (!files) {
         req.files.firebaseUrl = "comprovante não enviado";
         return okResponse();
       }
