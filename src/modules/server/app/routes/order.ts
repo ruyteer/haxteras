@@ -12,6 +12,7 @@ import { makeOrderController } from "../factories/order/make-order";
 import { FindManyOrdersController } from "../../../presentation/controllers/order/find-many";
 import { FindUniqueOrderController } from "../../../presentation/controllers/order/find-unique";
 import { UpdateOrdersController } from "../../../presentation/controllers/order/update";
+import { SendOrderVoucherController } from "../../../presentation/controllers/order/send-voucher";
 
 const orderRoutes = Router();
 
@@ -39,5 +40,12 @@ orderRoutes.get("/", controller(makeOrderController(FindManyOrdersController)));
 orderRoutes.get(
   "/:id",
   controller(makeOrderController(FindUniqueOrderController))
+);
+
+orderRoutes.put(
+  "/update/voucher/:id",
+  upload.array("file"),
+  middleware(makeUploadFile()),
+  controller(makeOrderController(SendOrderVoucherController))
 );
 export { orderRoutes };
