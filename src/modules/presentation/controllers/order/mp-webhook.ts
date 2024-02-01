@@ -56,7 +56,7 @@ export class MPWebhook implements Controller {
         await prisma.product.update({
           where: { id: updatedOrder.products[0] },
           data: {
-            stock: filteredItem[0].quantity - productData.stock,
+            stock: productData.stock - filteredItem[0].quantity,
           },
         });
       });
