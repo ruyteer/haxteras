@@ -22,6 +22,7 @@ export class MPWebhook implements Controller {
     try {
       const response = req.body;
       console.log("Webhook foi chamado com sucesso!");
+      console.log(response);
 
       const payment = new Payment(client);
       const paymentData = await payment.get({ id: response.data.id });
@@ -36,6 +37,7 @@ export class MPWebhook implements Controller {
       });
 
       orderId.map(async (result: string) => {
+        console.log(result);
         const updatedOrder = await prisma.order.update({
           where: { id: result },
           data: { status: paymentData.status },
