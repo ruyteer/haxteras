@@ -21,6 +21,7 @@ export class MPWebhook implements Controller {
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
       const response = req.body;
+      console.log("Webhook foi chamado com sucesso!");
 
       const payment = new Payment(client);
       const paymentData = await payment.get({ id: response.data.id });
