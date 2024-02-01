@@ -26,22 +26,34 @@ export class MPWebhook implements Controller {
       const paymentData = await payment.get({ id: response.data.id });
 
       const orderId: string[] = JSON.parse(paymentData.metadata.order);
+      const items: ItemsMetadata[] = paymentData.metadata.items;
+      const emailServices = new NodemailerServices();
 
       orderId.map(async (result: string) => {
-        await prisma.order.update({
+        const updatedOrder = await prisma.order.update({
           where: { id: result },
           data: { status: paymentData.status },
         });
+
+        if (items[0].id === "nenbot") {
+          // tratar nenbots
+          return;
+        } else if (items[0].id === "dashbot") return;
+
+        const filteredItem = items.filter(
+          (result) => updatedOrder.products[0] === result.id
+        );
+        const productData = await prisma.product.findUnique({
+          where: { id: updatedOrder.products[0] },
+        });
+
+        await prisma.product.update({
+          where: { id: updatedOrder.products[0] },
+          data: {
+            stock: filteredItem[0].quantity - productData.stock,
+          },
+        });
       });
-
-      const items: ItemsMetadata[] = paymentData.metadata.items;
-
-      const emailServices = new NodemailerServices();
-
-      if (items[0].id === "nenbot") {
-        // tratar nenbots
-        return;
-      }
 
       return okResponse();
     } catch (error) {
