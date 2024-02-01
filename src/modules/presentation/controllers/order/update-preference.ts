@@ -37,6 +37,8 @@ export class UpdatePreferenceController implements Controller {
         },
       });
 
+      console.log("Um cliente está indo pagar com mercado pago!");
+
       return okResponse();
     } catch (error) {
       console.log(error);
