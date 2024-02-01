@@ -130,10 +130,10 @@ function MenuItems() {
             <tr>
               <th>Itens</th>
               <th>Preço Unidade</th>
-              <th>Quantidade</th>
+              <th className="responsive">Quantidade</th>
               <th>Estoque</th>
-              <th></th>
-              <th></th>
+              <th className="responsive"></th>
+              <th className="responsive"></th>
             </tr>
           </thead>
           <tbody>
@@ -141,7 +141,7 @@ function MenuItems() {
               <tr>
                 <td>{result.name}</td>
                 <td>R$ {result.price}</td>
-                <td>
+                <td className="responsive">
                   <QuantityInput
                     onQuantityChange={(quantity, itemId) => {
                       setQuantity({ quantity, itemId });
@@ -165,7 +165,7 @@ function MenuItems() {
                   {result.stock > 0 ? (
                     <button
                       type="submit"
-                      className="cart-button"
+                      className="cart-button responsive"
                       onClick={() => handleAddToCart(result.id)}
                     >
                       <img src="/cart.svg" alt="Cart" />
@@ -174,7 +174,7 @@ function MenuItems() {
                     <>
                       <button
                         type="submit"
-                        className="cart-button"
+                        className="cart-button responsive"
                         onClick={() =>
                           toast("Indisponível no estoque!", {
                             theme: "dark",
@@ -192,7 +192,7 @@ function MenuItems() {
             <tr>
               <td>Crown</td>
               <td>R$ 0.18</td>
-              <td>
+              <td className="responsive">
                 <QuantityInput />
               </td>
               <td>estoque livre</td>

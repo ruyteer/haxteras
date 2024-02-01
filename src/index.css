@@ -200,3 +200,69 @@ body {
     font-size: 13px;
   }
 }
+
+@media screen and (max-width: 600px) {
+  table {
+    width: 100%;
+  }
+
+  .responsive {
+    display: none;
+  }
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    border: 1px solid #ccc;
+  }
+
+  table .button-table {
+    width: 100px !important;
+  }
+
+  td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 70%;
+    padding-right: 50px;
+    white-space: nowrap;
+  }
+
+  td:nth-of-type(1):before {
+    content: "Itens";
+  }
+  td:nth-of-type(2):before {
+    content: "Preço Unidade";
+  }
+
+  td:nth-of-type(4):before {
+    content: "Estoque";
+  }
+  td:nth-of-type(5):before {
+    content: "Comprar";
+  }
+}
