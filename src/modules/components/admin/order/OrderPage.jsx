@@ -195,6 +195,7 @@ function OrderPage() {
                 {result.paymentMethod === "pix" ? (
                   <>
                     <button
+                      className="admin-button"
                       onClick={(e) =>
                         handleApprovePayment({
                           id: result.id,
