@@ -137,7 +137,7 @@ function OrderPage() {
               <th>Quantidade</th>
               <th>Método de Pagamento</th>
               <th>Código</th>
-              <th></th>
+              <th>Aprovar</th>
             </tr>
           </thead>
           <tbody>
