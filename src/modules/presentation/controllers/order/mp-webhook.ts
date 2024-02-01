@@ -27,6 +27,7 @@ export class MPWebhook implements Controller {
 
       return okResponse();
     } catch (error) {
+      console.log(error);
       return badResponse(error);
     }
   }
