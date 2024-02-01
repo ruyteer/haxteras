@@ -136,6 +136,7 @@ function OrderPage() {
               <th>Produtos</th>
               <th>Quantidade</th>
               <th>Método de Pagamento</th>
+              <th>Código</th>
               <th></th>
             </tr>
           </thead>
@@ -181,6 +182,15 @@ function OrderPage() {
                     : result.paymentMethod === "pix"
                     ? "PIX"
                     : "Mercado Pago"}
+                </td>
+                <td>
+                  {result.paymentMethod === "pix" ? (
+                    <>{result.paymentIntent}</>
+                  ) : result.paymentMethod === "mercadopago" ? (
+                    <>{result.paymentIntent}</>
+                  ) : (
+                    <></>
+                  )}
                 </td>
                 {result.paymentMethod === "pix" ? (
                   <>
