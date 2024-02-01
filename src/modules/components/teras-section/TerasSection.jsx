@@ -71,7 +71,12 @@ function TerasSection() {
                   <p style={{ marginTop: "10px", fontSize: "13px" }}>
                     {" "}
                     Em estoque:{" "}
-                    <span style={{ fontWeight: 600 }}>{result.stock}</span>{" "}
+                    <span
+                      className={result.stock > 0 ? "stock-teras" : ""}
+                      style={{ fontWeight: 600, fontSize: "15px" }}
+                    >
+                      {result.stock}
+                    </span>{" "}
                   </p>
                 </div>
               </div>
@@ -122,7 +127,12 @@ function TerasSection() {
                   <p style={{ marginTop: "10px", fontSize: "13px" }}>
                     {" "}
                     Em estoque:{" "}
-                    <span style={{ fontWeight: 600 }}>{result.stock}</span>{" "}
+                    <span
+                      className={result.stock > 0 ? "stock-teras" : ""}
+                      style={{ fontWeight: 600, fontSize: "15px" }}
+                    >
+                      {result.stock}
+                    </span>{" "}
                   </p>
                 </div>
               </div>
