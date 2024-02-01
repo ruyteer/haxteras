@@ -28,6 +28,7 @@ function NewsProduct({ result }) {
 
   const handleAddToCart = async (id) => {
     const product = await handleFindProduct(id);
+
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     const productExists = cart.find((item) => item.id === id);
     const productExistsIndex = cart.findIndex((item) => item.id === id);
@@ -82,7 +83,7 @@ function NewsProduct({ result }) {
       </div>
       <div className="item-price">
         <p className="sigle">R$</p>
-        <p className="price-number">{result.price.toFixed(2)}</p>
+        <p className="price-number">{result.price}</p>
       </div>
     </>
   );
