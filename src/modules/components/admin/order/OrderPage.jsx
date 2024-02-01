@@ -154,6 +154,8 @@ function OrderPage() {
                   {" "}
                   {result.status === "succeeded" ? (
                     <>Aprovada</>
+                  ) : result.status === "approved" ? (
+                    <>Aprovada</>
                   ) : (
                     <>Não autorizada</>
                   )}{" "}
