@@ -82,7 +82,7 @@ function NewsProduct({ result }) {
       </div>
       <div className="item-price">
         <p className="sigle">R$</p>
-        <p className="price-number">{result.price}</p>
+        <p className="price-number">{result.price.toFixed(2)}</p>
       </div>
     </>
   );
