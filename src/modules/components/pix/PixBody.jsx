@@ -29,8 +29,8 @@ function PixBody({ product, quantity }) {
 
           <div className="paragraf">
             <p>
-              Faça o pagamento via PIX. O seu pedido será liberado assim que a
-              confirmação do pagamento for efetuada.
+              Faça o pagamento via PIX. O seu pedido será liberado assim que o
+              comprovante for enviado e a confirmação do pagamento for efetuada.
             </p>
             <p style={{ marginTop: "10px" }}>
               Leia o QRCode abaixo com o aplicativo do seu banco e realize o
