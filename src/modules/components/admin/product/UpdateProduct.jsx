@@ -29,13 +29,12 @@ function UpdateProduct() {
     const stock = document.getElementById("stock").value;
     const price = document.getElementById("price").value;
 
+    const formData = new FormData(e.target);
+
     try {
       const request = await fetch(`${url}/product/update/${id}`, {
-        body: JSON.stringify({ name, description, stock, price }),
+        body: formData,
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
 
       if (request.ok) {
@@ -87,6 +86,14 @@ function UpdateProduct() {
             id={"description"}
             type={"text"}
             value={product.description}
+            required={false}
+          />
+          <FormControl
+            name={"file"}
+            label={"Imagem"}
+            placeholder={"Arraste a imagem aqui"}
+            id={"file"}
+            type={"file"}
             required={false}
           />
           <FormControl
