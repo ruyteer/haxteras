@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { getNowDate } from "../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
 function BuyCartPage() {
   const [products, setProducts] = useState([{}]);
@@ -15,6 +17,10 @@ function BuyCartPage() {
   const [formData, setFormData] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("");
   const { discount } = useParams();
+  const preferenceId = localStorage.getItem("preferenceId");
+  const [error, setError] = useState(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [mpOpen, setMpOpen] = useState(true);
 
   useEffect(() => {
     handleGetProduct();
@@ -104,7 +110,7 @@ function BuyCartPage() {
         window.location.href = `${local}/payment/credit-card/cart`;
       } else {
         const responseJson = await response.json();
-        alert(responseJson);
+        return alert(responseJson);
       }
     } catch (error) {
       return alert(error);
@@ -178,8 +184,12 @@ function BuyCartPage() {
             method: "POST",
             body: formData,
           });
-          const orderJson = await orderResponse.json();
-          return orderIdsList.push(orderJson);
+          if (orderResponse.ok) {
+            const orderJson = await orderResponse.json();
+            return orderIdsList.push(orderJson);
+          } else {
+            alert("Houve um erro. Tente novamente!");
+          }
         });
 
         Promise.all(fetchPromises)
@@ -235,6 +245,124 @@ function BuyCartPage() {
     setFormData({ ...formData, cpf: formattedCPF });
   };
 
+  const handleFinishMpOrder = async (e) => {
+    e.preventDefault();
+    sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
+
+    const name = document.getElementById("pix-name").value;
+    const number = document.getElementById("pix-number").value;
+    const nickname = document.getElementById("pix-nick").value;
+    const cpf = document.getElementById("pix-cpf").value;
+
+    try {
+      const response = await fetch(`${url}/user/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          cpf: cpf,
+          email: emailValue,
+          phone: number,
+          surname: name.split(" ")[1] || "vazio",
+          nickname,
+          address: {
+            city: "-",
+            address: "-",
+            cep: "0",
+            neighborhood: "-",
+            state: "-",
+            country: "-",
+            number: 0,
+          },
+        }),
+      });
+      if (response.ok) {
+        const responseJson = await response.json();
+
+        localStorage.setItem("userId", responseJson);
+
+        try {
+          const date = getNowDate();
+          const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+
+          const orderIdsList = [];
+
+          const fetchPromises = products.map(async (result) => {
+            const formData = new FormData();
+            formData.append("userId", responseJson);
+            formData.append("quantity", result.quantity);
+            formData.append("products", JSON.stringify([result.id]));
+            formData.append("paymentMethod", "mercadopago");
+            formData.append("paymentIntent", orderId);
+            formData.append(
+              "amount",
+              JSON.stringify(result.price * result.quantity)
+            );
+            formData.append("date", date);
+
+            const orderResponse = await fetch(`${url}/order/create`, {
+              method: "POST",
+              body: formData,
+            });
+
+            if (orderResponse.ok) {
+              const orderJson = await orderResponse.json();
+              return orderIdsList.push(orderJson);
+            } else {
+              alert("Houve um erro, tente novamente!");
+            }
+          });
+
+          Promise.all(fetchPromises).then(async () => {
+            localStorage.setItem("orderMpId", JSON.stringify(orderIdsList));
+            const mpItems = [];
+            products.map((result) => {
+              const edit = {
+                id: result.id,
+                title: result.name,
+                picture_url: result.images[0],
+                description: result.description,
+                quantity: parseInt(result.quantity),
+                unit_price: result.price,
+              };
+
+              mpItems.push(edit);
+            });
+
+            const pResponse = await fetch(`${url}/order/preference/update`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId: responseJson,
+                orderId: JSON.stringify(orderIdsList),
+                preferenceId,
+                products: JSON.stringify(mpItems),
+              }),
+            });
+
+            if (pResponse.ok) {
+              setMpOpen(false);
+              setCheckoutOpen(true);
+            } else {
+              alert("Houve um erro. Tente novamente!");
+            }
+          });
+        } catch (error) {
+          setError(error);
+        }
+      } else {
+        const responseJson = await response.json();
+        setError(responseJson);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   return (
     <>
       <AllHeader />
@@ -244,24 +372,50 @@ function BuyCartPage() {
             <h1>Formas de pagamento</h1>
 
             <form onSubmit={handleFinishOrder}>
-              <div className="form-radio">
-                <input
-                  type="radio"
-                  onClick={() => setPaymentMethod("credit-card")}
-                  name="payment-method"
-                  id="credit-card"
-                />
-                <p>Cartão de Crédito</p>
-              </div>
-              <div className="form-radio">
-                <input
-                  type="radio"
-                  onClick={() => setPaymentMethod("pix")}
-                  name="payment-method"
-                  id="pix"
-                />
-                <p>Pix</p>
-              </div>
+              {products.some((result) => result.description === "bloquear") ? (
+                <>
+                  <div className="form-radio">
+                    <input
+                      type="radio"
+                      onClick={() => setPaymentMethod("pix")}
+                      name="payment-method"
+                      id="pix"
+                    />
+                    <p>Pix</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <div className="form-radio">
+                    <input
+                      type="radio"
+                      onClick={() => setPaymentMethod("credit-card")}
+                      name="payment-method"
+                      id="credit-card"
+                    />
+                    <p>Cartão de Crédito - Stripe</p>
+                  </div>
+                  <div className="form-radio">
+                    <input
+                      type="radio"
+                      onClick={() => setPaymentMethod("pix")}
+                      name="payment-method"
+                      id="pix"
+                    />
+                    <p>Pix</p>
+                  </div>
+                  <div className="form-radio">
+                    <input
+                      type="radio"
+                      onClick={() => setPaymentMethod("mp")}
+                      name="payment-method"
+                      id="mp"
+                    />
+                    <p>Cartão de Crédito - Mercado Pago</p>
+                  </div>
+                </>
+              )}
             </form>
           </div>
           {paymentMethod === "credit-card" ? (
@@ -474,6 +628,7 @@ function BuyCartPage() {
                       type="text"
                       name="name"
                       placeholder="Joaquim"
+                      required
                       id="pix-name"
                     />
                     <p>CPF</p>
@@ -481,7 +636,11 @@ function BuyCartPage() {
                     <input
                       type="text"
                       name="cpf"
-                      placeholder="3531253464"
+                      required
+                      onChange={handleCPFChange}
+                      maxLength={11}
+                      value={formData.cpf}
+                      placeholder="XXX.XXX.XXX-XX"
                       id="pix-cpf"
                     />
                     <p>Nick do jogo</p>
@@ -489,6 +648,7 @@ function BuyCartPage() {
                     <input
                       type="text"
                       name="nickname"
+                      required
                       placeholder="joaquimmm123"
                       id="pix-nick"
                     />
@@ -497,13 +657,111 @@ function BuyCartPage() {
                     <input
                       type="text"
                       name="number"
-                      placeholder="(61) 983532132"
+                      onChange={handlePhoneChange}
+                      value={formData.phone}
+                      maxLength={11}
+                      placeholder="DDD 9 XXXX-XXXX"
+                      required
                       id="pix-number"
                     />
                   </div>
 
                   <button type="submit">Prosseguir para pagamento</button>
                 </form>
+              </div>
+            </>
+          ) : paymentMethod === "mp" ? (
+            <>
+              <div className={`email-container`}>
+                <h1>Meu contato</h1>
+                <p className="email-value">{emailValue}</p>
+                <form onSubmit={handleFinishMpOrder}>
+                  {mpOpen ? (
+                    <>
+                      {" "}
+                      <div className={"content"}>
+                        <p>Endereço de e-mail</p>
+                        <input
+                          type="email"
+                          required
+                          placeholder="email@gmail.com"
+                          value={emailValue}
+                          onChange={(e) => setEmailValue(e.target.value)}
+                        />
+                        <p className="info">
+                          O número do pedido e o recibo serão enviados para esse
+                          endereço de email.
+                        </p>
+
+                        <p>Nome</p>
+
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="Joaquim"
+                          id="pix-name"
+                          required
+                        />
+                        <p>CPF</p>
+
+                        <input
+                          type="text"
+                          name="cpf"
+                          required
+                          onChange={handleCPFChange}
+                          maxLength={11}
+                          value={formData.cpf}
+                          placeholder="XXX.XXX.XXX-XX"
+                          id="pix-cpf"
+                        />
+                        <p>Nick do jogo</p>
+
+                        <input
+                          type="text"
+                          name="nickname"
+                          placeholder="joaquimmm123"
+                          id="pix-nick"
+                          required
+                        />
+                        <p>Número</p>
+
+                        <input
+                          type="text"
+                          name="number"
+                          onChange={handlePhoneChange}
+                          value={formData.phone}
+                          maxLength={11}
+                          placeholder="DDD 9 XXXX-XXXX"
+                          required
+                          id="pix-number"
+                        />
+                      </div>
+                      <button type="submit">Prosseguir para pagamento</button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </form>
+
+                {checkoutOpen ? (
+                  <>
+                    <Wallet
+                      locale="pt-BR"
+                      onError={(error) => {
+                        setError(error);
+                      }}
+                      initialization={{
+                        preferenceId: preferenceId,
+                        redirectMode: "self",
+                      }}
+                      customization={{
+                        texts: { valueProp: "smart_option" },
+                      }}
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </>
           ) : (

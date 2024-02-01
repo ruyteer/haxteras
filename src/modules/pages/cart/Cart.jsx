@@ -4,6 +4,7 @@ import { AllHeader, ProductCartList } from "../../components/";
 import { Link } from "react-router-dom";
 import { useCart } from "../../../CartProvider";
 const url = import.meta.env.VITE_URL;
+const local = import.meta.env.VITE_LOCAL;
 
 function Cart() {
   const { cartItems, updateCart } = useCart();
@@ -54,6 +55,41 @@ function Cart() {
     }
   };
 
+  const handlePreference = async (e) => {
+    e.preventDefault();
+
+    const mpItems = [];
+    cartItems.map((result) => {
+      const edit = {
+        id: result.id,
+        title: result.name,
+        picture_url: result.images[0],
+        description: result.description,
+        quantity: parseInt(result.quantity),
+        unit_price: result.price,
+      };
+
+      mpItems.push(edit);
+    });
+
+    const response = await fetch(`${url}/order/preference`, {
+      method: "POST",
+      body: JSON.stringify({
+        products: JSON.stringify(mpItems),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("preferenceId", responseJson);
+      window.location.href = `${local}/buy/cart/${discount}`;
+    }
+  };
+
   return (
     <>
       <AllHeader />
@@ -92,9 +128,7 @@ function Cart() {
                   </p>
                 </div>
                 <div className="finaly">
-                  <Link to={`/buy/cart/${discount}`}>
-                    <button>Fechar Pedido</button>
-                  </Link>
+                  <button onClick={handlePreference}>Fechar Pedido</button>
                 </div>
               </div>
               <div className="coupon">

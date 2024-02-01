@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCart } from "../../../CartProvider";
 import { usePopup } from "../../../CartPopupModalContext";
+const local = import.meta.env.VITE_LOCAL;
+const url = import.meta.env.VITE_URL;
 
 function ProductPage() {
   const { id } = useParams();
@@ -70,6 +72,36 @@ function ProductPage() {
     });
   };
 
+  const handlePreference = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(`${url}/order/preference`, {
+      method: "POST",
+      body: JSON.stringify({
+        products: JSON.stringify([
+          {
+            id: product.id,
+            title: product.name,
+            picture_url: product.images[0],
+            description: product.description,
+            quantity: parseInt(mcdValue),
+            unit_price: product.price,
+          },
+        ]),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("preferenceId", responseJson);
+      window.location.href = `${local}/buy/${product.id}/${mcdValue}`;
+    }
+  };
+
   useEffect(() => {
     handleGetProduct();
   }, []);
@@ -127,9 +159,11 @@ function ProductPage() {
                 +
               </button>
             </div>
-            <Link to={`/buy/${product.id}/${mcdValue}`}>
-              <button className="buy-button">COMPRAR</button>
-            </Link>
+
+            <button className="buy-button" onClick={handlePreference}>
+              COMPRAR
+            </button>
+
             <button
               className="add-cart-button"
               onClick={() => handleAddToCart(product.id)}

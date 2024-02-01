@@ -5,11 +5,48 @@ import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import { useCart } from "../../../CartProvider";
 import { usePopup } from "../../../CartPopupModalContext";
+const local = import.meta.env.VITE_LOCAL;
+const url = import.meta.env.VITE_URL;
 
 function PopupCart() {
   const { visible, showModal, closeModal } = usePopup();
   const { cartItems } = useCart();
   const { updateCart } = useCart();
+
+  const handlePreference = async (e) => {
+    e.preventDefault();
+
+    const mpItems = [];
+    cartItems.map((result) => {
+      const edit = {
+        id: result.id,
+        title: result.name,
+        picture_url: result.images[0],
+        description: result.description,
+        quantity: parseInt(result.quantity),
+        unit_price: result.price,
+      };
+
+      mpItems.push(edit);
+    });
+
+    const response = await fetch(`${url}/order/preference`, {
+      method: "POST",
+      body: JSON.stringify({
+        products: JSON.stringify(mpItems),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseJson = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("preferenceId", responseJson);
+      window.location.href = `${local}/buy/cart/${0}`;
+    }
+  };
 
   const handleGetPrice = () => {
     return cartItems.reduce((accumulator, currentItem) => {
@@ -152,21 +189,20 @@ function PopupCart() {
                   </>
                 ) : (
                   <>
-                    <Link to={"/buy/cart/0"}>
-                      <button
-                        style={{
-                          backgroundColor: "var(--amarelo)",
-                          color: "white",
-                          fontWeight: 600,
-                          padding: "8px",
-                          borderRadius: "10px ",
-                          border: "none",
-                          cursor: "pointer",
-                        }}
-                      >
-                        FECHAR PEDIDO
-                      </button>
-                    </Link>
+                    <button
+                      onClick={handlePreference}
+                      style={{
+                        backgroundColor: "var(--amarelo)",
+                        color: "white",
+                        fontWeight: 600,
+                        padding: "8px",
+                        borderRadius: "10px ",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      FECHAR PEDIDO
+                    </button>
                   </>
                 )}
               </div>

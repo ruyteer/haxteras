@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { getNowDate } from "../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
 function BuyBotPage({ botType }) {
   const [emailVerify, setEmailVerify] = useState(false);
@@ -14,6 +16,10 @@ function BuyBotPage({ botType }) {
   const [formData, setFormData] = useState({});
   const [paymentMethod, setPaymentMethod] = useState("");
   const botData = JSON.parse(sessionStorage.getItem("dashbotData"));
+  const [mpOpen, setMpOpen] = useState(true);
+  const preferenceId = localStorage.getItem("preferenceId");
+  const [error, setError] = useState(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -63,17 +69,21 @@ function BuyBotPage({ botType }) {
         }),
       });
 
-      const responseJson = await response.json();
+      if (response.ok) {
+        const responseJson = await response.json();
 
-      localStorage.setItem("userId", responseJson);
+        localStorage.setItem("userId", responseJson);
+        if (botType === "dashbot") {
+          window.location.href = `${local}/payment/credit-card/dashbot`;
+        } else if (botType === "nenbot") {
+          window.location.href = `${local}/payment/credit-card/nenbot`;
+        }
+      } else {
+        const responseJson = await response.json();
+        return alert(responseJson);
+      }
     } catch (error) {
-      alert(error);
-    }
-
-    if (botType === "dashbot") {
-      window.location.href = `${local}/payment/credit-card/dashbot`;
-    } else if (botType === "nenbot") {
-      window.location.href = `${local}/payment/credit-card/nenbot`;
+      return alert(error);
     }
   };
 
@@ -177,19 +187,26 @@ function BuyBotPage({ botType }) {
             products: JSON.stringify([dataBody]),
             paymentMethod: "pix",
             paymentIntent: orderId,
-            amount: (product.price * quantity).toFixed(2),
+            amount: (botData.price * botData.screen).toFixed(2),
             date,
           }),
         });
 
-        const orderResponseJson = await orderResponse.json();
+        if (orderResponse.ok) {
+          const orderResponseJson = await orderResponse.json();
 
-        localStorage.setItem("orderPixId", JSON.stringify([orderResponseJson]));
+          localStorage.setItem(
+            "orderPixId",
+            JSON.stringify([orderResponseJson])
+          );
 
-        if (botType === "dashbot") {
-          window.location.href = `${local}/payment/pix/dashbot`;
-        } else if (botType === "nenbot") {
-          window.location.href = `${local}/payment/pix/nenbot`;
+          if (botType === "dashbot") {
+            window.location.href = `${local}/payment/pix/dashbot`;
+          } else if (botType === "nenbot") {
+            window.location.href = `${local}/payment/pix/nenbot`;
+          }
+        } else {
+          alert("Houve um erro. Tente novamente!");
         }
       } else {
         const responseJson = await response.json();
@@ -197,6 +214,120 @@ function BuyBotPage({ botType }) {
       }
     } catch (error) {
       return alert(error);
+    }
+  };
+
+  const handleFinishMpOrder = async (e) => {
+    e.preventDefault();
+    sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
+
+    const name = document.getElementById("pix-name").value;
+    const number = document.getElementById("pix-number").value;
+    const nickname = document.getElementById("pix-nick").value;
+    const cpf = document.getElementById("pix-cpf").value;
+
+    try {
+      const response = await fetch(`${url}/user/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+          cpf: cpf,
+          email: emailValue,
+          phone: number,
+          surname: name.split(" ")[1] || "vazio",
+          nickname: botData.username,
+          address: {
+            city: "-",
+            address: "-",
+            cep: "0",
+            neighborhood: "-",
+            state: "-",
+            country: "-",
+            number: 0,
+          },
+        }),
+      });
+      if (response.ok) {
+        const responseJson = await response.json();
+
+        localStorage.setItem("userId", responseJson);
+
+        try {
+          const date = getNowDate();
+          const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+
+          const dataBody = {
+            type: botType,
+            day: botData.day,
+            mdc: botData.screen,
+          };
+
+          const orderResponse = await fetch(`${url}/order/create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: responseJson,
+              quantity: botData.screen,
+              products: JSON.stringify([dataBody]),
+              paymentMethod: "mercadopago",
+              paymentIntent: orderId,
+              amount: (botData.price * botData.screen).toFixed(2),
+              date,
+            }),
+          });
+
+          if (orderResponse.ok) {
+            const orderResponseJson = await orderResponse.json();
+
+            localStorage.setItem(
+              "orderMpId",
+              JSON.stringify([orderResponseJson])
+            );
+
+            const pResponse = await fetch(`${url}/order/preference/update`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userId: responseJson,
+                orderId: JSON.stringify([orderResponseJson]),
+                preferenceId,
+                products: JSON.stringify([
+                  {
+                    id: botType,
+                    title: `${botType} ${botData.day}D`,
+                    picture_url:
+                      "https://storage.googleapis.com/haxteras.appspot.com/2a8ecc3215e0a270301afdc3de5e587f2e14bc03r1-1200-1773v2_hq.jpg?GoogleAccessId=firebase-adminsdk-fb1sc%40haxteras.iam.gserviceaccount.com&Expires=16730323200&Signature=FMRzz2llF6Nfj8zo1je%2BbmIpVrwZuqfUP%2F1MW%2FaY2%2B3KaNXaqSlSougfnFUBHaTOalrWrno5APnZgY%2BSOHjqDdhsZIlbUl7Kpj4Knyql6kfWnoeSauAz53I29hO9ZQM%2B8Oj4XJLdXhi9HYsdf0DxocIMjyZoZFR3sJ4gq64X6R72ESuTVUroUgB1WDxGlljvF%2Fz4kZDPCoCKMe1nC5KH9EH1nwtkAH7INgOzmW%2FRRuoYmrtRGm6zi%2BMb4YC4PD36xiaN%2BadUzNcG%2B%2BFcTlxIo7UDgcen2Rz2qj8LhUeAp%2F75LPEadRG19yyxa6Vfe04FJTtP%2F%2BvjF04%2B6Yy48f8Uqw%3D%3D",
+                    description: `${botType} ${botData.day}D`,
+                    quantity: parseInt(botData.screen),
+                    unit_price: botData.price,
+                  },
+                ]),
+              }),
+            });
+
+            if (pResponse.ok) {
+              setMpOpen(false);
+              setCheckoutOpen(true);
+            }
+          } else {
+            alert("Houve um erro. Tente novamente!");
+          }
+        } catch (error) {
+          setError(error);
+        }
+      } else {
+        const responseJson = await response.json();
+        setError(responseJson);
+      }
+    } catch (error) {
+      setError(error);
     }
   };
 
@@ -216,7 +347,7 @@ function BuyBotPage({ botType }) {
                   name="payment-method"
                   id="credit-card"
                 />
-                <p>Cartão de Crédito</p>
+                <p>Cartão de Crédito - Stripe</p>
               </div>
               <div className="form-radio">
                 <input
@@ -226,6 +357,15 @@ function BuyBotPage({ botType }) {
                   id="pix"
                 />
                 <p>Pix</p>
+              </div>
+              <div className="form-radio">
+                <input
+                  type="radio"
+                  onClick={() => setPaymentMethod("mp")}
+                  name="payment-method"
+                  id="mp"
+                />
+                <p>Cartão de Crédito - Mercado Pago</p>
               </div>
             </form>
           </div>
@@ -439,6 +579,7 @@ function BuyBotPage({ botType }) {
                       type="text"
                       name="name"
                       placeholder="Joaquim"
+                      required
                       id="pix-name"
                     />
                     <p>CPF</p>
@@ -446,22 +587,132 @@ function BuyBotPage({ botType }) {
                     <input
                       type="text"
                       name="cpf"
-                      placeholder="3531253464"
+                      required
+                      onChange={handleCPFChange}
+                      maxLength={11}
+                      value={formData.cpf}
+                      placeholder="XXX.XXX.XXX-XX"
                       id="pix-cpf"
                     />
+                    <p>Nick do jogo</p>
 
+                    <input
+                      type="text"
+                      name="nickname"
+                      required
+                      placeholder="joaquimmm123"
+                      id="pix-nick"
+                    />
                     <p>Número</p>
 
                     <input
                       type="text"
                       name="number"
-                      placeholder="(61) 983532132"
+                      onChange={handlePhoneChange}
+                      value={formData.phone}
+                      maxLength={11}
+                      placeholder="DDD 9 XXXX-XXXX"
+                      required
                       id="pix-number"
                     />
                   </div>
 
                   <button type="submit">Prosseguir para pagamento</button>
                 </form>
+              </div>
+            </>
+          ) : paymentMethod === "mp" ? (
+            <>
+              <div className={`email-container`}>
+                <h1>Meu contato</h1>
+                <p className="email-value">{emailValue}</p>
+                <form onSubmit={handleFinishMpOrder}>
+                  {mpOpen ? (
+                    <>
+                      {" "}
+                      <div className={"content"}>
+                        <p>Endereço de e-mail</p>
+                        <input
+                          type="email"
+                          required
+                          placeholder="email@gmail.com"
+                          value={emailValue}
+                          onChange={(e) => setEmailValue(e.target.value)}
+                        />
+                        <p className="info">
+                          O número do pedido e o recibo serão enviados para esse
+                          endereço de email.
+                        </p>
+
+                        <p>Nome</p>
+
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="Joaquim"
+                          id="pix-name"
+                          required
+                        />
+                        <p>CPF</p>
+
+                        <input
+                          type="text"
+                          name="cpf"
+                          required
+                          onChange={handleCPFChange}
+                          maxLength={11}
+                          value={formData.cpf}
+                          placeholder="XXX.XXX.XXX-XX"
+                          id="pix-cpf"
+                        />
+                        <p>Nick do jogo</p>
+
+                        <input
+                          type="text"
+                          name="nickname"
+                          placeholder="joaquimmm123"
+                          id="pix-nick"
+                          required
+                        />
+                        <p>Número</p>
+
+                        <input
+                          type="text"
+                          name="number"
+                          onChange={handlePhoneChange}
+                          value={formData.phone}
+                          maxLength={11}
+                          placeholder="DDD 9 XXXX-XXXX"
+                          required
+                          id="pix-number"
+                        />
+                      </div>
+                      <button type="submit">Prosseguir para pagamento</button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </form>
+
+                {checkoutOpen ? (
+                  <>
+                    <Wallet
+                      locale="pt-BR"
+                      onError={(error) => {
+                        setError(error);
+                      }}
+                      initialization={{
+                        preferenceId: preferenceId,
+                        redirectMode: "self",
+                      }}
+                      customization={{
+                        texts: { valueProp: "smart_option" },
+                      }}
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </>
           ) : (
