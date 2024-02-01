@@ -10,6 +10,7 @@ export class UpdateProductController implements Controller {
     try {
       const data = req.body;
       const { id } = req.params;
+      const image = req.files.firebaseUrl;
 
       await this.productServices.update(
         {
@@ -17,7 +18,7 @@ export class UpdateProductController implements Controller {
           price: parseFloat(data.price),
           stock: parseInt(data.stock),
           description: data.description,
-          images: data.images,
+          images: image,
         },
         id
       );

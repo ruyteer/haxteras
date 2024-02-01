@@ -38,6 +38,8 @@ productRoutes.delete(
 
 productRoutes.put(
   "/update/:id",
+  upload.array("file"),
+  middleware(makeUploadFile()),
   controller(makeProductController(UpdateProductController))
 );
 
