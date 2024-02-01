@@ -178,7 +178,7 @@ function OrderPage() {
                     ? "Cartão de Crédito"
                     : result.paymentMethod === "pix"
                     ? "PIX"
-                    : ""}
+                    : "Mercado Pago"}
                 </td>
                 {result.paymentMethod === "pix" ? (
                   <>
