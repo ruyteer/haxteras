@@ -4,7 +4,6 @@ import { makeNewsletterController } from "../factories/newsletter/makeNewsletter
 import { CreateNewsletterController } from "../../../presentation/controllers/newsletter/create";
 import { FindNewsletterController } from "../../../presentation/controllers/newsletter/find";
 import { UpdateNewsletterController } from "../../../presentation/controllers/newsletter/update";
-import { MPWebhook } from "../../../presentation/controllers/order/mp-webhook";
 
 const newsletterRoutes = Router();
 
@@ -22,7 +21,5 @@ newsletterRoutes.put(
   "/update",
   controller(makeNewsletterController(UpdateNewsletterController))
 );
-
-newsletterRoutes.post("/webhook", controller(new MPWebhook()));
 
 export { newsletterRoutes };

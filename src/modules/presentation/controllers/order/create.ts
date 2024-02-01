@@ -29,8 +29,8 @@ export class CreateOrderController implements Controller {
       console.log(productsParse);
 
       if (
-        productsParse[0].type === "Dashbot" ||
-        productsParse[0].type === "Nenbot"
+        productsParse[0].type === "dashbot" ||
+        productsParse[0].type === "nenbot"
       ) {
         const productId = `${productsParse[0].type} ${productsParse[0].day}`;
         const orderId = await this.orderServices.create(

@@ -13,6 +13,9 @@ import { FindManyOrdersController } from "../../../presentation/controllers/orde
 import { FindUniqueOrderController } from "../../../presentation/controllers/order/find-unique";
 import { UpdateOrdersController } from "../../../presentation/controllers/order/update";
 import { SendOrderVoucherController } from "../../../presentation/controllers/order/send-voucher";
+import { CreatePreferenceController } from "../../../presentation/controllers/order/create-mp";
+import { UpdatePreferenceController } from "../../../presentation/controllers/order/update-preference";
+import { MPWebhook } from "../../../presentation/controllers/order/mp-webhook";
 
 const orderRoutes = Router();
 
@@ -23,6 +26,7 @@ orderRoutes.post(
 );
 
 orderRoutes.post("/webhook", controller(makeWebhook()));
+orderRoutes.post("/mercadopago/webhook", controller(new MPWebhook()));
 
 orderRoutes.post(
   "/create",
@@ -34,6 +38,12 @@ orderRoutes.post(
 orderRoutes.post(
   "/update/:id",
   controller(makeOrderController(UpdateOrdersController))
+);
+
+orderRoutes.post("/preference", controller(new CreatePreferenceController()));
+orderRoutes.post(
+  "/preference/update",
+  controller(new UpdatePreferenceController())
 );
 
 orderRoutes.get("/", controller(makeOrderController(FindManyOrdersController)));
