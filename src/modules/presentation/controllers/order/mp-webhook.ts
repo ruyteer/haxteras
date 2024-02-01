@@ -29,6 +29,11 @@ export class MPWebhook implements Controller {
       const orderId: string[] = JSON.parse(paymentData.metadata.order);
       const items: ItemsMetadata[] = paymentData.metadata.items;
       const emailServices = new NodemailerServices();
+      console.log({
+        paymentData: paymentData,
+        items: items,
+        orderId: orderId,
+      });
 
       orderId.map(async (result: string) => {
         const updatedOrder = await prisma.order.update({
