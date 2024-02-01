@@ -15,9 +15,8 @@ export class MPWebhook implements Controller {
 
       const payment = new Payment(client);
       const paymentData = await payment.get({ id: response.data.id });
-      console.log(paymentData.metadata.order_id);
 
-      const orderId = JSON.parse(paymentData.metadata.orderId);
+      const orderId = JSON.parse(paymentData.metadata.order);
       console.log(orderId);
 
       orderId.map(async (result) => {
