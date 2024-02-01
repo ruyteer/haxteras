@@ -1,3 +1,4 @@
+import { prisma } from "../../../../config/prisma-client";
 import { ICreateIntent } from "../../contracts/create-intent";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
@@ -10,16 +11,19 @@ const client = new MercadoPagoConfig({
 export class MPWebhook implements Controller {
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const data = req.body;
-      const params = req.params;
-
-      console.log(data);
-      console.log(params);
+      const response = req.body;
 
       const payment = new Payment(client);
-      const paymentData = await payment.get({ id: data.data.id });
+      const paymentData = await payment.get({ id: response.data.id });
 
-      console.log(paymentData);
+      const orderId = JSON.parse(paymentData.metadata.order_id);
+
+      orderId.map(async (result) => {
+        await prisma.order.update({
+          where: { id: result },
+          data: { status: paymentData.status },
+        });
+      });
 
       return okResponse();
     } catch (error) {
