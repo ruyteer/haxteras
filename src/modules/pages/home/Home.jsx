@@ -83,7 +83,7 @@ function NewsProduct({ result }) {
       </div>
       <div className="item-price">
         <p className="sigle">R$</p>
-        <p className="price-number">{result.price}</p>
+        <p className="price-number">{result.price.toFixed(2)}</p>
       </div>
     </>
   );
@@ -91,7 +91,7 @@ function NewsProduct({ result }) {
 
 function Home() {
   const [botType, setBotType] = useState(true);
-  const [newsProduct, setNewsProduct] = useState([{ images: [] }]);
+  const [newsProduct, setNewsProduct] = useState([{ images: [], price: 0 }]);
   const handleChangeBot = () => {
     setBotType(!botType);
   };
