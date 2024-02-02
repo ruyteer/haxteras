@@ -265,4 +265,32 @@ body {
   td:nth-of-type(5):before {
     content: "Comprar";
   }
+
+  .product-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-page .details {
+    width: 300px;
+    margin-left: 0;
+  }
+
+  .product-page .details .info .buttons .quantity-input {
+    display: flex;
+  }
+
+  .product-page .cards-info {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    gap: 10px;
+  }
+
+  .product-page .card-shipping {
+    width: 80px;
+    height: 50px;
+    font-size: 10px;
+  }
 }

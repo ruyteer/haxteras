@@ -340,6 +340,7 @@ function BuyCartPage() {
                 userId: responseJson,
                 orderId: JSON.stringify(orderIdsList),
                 preferenceId,
+                code: orderId,
                 products: JSON.stringify(mpItems),
               }),
             });

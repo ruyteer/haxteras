@@ -294,6 +294,7 @@ function BuyPage() {
                 userId: responseJson,
                 orderId: JSON.stringify([orderResponseJson]),
                 preferenceId,
+                code: orderId,
                 products: JSON.stringify([
                   {
                     id: product.id,

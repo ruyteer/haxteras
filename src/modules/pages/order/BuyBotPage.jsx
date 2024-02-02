@@ -298,6 +298,7 @@ function BuyBotPage({ botType }) {
                 userId: responseJson,
                 orderId: JSON.stringify([orderResponseJson]),
                 preferenceId,
+                code: orderId,
                 products: JSON.stringify([
                   {
                     id: botType,
