@@ -10,7 +10,7 @@ const client = new MercadoPagoConfig({
 export class UpdatePreferenceController implements Controller {
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
-      const { userId, orderId, preferenceId, products } = req.body;
+      const { userId, orderId, preferenceId, products, code } = req.body;
       const productsParsed = JSON.parse(products);
 
       const preference = new Preference(client);
@@ -24,6 +24,10 @@ export class UpdatePreferenceController implements Controller {
           metadata: {
             order: orderId,
             items: productsParsed,
+          },
+          back_urls: {
+            success: `https://haxtera.com/payment/success/${code}`,
+            pending: `https://haxtera.com/payment/success/${code}`,
           },
           payer: {
             email: user.email,
