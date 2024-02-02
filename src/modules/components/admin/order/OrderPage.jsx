@@ -8,40 +8,41 @@ function OrderPage() {
 
   const handleGetOrders = async () => {
     try {
+      // Buscar pedidos
       const response = await fetch(`${url}/order`);
-      const responseJson = await response.json();
-      const sortedOrders = responseJson.sort((a, b) => {
+      const orders = await response.json();
+
+      // Buscar todos os usuários de uma vez
+      const userResponse = await fetch(`${url}/user`);
+      const users = await userResponse.json();
+
+      // Associar usuários aos pedidos
+      const ordersWithUsers = orders.map((order) => {
+        const user = users.find((user) => user.id === order.userId);
+        return {
+          ...order,
+          username: user ? user.name : "Nome não encontrado",
+        };
+      });
+
+      // Ordenar e setar os pedidos
+      const sortedOrders = ordersWithUsers.sort((a, b) => {
         const dateA = new Date(
           a.date.replace(
             /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
             "$3-$2-$1T$4:$5"
           )
         );
-
         const dateB = new Date(
           b.date.replace(
             /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
             "$3-$2-$1T$4:$5"
           )
         );
-
         return dateB - dateA;
       });
 
-      const muPromises = sortedOrders.map(async (result) => {
-        const response = await fetch(`${url}/user`);
-        const users = await response.json();
-        const user = users.find((resul) => resul.id === result.userId);
-
-        return {
-          ...result,
-          username: user ? user.name : "Nome não encontrado",
-        };
-      });
-
-      const mu = await Promise.all(muPromises);
-
-      setOrders(mu);
+      setOrders(sortedOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
