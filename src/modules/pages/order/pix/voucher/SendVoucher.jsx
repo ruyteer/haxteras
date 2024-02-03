@@ -27,7 +27,7 @@ function SendVoucher() {
 
     const formData = new FormData(e.target);
     formData.append("orderList", orderId);
-    const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
+    const orderIdGenerated = localStorage.getItem("orderGenerated");
 
     try {
       const response = await fetch(`${url}/order/update/voucher/`, {

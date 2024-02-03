@@ -13,7 +13,7 @@ function CartSendVoucher() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
+    const orderIdGenerated = localStorage.getItem("orderGenerated");
 
     try {
       const formData = new FormData(e.target);

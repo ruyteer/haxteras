@@ -15,7 +15,7 @@ function BotSendVoucher({ botType }) {
     e.preventDefault();
 
     const price = botData.price * botData.screen;
-    const orderIdGenerated = Math.floor(Math.random() * 100000).toFixed(0);
+    const orderIdGenerated = localStorage.getItem("orderGenerated");
 
     const formData = new FormData(e.target);
     formData.append("orderList", orderId);

@@ -169,6 +169,7 @@ function BuyBotPage({ botType }) {
 
         const date = getNowDate();
         const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+        localStorage.setItem("orderGenerated", orderId);
 
         const dataBody = {
           type: botType,

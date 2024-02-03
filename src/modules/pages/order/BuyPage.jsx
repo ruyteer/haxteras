@@ -178,6 +178,7 @@ function BuyPage() {
         try {
           const date = getNowDate();
           const orderId = Math.floor(Math.random() * 100000).toFixed(0);
+          localStorage.setItem("orderGenerated", orderId);
 
           const orderResponse = await fetch(`${url}/order/create`, {
             method: "POST",
