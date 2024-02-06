@@ -50,7 +50,7 @@ export class WebhookController implements Controller {
               return await this.orderServices.create(
                 orderData,
                 [result.id],
-                metaData.userId
+                metaDataFailed.userId
               );
             });
           } else {
