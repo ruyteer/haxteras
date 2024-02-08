@@ -60,7 +60,7 @@ function Router() {
         <Route path="/payment/pix/voucher/cart" element={<CartSendVoucher />} />
 
         <Route path="/dashbot/:day" element={<Dashbot />} />
-        <Route path="/nenbot/:day" element={<Nenbot />} />
+        <Route path="/nenbot/:day/:id" element={<Nenbot />} />
 
         <Route
           path="/buy/bot/dashbot"

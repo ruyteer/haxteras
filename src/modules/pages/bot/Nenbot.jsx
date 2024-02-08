@@ -8,25 +8,20 @@ const local = import.meta.env.VITE_LOCAL;
 const url = import.meta.env.VITE_URL;
 
 function Nenbot() {
-  const { day } = useParams();
+  const { id, day } = useParams();
+  const [nenbot, setNenbot] = useState({});
   const [mcdValue, setMcdValue] = useState(1);
 
   const [price, setPrice] = useState(0);
 
-  const handleGetPrice = () => {
-    if (day === "30") {
-      setPrice(45);
-    } else if (day === "15") {
-      setPrice(25);
-    } else if (day === "7") {
-      setPrice(15);
-    } else {
-      alert("Ocorreu um erro!");
-    }
+  const handleGetNenbot = async () => {
+    const response = await fetch(`${url}/product/${id}`);
+    const responseJson = await response.json();
+    setNenbot(responseJson);
   };
 
   useEffect(() => {
-    handleGetPrice();
+    handleGetNenbot();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -35,7 +30,7 @@ function Nenbot() {
     const data = {
       day,
       screen: mcdValue,
-      price,
+      price: nenbot.price,
     };
 
     sessionStorage.setItem("dashbotData", JSON.stringify(data));
@@ -98,7 +93,7 @@ function Nenbot() {
           <div className="info">
             <h1>Nenbot {day}D</h1>
             <p className="price">
-              R$ {price}, 00 <span>uma tela</span>
+              R$ {(nenbot.price * mcdValue).toFixed(2)} <span>uma tela</span>
             </p>
             <p className="installments">
               <img src="/Group.svg" alt="" />

@@ -91,7 +91,9 @@ function NenBot({ effectClass }) {
               <>
                 {bot.map((result) => (
                   <Link
-                    to={`/nenbot/${result.name.split(" ")[1].replace("D", "")}`}
+                    to={`/nenbot/${result.name
+                      .split(" ")[1]
+                      .replace("D", "")}/${result.id}`}
                   >
                     <button>Comprar</button>
                   </Link>
