@@ -29,6 +29,7 @@ export class MPWebhook implements Controller {
 
       const orderId: string[] = JSON.parse(paymentData.metadata.order);
       const items: ItemsMetadata[] = paymentData.metadata.items;
+      const userId = paymentData.metadata.user;
       const emailServices = new NodemailerServices();
       console.log({
         paymentData: paymentData,
@@ -44,7 +45,38 @@ export class MPWebhook implements Controller {
         });
 
         if (items[0].id === "nenbot") {
-          // tratar nenbots
+          const nenbots = await prisma.nenbot.findMany();
+
+          const splittedStr = items[0].title.split(" ")[1];
+          const filteredNenbots = nenbots.filter(
+            (result) => result.days === parseInt(splittedStr)
+          );
+
+          let nenbotsFinallyArray = [];
+
+          if (filteredNenbots.length < 1) {
+            console.error("No have nenbots");
+          } else {
+            for (let index = 0; index < items[0].quantity; index++) {
+              nenbotsFinallyArray.push(filteredNenbots[0]);
+              await prisma.nenbot.delete({
+                where: { id: filteredNenbots[0].id },
+              });
+              filteredNenbots.shift();
+            }
+          }
+
+          const user = await prisma.user.findUnique({
+            where: { id: userId },
+            include: { address: true },
+          });
+
+          await emailServices.sendNenbotMail(
+            nenbotsFinallyArray,
+            user,
+            updatedOrder
+          );
+
           return;
         } else if (items[0].id === "dashbot") return;
 

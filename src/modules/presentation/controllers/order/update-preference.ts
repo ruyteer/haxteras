@@ -24,6 +24,7 @@ export class UpdatePreferenceController implements Controller {
           metadata: {
             order: orderId,
             items: productsParsed,
+            user: userId,
           },
           back_urls: {
             success: `https://haxtera.com/payment/success/${code}`,
