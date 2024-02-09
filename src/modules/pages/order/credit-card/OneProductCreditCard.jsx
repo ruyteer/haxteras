@@ -8,6 +8,7 @@ import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
 import { useParams } from "react-router-dom";
 import { handleFindProduct } from "../../../helpers/find-product";
+import { getNowDate } from "../../../helpers/get-date";
 const stripePromise = loadStripe(stripeKey);
 
 function OneProductCreditCard() {
@@ -20,16 +21,7 @@ function OneProductCreditCard() {
     const response = await handleFindProduct(id);
     const price = ((await response.price) * quantity).toFixed(2);
 
-    const now = new Date();
-
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const year = now.getFullYear();
-
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-
-    const date = `${day}/${month}/${year}:${hours}:${minutes}`;
+    const date = getNowDate();
 
     try {
       fetch(`${url}/order/create/intent`, {
