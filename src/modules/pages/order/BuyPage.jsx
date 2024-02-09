@@ -547,7 +547,6 @@ function BuyPage() {
                           name="cpf"
                           id="cpf"
                           maxLength={11}
-                          required
                           placeholder="XXX.XXX.XXX-XX"
                         />
                       </div>

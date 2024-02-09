@@ -36,6 +36,7 @@ function CreditCardBot({ botType }) {
           products: [productData],
           date,
           userId,
+          productType: botType,
         }),
       })
         .then((res) => res.json())
