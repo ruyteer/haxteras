@@ -7,88 +7,413 @@ import { transporter } from "./nodemailer.config";
 
 export class NodemailerServices implements INodemailerServices {
   async sendMail(user: UserModel): Promise<void> {
-    const html = `<!DOCTYPE html>
-    <html>
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
       <head>
-        <style>
-          /* Estilos CSS para o corpo do e-mail */
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Simple Transactional Email</title>
+        <style media="all" type="text/css">
+          /* -------------------------------------
+        GLOBAL RESETS
+    ------------------------------------- */
+    
           body {
-            font-family: "Arial", sans-serif;
-            background-color: #f4f4f4;
+            font-family: Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            line-height: 1.3;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+          }
+    
+          table {
+            border-collapse: separate;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%;
+          }
+    
+          table td {
+            font-family: Helvetica, sans-serif;
+            font-size: 16px;
+            vertical-align: top;
+          }
+          /* -------------------------------------
+        BODY & CONTAINER
+    ------------------------------------- */
+    
+          body {
+            background-color: #f4f5f6;
             margin: 0;
             padding: 0;
-            text-align: center;
           }
     
-          /* Estilos CSS para a área de conteúdo */
-          .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px;
-          }
-    
-          ul {
-            list-style: none;
-          }
-    
-          /* Estilos CSS para o cabeçalho */
-          header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px 10px 0 0;
-          }
-    
-          .resum {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            justify-content: center;
-            background-color: rgb(184, 183, 183);
+          .body {
+            background-color: #f4f5f6;
             width: 100%;
-            padding: 10px;
-            margin-top: 20px;
           }
     
-          .resum ul li {
-            margin-left: -40px;
+          .container {
+            margin: 0 auto !important;
+            max-width: 600px;
+            padding: 0;
+            padding-top: 24px;
+            width: 600px;
           }
     
-          /* Estilos CSS para o conteúdo principal */
           .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 0;
+          }
+          /* -------------------------------------
+        HEADER, FOOTER, MAIN
+    ------------------------------------- */
+    
+          .main {
+            background: #ffffff;
+            border: 1px solid #eaebed;
+            border-radius: 16px;
+            width: 100%;
+          }
+    
+          .wrapper {
+            box-sizing: border-box;
+            padding: 24px;
+          }
+    
+          .footer {
+            clear: both;
+            padding-top: 24px;
+            text-align: center;
+            width: 100%;
+          }
+    
+          .footer td,
+          .footer p,
+          .footer span,
+          .footer a {
+            color: #9a9ea6;
+            font-size: 16px;
+            text-align: center;
+          }
+          /* -------------------------------------
+        TYPOGRAPHY
+    ------------------------------------- */
+    
+          p {
+            font-family: Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            margin: 0;
+            margin-bottom: 16px;
+          }
+    
+          a {
+            color: #0867ec;
+            text-decoration: underline;
+          }
+          /* -------------------------------------
+        BUTTONS
+    ------------------------------------- */
+    
+          .btn {
+            box-sizing: border-box;
+            min-width: 100% !important;
+            width: 100%;
+          }
+    
+          .btn > tbody > tr > td {
+            padding-bottom: 16px;
+          }
+    
+          .btn table {
+            width: auto;
+          }
+    
+          .btn table td {
+            background-color: #ffffff;
+            border-radius: 4px;
+            text-align: center;
+          }
+    
+          .btn a {
+            background-color: #ffffff;
+            border: solid 2px #0867ec;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #0867ec;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            padding: 12px 24px;
+            text-decoration: none;
+            text-transform: capitalize;
+          }
+    
+          .btn-primary table td {
+            background-color: #0867ec;
+          }
+    
+          .btn-primary a {
+            background-color: #0867ec;
+            border-color: #0867ec;
+            color: #ffffff;
+          }
+    
+          @media all {
+            .btn-primary table td:hover {
+              background-color: #ec0867 !important;
+            }
+            .btn-primary a:hover {
+              background-color: #ec0867 !important;
+              border-color: #ec0867 !important;
+            }
+          }
+    
+          /* -------------------------------------
+        OTHER STYLES THAT MIGHT BE USEFUL
+    ------------------------------------- */
+    
+          .last {
+            margin-bottom: 0;
+          }
+    
+          .first {
+            margin-top: 0;
+          }
+    
+          .align-center {
+            text-align: center;
+          }
+    
+          .align-right {
+            text-align: right;
+          }
+    
+          .align-left {
+            text-align: left;
+          }
+    
+          .text-link {
+            color: #0867ec !important;
+            text-decoration: underline !important;
+          }
+    
+          .clear {
+            clear: both;
+          }
+    
+          .mt0 {
+            margin-top: 0;
+          }
+    
+          .mb0 {
+            margin-bottom: 0;
+          }
+    
+          .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0;
+          }
+    
+          .powered-by a {
+            text-decoration: none;
+          }
+    
+          /* -------------------------------------
+        RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+    
+          @media only screen and (max-width: 640px) {
+            .main p,
+            .main td,
+            .main span {
+              font-size: 16px !important;
+            }
+            .wrapper {
+              padding: 8px !important;
+            }
+            .content {
+              padding: 0 !important;
+            }
+            .container {
+              padding: 0 !important;
+              padding-top: 8px !important;
+              width: 100% !important;
+            }
+            .main {
+              border-left-width: 0 !important;
+              border-radius: 0 !important;
+              border-right-width: 0 !important;
+            }
+            .btn table {
+              max-width: 100% !important;
+              width: 100% !important;
+            }
+            .btn a {
+              font-size: 16px !important;
+              max-width: 100% !important;
+              width: 100% !important;
+            }
+          }
+          /* -------------------------------------
+        PRESERVE THESE STYLES IN THE HEAD
+    ------------------------------------- */
+    
+          @media all {
+            .ExternalClass {
+              width: 100%;
+            }
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+              line-height: 100%;
+            }
+            .apple-link a {
+              color: inherit !important;
+              font-family: inherit !important;
+              font-size: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+              text-decoration: none !important;
+            }
+            #MessageViewBody a {
+              color: inherit;
+              text-decoration: none;
+              font-size: inherit;
+              font-family: inherit;
+              font-weight: inherit;
+              line-height: inherit;
+            }
           }
         </style>
       </head>
-    
       <body>
-        <div class="container">
-          <header>
-            <h1>Compra Efetuada com Sucesso!</h1>
-          </header>
-          <div class="content">
-            <p>Olá, ${user.name}!</p>
-            <p>
-              Sua compra foi efetuada com sucesso. <br />
-              Agradecemos por escolher nossos produtos/serviços. 
-  
-            
-            </p>
+        <table
+          role="presentation"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          class="body"
+        >
+          <tr>
+            <td>&nbsp;</td>
+            <td class="container">
+              <div class="content">
+                <!-- START CENTERED WHITE CONTAINER -->
+                <span class="preheader">Obrigado pela sua compra!</span>
+                <table
+                  role="presentation"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  class="main"
+                >
+                  <!-- START MAIN CONTENT AREA -->
+                  <tr>
+                    <td class="wrapper">
+                      <p>Olá, ${user.name}</p>
+                      <p>
+                        Pedido aprovado! Agradecemos sinceramente pela confiança
+                        depositada em nossos serviços. Estamos à disposição para
+                        qualquer dúvida ou solicitação adicional; entre em contato
+                        conosco pelo chat do site e teremos o prazer de ajudar.
+                        Aguardamos ansiosamente para atendê-lo novamente em breve.
+                      </p>
+                      <table
+                        role="presentation"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        class="btn btn-primary"
+                      >
+                        <tbody>
+                          <tr>
+                            <td align="left">
+                              <table
+                                role="presentation"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <a href="https://haxtera.com" target="_blank"
+                                        >Chat</a
+                                      >
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p>
+                        Para receber o seu pedido, entre em contato no chat do site
+                        e faça a solicitação.
+                      </p>
+                      <p>Boa sorte! A Haxtera agradece.</p>
+                    </td>
+                  </tr>
     
-        
+                  <!-- END MAIN CONTENT AREA -->
+                </table>
     
-           
-            <p>Obrigado por fazer negócios conosco!</p>
-          </div>
-        </div>
+                <!-- START FOOTER -->
+                <div class="footer">
+                  <table
+                    role="presentation"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tr>
+                      <td class="content-block">
+                        <span class="apple-link">Haxtera Inc</span>
+                        <br />
+                        Have any question?
+                        <a href="https://haxtera.com">Contact on chat</a>.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="content-block powered-by">
+                        Powered by <a href="https://haxtera.com">Haxtera</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+    
+                <!-- END FOOTER -->
+    
+                <!-- END CENTERED WHITE CONTAINER -->
+              </div>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
       </body>
     </html>
+    
     
     `;
 
@@ -106,97 +431,409 @@ export class NodemailerServices implements INodemailerServices {
     order: OrderModel
   ): Promise<void> {
     const html = `<!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
-        <style>
-          /* Estilos CSS para o corpo do e-mail */
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Simple Transactional Email</title>
+        <style media="all" type="text/css">
+          /* -------------------------------------
+        GLOBAL RESETS
+    ------------------------------------- */
+    
           body {
-            font-family: "Arial", sans-serif;
-            background-color: #f4f4f4;
+            font-family: Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 16px;
+            line-height: 1.3;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+          }
+    
+          table {
+            border-collapse: separate;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%;
+          }
+    
+          table td {
+            font-family: Helvetica, sans-serif;
+            font-size: 16px;
+            vertical-align: top;
+          }
+          /* -------------------------------------
+        BODY & CONTAINER
+    ------------------------------------- */
+    
+          body {
+            background-color: #f4f5f6;
             margin: 0;
             padding: 0;
-            text-align: center;
           }
     
-          /* Estilos CSS para a área de conteúdo */
-          .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px;
-          }
-    
-          ul {
-            list-style: none;
-          }
-    
-          /* Estilos CSS para o cabeçalho */
-          header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px 10px 0 0;
-          }
-    
-          .resum {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            justify-content: center;
-            background-color: rgb(184, 183, 183);
+          .body {
+            background-color: #f4f5f6;
             width: 100%;
-            padding: 10px;
-            margin-top: 20px;
           }
     
-          .resum ul li {
-            margin-left: -40px;
+          .container {
+            margin: 0 auto !important;
+            max-width: 600px;
+            padding: 0;
+            padding-top: 24px;
+            width: 600px;
           }
     
-          /* Estilos CSS para o conteúdo principal */
           .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            box-sizing: border-box;
+            display: block;
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 0;
+          }
+          /* -------------------------------------
+        HEADER, FOOTER, MAIN
+    ------------------------------------- */
+    
+          .main {
+            background: #ffffff;
+            border: 1px solid #eaebed;
+            border-radius: 16px;
+            width: 100%;
+          }
+    
+          .wrapper {
+            box-sizing: border-box;
+            padding: 24px;
+          }
+    
+          .footer {
+            clear: both;
+            padding-top: 24px;
+            text-align: center;
+            width: 100%;
+          }
+    
+          .footer td,
+          .footer p,
+          .footer span,
+          .footer a {
+            color: #9a9ea6;
+            font-size: 16px;
+            text-align: center;
+          }
+          /* -------------------------------------
+        TYPOGRAPHY
+    ------------------------------------- */
+    
+          p {
+            font-family: Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            margin: 0;
+            margin-bottom: 16px;
+          }
+    
+          a {
+            color: #0867ec;
+            text-decoration: underline;
+          }
+          /* -------------------------------------
+        BUTTONS
+    ------------------------------------- */
+    
+          .btn {
+            box-sizing: border-box;
+            min-width: 100% !important;
+            width: 100%;
+          }
+    
+          .btn > tbody > tr > td {
+            padding-bottom: 16px;
+          }
+    
+          .btn table {
+            width: auto;
+          }
+    
+          .btn table td {
+            background-color: #ffffff;
+            border-radius: 4px;
+            text-align: center;
+          }
+    
+          .btn a {
+            background-color: #ffffff;
+            border: solid 2px #0867ec;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #0867ec;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            padding: 12px 24px;
+            text-decoration: none;
+            text-transform: capitalize;
+          }
+    
+          .btn-primary table td {
+            background-color: #0867ec;
+          }
+    
+          .btn-primary a {
+            background-color: #0867ec;
+            border-color: #0867ec;
+            color: #ffffff;
+          }
+    
+          @media all {
+            .btn-primary table td:hover {
+              background-color: #ec0867 !important;
+            }
+            .btn-primary a:hover {
+              background-color: #ec0867 !important;
+              border-color: #ec0867 !important;
+            }
+          }
+    
+          /* -------------------------------------
+        OTHER STYLES THAT MIGHT BE USEFUL
+    ------------------------------------- */
+    
+          .last {
+            margin-bottom: 0;
+          }
+    
+          .first {
+            margin-top: 0;
+          }
+    
+          .align-center {
+            text-align: center;
+          }
+    
+          .align-right {
+            text-align: right;
+          }
+    
+          .align-left {
+            text-align: left;
+          }
+    
+          .text-link {
+            color: #0867ec !important;
+            text-decoration: underline !important;
+          }
+    
+          .clear {
+            clear: both;
+          }
+    
+          .mt0 {
+            margin-top: 0;
+          }
+    
+          .mb0 {
+            margin-bottom: 0;
+          }
+    
+          .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0;
+          }
+    
+          .powered-by a {
+            text-decoration: none;
+          }
+    
+          /* -------------------------------------
+        RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+    
+          @media only screen and (max-width: 640px) {
+            .main p,
+            .main td,
+            .main span {
+              font-size: 16px !important;
+            }
+            .wrapper {
+              padding: 8px !important;
+            }
+            .content {
+              padding: 0 !important;
+            }
+            .container {
+              padding: 0 !important;
+              padding-top: 8px !important;
+              width: 100% !important;
+            }
+            .main {
+              border-left-width: 0 !important;
+              border-radius: 0 !important;
+              border-right-width: 0 !important;
+            }
+            .btn table {
+              max-width: 100% !important;
+              width: 100% !important;
+            }
+            .btn a {
+              font-size: 16px !important;
+              max-width: 100% !important;
+              width: 100% !important;
+            }
+          }
+          /* -------------------------------------
+        PRESERVE THESE STYLES IN THE HEAD
+    ------------------------------------- */
+    
+          @media all {
+            .ExternalClass {
+              width: 100%;
+            }
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+              line-height: 100%;
+            }
+            .apple-link a {
+              color: inherit !important;
+              font-family: inherit !important;
+              font-size: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+              text-decoration: none !important;
+            }
+            #MessageViewBody a {
+              color: inherit;
+              text-decoration: none;
+              font-size: inherit;
+              font-family: inherit;
+              font-weight: inherit;
+              line-height: inherit;
+            }
           }
         </style>
       </head>
-    
       <body>
-        <div class="container">
-          <header>
-            <h1>Compra Efetuada com Sucesso!</h1>
-          </header>
-          <div class="content">
-            <p>Olá, ${user.name}!</p>
-            <p>
-              Sua compra foi efetuada com sucesso. <br />
-              Agradecemos por escolher nossos produtos/serviços. <br />
-              <br />
-              Segue abaixo a(s) key(s) para ativação do(s) seu(s) Nenbot(s):
-            </p>
+        <table
+          role="presentation"
+          border="0"
+          cellpadding="0"
+          cellspacing="0"
+          class="body"
+        >
+          <tr>
+            <td>&nbsp;</td>
+            <td class="container">
+              <div class="content">
+                <!-- START CENTERED WHITE CONTAINER -->
+                <span class="preheader">Obrigado pela sua compra!</span>
+                <table
+                  role="presentation"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  class="main"
+                >
+                  <!-- START MAIN CONTENT AREA -->
+                  <tr>
+                    <td class="wrapper">
+                      <p>Olá, ${user.name}</p>
+                      <p>
+                        Pedido aprovado! Agradecemos sinceramente pela confiança
+                        depositada em nossos serviços. Aguardamos ansiosamente para
+                        atendê-lo novamente em breve.
+                      </p>
     
-            ${nenbot.map((result) => {
-              return `
-            <p style="margin-top: 10px; margin-bottom: 20px">Key: ${result.key}</p>
-            `;
-            })}
+                      <table
+                        role="presentation"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        class="btn btn-primary"
+                      >
+                        <tbody>
+                          <tr>
+                            <td align="left">
+                              <table
+                                role="presentation"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <a href="https://haxtera.com" target="_blank"
+                                        >Chat de suporte</a
+                                      >
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p>
+                        Aqui está a sua chave de ativação do Nenbot:
+                        ${nenbot.map((result) => {
+                          return result.key;
+                        })}
+                      </p>
+                      <p>Boa sorte! A Haxtera agradece.</p>
+                    </td>
+                  </tr>
     
-            <div class="resum">
-              <p>Detalhes da compra:</p>
-              <ul>
-                <li>Valor: R$ ${order.amount}</li>
-                <li>Data da Compra: ${order.date}</li>
-                <li>CPF do Comprador: ${user.cpf}</li>
-                <li>Comprovante de compra: ${order.voucher}</li>
-              </ul>
-            </div>
-            <p>Obrigado por fazer negócios conosco!</p>
-          </div>
-        </div>
+                  <!-- END MAIN CONTENT AREA -->
+                </table>
+    
+                <!-- START FOOTER -->
+                <div class="footer">
+                  <table
+                    role="presentation"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tr>
+                      <td class="content-block">
+                        <span class="apple-link">Haxtera Inc</span>
+                        <br />
+                        Have any question?
+                        <a href="https://haxtera.com">Contact on chat</a>.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="content-block powered-by">
+                        Powered by <a href="https://haxtera.com">Haxtera</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+    
+                <!-- END FOOTER -->
+    
+                <!-- END CENTERED WHITE CONTAINER -->
+              </div>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
       </body>
     </html>
     

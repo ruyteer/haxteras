@@ -13,7 +13,7 @@ export type User = {
   name: string;
   surname: string;
   email: string;
-  address: Address[];
+  address?: Address[];
   phone: string;
   cpf: string;
   nickname?: string;

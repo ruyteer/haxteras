@@ -68,7 +68,6 @@ export class MPWebhook implements Controller {
 
           const user = await prisma.user.findUnique({
             where: { id: userId },
-            include: { address: true },
           });
 
           await emailServices.sendNenbotMail(

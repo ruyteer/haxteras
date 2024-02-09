@@ -181,27 +181,25 @@ export class WebhookController implements Controller {
             if (metaData.productType === "Nenbot") {
               const nenbots = await this.nenbotServices.findAll();
 
-              const splittedStr = metaData.products.split(" ")[1];
+              const splittedStr = botProducts[0].day;
               const filteredNenbots = nenbots.filter(
                 (result) => result.days === parseInt(splittedStr)
               );
+
+              console.log(filteredNenbots);
 
               let nenbotsFinallyArray = [];
 
               if (filteredNenbots.length < 1) {
                 console.error("No have nenbots");
               } else {
-                for (
-                  let index = 0;
-                  index < parseInt(metaData.quantity);
-                  index++
-                ) {
+                for (let index = 0; index < botProducts[0].mdc; index++) {
                   nenbotsFinallyArray.push(filteredNenbots[0]);
                   await this.nenbotServices.delete(filteredNenbots[0].id);
                   filteredNenbots.shift();
                 }
               }
-
+              console.log(nenbotsFinallyArray);
               await this.nodemailerServices.sendNenbotMail(
                 nenbotsFinallyArray,
                 user,
