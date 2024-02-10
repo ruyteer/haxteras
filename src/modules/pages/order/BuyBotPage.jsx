@@ -20,6 +20,7 @@ function BuyBotPage({ botType }) {
   const preferenceId = localStorage.getItem("preferenceId");
   const [error, setError] = useState(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [isGringo, setIsGringo] = useState(false);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +45,11 @@ function BuyBotPage({ botType }) {
 
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
 
+    let cpf = formData.cpf;
+    if (isGringo) {
+      cpf = "0110";
+    }
+
     try {
       const response = await fetch(`${url}/user/create`, {
         method: "POST",
@@ -52,7 +58,7 @@ function BuyBotPage({ botType }) {
         },
         body: JSON.stringify({
           name: formData.name,
-          cpf: formData.cpf,
+          cpf: cpf,
           email: emailValue,
           phone: formData.phone,
           surname: formData.surname,
@@ -514,17 +520,42 @@ function BuyBotPage({ botType }) {
                       />
                     </div>
                     <div className="form-content">
-                      <label htmlFor="cpf">CPF</label>
-                      <input
-                        type="text"
-                        onChange={handleCPFChange}
-                        value={formData.cpf}
-                        name="cpf"
-                        id="cpf"
-                        maxLength={11}
-                        required
-                        placeholder="XXX.XXX.XXX-XX"
-                      />
+                      {isGringo ? (
+                        <></>
+                      ) : (
+                        <>
+                          <label htmlFor="cpf">CPF</label>
+                          <input
+                            type="text"
+                            onChange={handleCPFChange}
+                            value={formData.cpf}
+                            name="cpf"
+                            id="cpf"
+                            maxLength={11}
+                            required
+                            placeholder="XXX.XXX.XXX-XX"
+                          />
+                        </>
+                      )}
+                      <div
+                        className="grigo-question"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <label htmlFor="gringo">You're not Brazilian?</label>
+                        <input
+                          style={{ marginLeft: "10px", marginTop: "0" }}
+                          type="checkbox"
+                          name="gringo"
+                          id="gringo"
+                          checked={isGringo}
+                          onChange={(e) => {
+                            setIsGringo(e.target.checked);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
 
