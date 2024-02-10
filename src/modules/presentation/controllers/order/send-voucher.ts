@@ -9,7 +9,7 @@ export class SendOrderVoucherController implements Controller {
   async handle(req: httpRequest): Promise<httpResponse> {
     try {
       const { orderList } = req.body;
-      const voucher = req.files.firebaseUrl;
+      const voucher = req.files.firebaseUrl || ["comprovante inválido"];
       console.log(orderList);
       const orderListParse = JSON.parse(orderList);
 
