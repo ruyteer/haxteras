@@ -97,7 +97,8 @@ function Dashbot() {
           <h1>{dashbot.name}</h1>
 
           <p className="offer">
-            por <span className="price">R$ {price}, 00</span>{" "}
+            por{" "}
+            <span className="price">R$ {(price * mcdValue).toFixed(2)}</span>{" "}
             <span>uma tela</span>
           </p>
 
