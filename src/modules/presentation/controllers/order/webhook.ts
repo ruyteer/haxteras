@@ -45,7 +45,7 @@ export class WebhookController implements Controller {
                 paymentIntent: responseDataFailed.id,
                 quantity: result.quantity,
                 status: responseDataFailed.status,
-                voucher: intentDataFailed.voucher,
+                voucher: "Payment failed",
               };
               return await this.orderServices.create(
                 orderData,
