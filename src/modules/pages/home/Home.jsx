@@ -122,8 +122,10 @@ function Home() {
 
       const responseJson = await response.json();
       setNewsProduct(responseJson);
+      return;
     } catch (error) {
       console.log(error);
+      return;
     }
   };
 
