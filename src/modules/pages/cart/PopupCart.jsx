@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import { useCart } from "../../../CartProvider";
 import { usePopup } from "../../../CartPopupModalContext";
+import { useLoading } from "../../../LoadingProvider";
 const local = import.meta.env.VITE_LOCAL;
 const url = import.meta.env.VITE_URL;
 
@@ -12,8 +13,10 @@ function PopupCart() {
   const { visible, showModal, closeModal } = usePopup();
   const { cartItems } = useCart();
   const { updateCart } = useCart();
+  const { showLoading } = useLoading();
 
   const handlePreference = async (e) => {
+    showLoading();
     e.preventDefault();
 
     const mpItems = [];

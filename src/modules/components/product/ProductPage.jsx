@@ -8,6 +8,7 @@ import { useCart } from "../../../CartProvider";
 import { usePopup } from "../../../CartPopupModalContext";
 const local = import.meta.env.VITE_LOCAL;
 const url = import.meta.env.VITE_URL;
+import { useLoading } from "../../../LoadingProvider";
 
 function ProductPage() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ function ProductPage() {
   const [mcdValue, setMcdValue] = useState(1);
   const { cartItems, updateCart } = useCart();
   const { showModal } = usePopup();
+  const { showLoading, closeLoading } = useLoading();
 
   const handleDecrease = () => {
     if (mcdValue > 1) {
@@ -73,6 +75,7 @@ function ProductPage() {
   };
 
   const handlePreference = async (e) => {
+    showLoading();
     e.preventDefault();
 
     const response = await fetch(`${url}/order/preference`, {
@@ -123,8 +126,15 @@ function ProductPage() {
           </p>
           <p className="installments">
             <img src="/Group.svg" alt="" />
-            <p> em até 8x sem juros ou a vista no pix</p>
+            <p>
+              {" "}
+              cartão, débito e crédito worked for other countries. <br />
+              <span>mercado pago até 12x, crédito ou débito à vista.</span>{" "}
+              <br />
+              crie uma conta para melhor aprovação do pagamento!
+            </p>
           </p>
+
           <p className="additional-info">
             Entrega imediata e segura, <br /> sem riscos de ban
           </p>

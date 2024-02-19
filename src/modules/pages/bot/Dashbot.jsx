@@ -2,6 +2,7 @@ import "./styles.css";
 import { AllHeader } from "../../components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLoading } from "../../../LoadingProvider";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
@@ -11,6 +12,7 @@ function Dashbot() {
   const [username, setUsername] = useState("");
   const [price, setPrice] = useState(0);
   const [dashbot, setDashbot] = useState({ name: "A AD" });
+  const { showLoading } = useLoading();
 
   const handleGetPrice = async () => {
     const response = await fetch(`${url}/product/${day}`);
@@ -45,6 +47,7 @@ function Dashbot() {
   };
 
   const handleSubmit = async (e) => {
+    showLoading();
     e.preventDefault();
 
     const data = {

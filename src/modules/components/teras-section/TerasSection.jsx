@@ -5,10 +5,12 @@ import { handleGetProductOfCategory } from "../../helpers/get-product-category";
 import { Link } from "react-router-dom";
 import { MenuItems } from "../menu-items/MenuItems";
 import Footer from "../footer/Footer";
+import { useLoading } from "../../../LoadingProvider";
 
 function TerasSection() {
   const [naProducts, setNaProducts] = useState([{ images: [] }]);
   const [laProducts, setLaProducts] = useState([{ images: [] }]);
+  const { showLoading, closeLoading } = useLoading();
 
   useEffect(() => {
     handleGetProduct();

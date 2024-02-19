@@ -3,6 +3,7 @@ import "./styles.css";
 import { AllHeader, ProductCartList } from "../../components/";
 import { Link } from "react-router-dom";
 import { useCart } from "../../../CartProvider";
+import { useLoading } from "../../../LoadingProvider";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
@@ -10,6 +11,7 @@ function Cart() {
   const { cartItems, updateCart } = useCart();
   const [discount, setDiscount] = useState(0);
   const [error, setError] = useState("");
+  const { showLoading } = useLoading();
 
   const handleGetTotalPrice = () => {
     let price = 0;
@@ -56,6 +58,7 @@ function Cart() {
   };
 
   const handlePreference = async (e) => {
+    showLoading();
     e.preventDefault();
 
     const mpItems = [];

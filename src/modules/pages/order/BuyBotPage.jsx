@@ -7,6 +7,7 @@ import { getNowDate } from "../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useLoading } from "../../../LoadingProvider";
 initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
 function BuyBotPage({ botType }) {
@@ -21,6 +22,12 @@ function BuyBotPage({ botType }) {
   const [error, setError] = useState(null);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [isGringo, setIsGringo] = useState(false);
+
+  const { closeLoading } = useLoading();
+
+  useEffect(() => {
+    closeLoading();
+  });
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { AllHeader } from "../../components";
 import "./styles.css";
 import { handleFindProduct } from "../../helpers/find-product";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import { getNowDate } from "../../helpers/get-date";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useLoading } from "../../../LoadingProvider";
 initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
 function BuyCartPage() {
@@ -22,9 +23,11 @@ function BuyCartPage() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [mpOpen, setMpOpen] = useState(true);
   const [isGringo, setIsGringo] = useState(false);
+  const { closeLoading } = useLoading();
 
   useEffect(() => {
     handleGetProduct();
+    closeLoading();
   }, []);
 
   const handleGetProduct = async () => {

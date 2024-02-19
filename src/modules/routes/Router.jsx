@@ -29,6 +29,8 @@ import CouponPage from "../components/admin/coupons/CouponPage";
 import CreateCoupon from "../components/admin/coupons/CreateCoupon";
 import PrivateRoutes from "../../private-route";
 import Newsletter from "../components/admin/Newsletter";
+import Loading from "../components/loading/Loading";
+import { useLoading } from "../../LoadingProvider";
 
 function Router() {
   const location = useLocation();

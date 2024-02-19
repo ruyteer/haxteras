@@ -44,6 +44,10 @@
   margin-right: 10px;
 }
 
+.product-page .details .info .installments p {
+  font-size: 12px;
+}
+
 .product-page .details .info .additional-info {
   margin-top: 50px;
   font-size: 13px;

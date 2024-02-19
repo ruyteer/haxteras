@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AllHeader } from "../../components";
+import { useLoading } from "../../../LoadingProvider";
 const local = import.meta.env.VITE_LOCAL;
 const url = import.meta.env.VITE_URL;
 
@@ -11,6 +12,7 @@ function Nenbot() {
   const { id, day } = useParams();
   const [nenbot, setNenbot] = useState({});
   const [mcdValue, setMcdValue] = useState(1);
+  const { showLoading } = useLoading();
 
   const [price, setPrice] = useState(0);
 
@@ -25,6 +27,7 @@ function Nenbot() {
   }, []);
 
   const handleSubmit = async (e) => {
+    showLoading();
     e.preventDefault();
 
     const data = {

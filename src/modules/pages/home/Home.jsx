@@ -18,6 +18,8 @@ import PopupCart from "../cart/PopupCart";
 import { useCart } from "../../../CartProvider";
 import Painel from "../chat/Painel";
 import { usePopup } from "../../../CartPopupModalContext";
+import Loading from "../../components/loading/Loading";
+import { useLoading } from "../../../LoadingProvider";
 
 const url = import.meta.env.VITE_URL;
 
@@ -25,6 +27,7 @@ function NewsProduct({ result }) {
   const [hovered, setHovered] = useState(false);
   const { updateCart } = useCart();
   const { visible, showModal, closeModal } = usePopup();
+  const { loading, showLoading, closeLoading } = useLoading();
 
   const handleAddToCart = async (id) => {
     const product = await handleFindProduct(id);
@@ -92,12 +95,15 @@ function NewsProduct({ result }) {
 function Home() {
   const [botType, setBotType] = useState(true);
   const [newsProduct, setNewsProduct] = useState([{ images: [], price: 0 }]);
+  const { loading, showLoading, closeLoading } = useLoading();
   const handleChangeBot = () => {
     setBotType(!botType);
   };
 
   useEffect(() => {
+    showLoading();
     handleGetNewsProduct();
+    setTimeout(closeLoading, 1400);
   }, []);
 
   const handleGetNewsProduct = async () => {

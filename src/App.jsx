@@ -6,8 +6,11 @@ import Footer from "./modules/components/footer/Footer";
 import Painel from "./modules/pages/chat/Painel";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import Loading from "./modules/components/loading/Loading";
+import { useLoading } from "./LoadingProvider";
 
 function App() {
+  const { loading, showLoading, closeLoading } = useLoading();
   useEffect(() => {
     Aos.init();
   }, []);
@@ -15,8 +18,18 @@ function App() {
   return (
     <>
       <ToastContainer />
-      <Router />
-      <Footer />
+
+      {loading ? (
+        <>
+          <Loading />
+          <Router />
+        </>
+      ) : (
+        <>
+          <Router />
+          <Footer />
+        </>
+      )}
     </>
   );
 }
