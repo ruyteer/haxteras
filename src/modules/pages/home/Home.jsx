@@ -101,11 +101,9 @@ function Home() {
   };
 
   useEffect(() => {
-    function execute() {
-      showLoading();
-      handleGetNewsProduct().then(() => closeLoading());
-    }
-    execute();
+    showLoading();
+    handleGetNewsProduct();
+    setTimeout(closeLoading, 1000);
   }, []);
 
   const handleGetNewsProduct = async () => {
@@ -122,10 +120,8 @@ function Home() {
 
       const responseJson = await response.json();
       setNewsProduct(responseJson);
-      return;
     } catch (error) {
       console.log(error);
-      return;
     }
   };
 
