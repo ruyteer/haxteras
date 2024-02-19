@@ -101,12 +101,11 @@ function Home() {
   };
 
   useEffect(() => {
-    showLoading();
     handleGetNewsProduct();
-    setTimeout(closeLoading, 1400);
   }, []);
 
   const handleGetNewsProduct = async () => {
+    showLoading();
     const categoryResponse = await fetch(`${url}/category`);
     const categories = await categoryResponse.json();
     const category = categories.filter(
@@ -120,6 +119,7 @@ function Home() {
 
       const responseJson = await response.json();
       setNewsProduct(responseJson);
+      closeLoading();
     } catch (error) {
       console.log(error);
     }
