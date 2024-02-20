@@ -101,9 +101,7 @@ function Home() {
   };
 
   useEffect(() => {
-    showLoading();
     handleGetNewsProduct();
-    setTimeout(closeLoading, 1000);
   }, []);
 
   const handleGetNewsProduct = async () => {
