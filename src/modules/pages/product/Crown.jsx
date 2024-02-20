@@ -171,7 +171,7 @@ function Crown() {
 function AlphaCrown() {
   const [products, setProducts] = useState([{}]);
   const [preview, setPreview] = useState([{ price: 0 }]);
-  const [search, setSearch] = useState("");
+  const [searchAlpha, setSearchAlpha] = useState("");
   const [quantity, setQuantity] = useState({});
   const { cartItems, updateCart } = useCart();
 
@@ -258,11 +258,11 @@ function AlphaCrown() {
                 type="text"
                 required
                 placeholder="Pesquise o item"
-                value={search}
+                value={searchAlpha}
                 onChange={(e) => {
                   e.preventDefault();
                   handleSearch(e.target.value);
-                  setSearch(e.target.value);
+                  setSearchAlpha(e.target.value);
                 }}
               />
               <button onClick={handleSearch}>

@@ -158,7 +158,16 @@ function ProductPage() {
                       type: "error",
                     });
                   } else {
-                    setMcdValue(e.target.value);
+                    if (e.target.value > product.stock) {
+                      toast(`Há apenas ${product.stock} no estoque!`, {
+                        theme: "dark",
+                        pauseOnHover: false,
+                        type: "error",
+                      });
+                      return;
+                    } else {
+                      setMcdValue(e.target.value);
+                    }
                   }
                 }}
               />
