@@ -39,30 +39,18 @@ function OrderPage() {
 
   const handleApprovePayment = async ({ id, products, quantity }) => {
     try {
-      await fetch(`${url}/order/update/${id}`, {
+      const response = await fetch(`${url}/order/update/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
-
-      const response = await fetch(`${url}/product/${products}`);
-      const responseJson = await response.json();
-
-      console.log(responseJson.stock);
-      console.log(quantity);
-      const updatedStock = responseJson.stock - parseInt(quantity);
-      console.log(updatedStock);
-
-      await fetch(`${url}/product/update/${products}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          stock: updatedStock,
-        }),
-      });
+      if (response.ok) {
+        toast("Pedido aprovado com sucesso!", {
+          theme: "dark",
+          type: "success",
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -130,6 +118,15 @@ function OrderPage() {
     setVisibleOrders(result);
   };
 
+  const handleDeleteOrder = async (id) => {
+    const response = await fetch(`${url}/order/delete/${id}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      toast("Pedido excluído com sucesso!", { theme: "dark", type: "success" });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -185,6 +182,7 @@ function OrderPage() {
               <th>Método de Pagamento</th>
               <th>Código</th>
               <th>Aprovar</th>
+              <th>Excluir</th>
             </tr>
           </thead>
           <tbody>
@@ -239,24 +237,38 @@ function OrderPage() {
                     <></>
                   )}
                 </td>
-                {result.paymentMethod === "pix" ? (
-                  <>
-                    <button
-                      className="admin-button"
-                      onClick={(e) =>
-                        handleApprovePayment({
-                          id: result.id,
-                          products: result.products[0],
-                          quantity: result.quantity,
-                        })
-                      }
-                    >
-                      Aprovar pagamento
-                    </button>
-                  </>
-                ) : (
-                  <></>
-                )}
+                <td>
+                  {" "}
+                  {result.paymentMethod === "pix" ? (
+                    <>
+                      <button
+                        className="admin-button"
+                        onClick={(e) =>
+                          handleApprovePayment({
+                            id: result.id,
+                            products: result.products[0],
+                            quantity: result.quantity,
+                          })
+                        }
+                      >
+                        Aprovar pagamento
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </td>
+                <td>
+                  <button
+                    className="admin-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDeleteOrder(result.id);
+                    }}
+                  >
+                    Excluir Pedido
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
