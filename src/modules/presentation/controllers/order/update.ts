@@ -48,6 +48,18 @@ export class UpdateOrdersController implements Controller {
         await emailServices.sendNenbotMail(nenbotsFinallyArray, user, order);
 
         return okResponse();
+      } else if (products[0] === "dashbot") {
+        console.log("Dashbot aprovado");
+      } else {
+        const productOrder = await prisma.product.findUnique({
+          where: { id: order.products[0] },
+        });
+        const updatedStock = productOrder.stock - order.quantity;
+
+        await prisma.product.update({
+          where: { id: order.products[0] },
+          data: { stock: updatedStock },
+        });
       }
 
       return okResponse();
