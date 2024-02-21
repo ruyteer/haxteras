@@ -16,6 +16,7 @@ import { SendOrderVoucherController } from "../../../presentation/controllers/or
 import { CreatePreferenceController } from "../../../presentation/controllers/order/create-mp";
 import { UpdatePreferenceController } from "../../../presentation/controllers/order/update-preference";
 import { MPWebhook } from "../../../presentation/controllers/order/mp-webhook";
+import { DeleteOrderController } from "../../../presentation/controllers/order/delete";
 
 const orderRoutes = Router();
 
@@ -58,4 +59,10 @@ orderRoutes.put(
   middleware(makeUploadFile()),
   controller(makeOrderController(SendOrderVoucherController))
 );
+
+orderRoutes.delete(
+  "/delete/:id",
+  controller(makeOrderController(DeleteOrderController))
+);
+
 export { orderRoutes };
