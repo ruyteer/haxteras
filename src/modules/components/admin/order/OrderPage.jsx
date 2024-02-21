@@ -8,48 +8,7 @@ function OrderPage() {
   const [allOrders, setAllOrders] = useState([]); // Armazena todos os pedidos do backend
   const [visibleOrders, setVisibleOrders] = useState([]); // Pedidos a serem exibidos na página
   const [pageSize, setPageSize] = useState(20); // Número de pedidos a serem exibidos por vez
-
-  // const handleGetOrders = async () => {
-  //   try {
-  //     // Buscar pedidos
-  //     const response = await fetch(`${url}/order/${page}`);
-  //     const orders = await response.json();
-
-  //     // Buscar todos os usuários de uma vez
-  //     const userResponse = await fetch(`${url}/user`);
-  //     const users = await userResponse.json();
-
-  //     // Associar usuários aos pedidos
-  //     const ordersWithUsers = orders.map((order) => {
-  //       const user = users.find((user) => user.id === order.userId);
-  //       return {
-  //         ...order,
-  //         username: user ? user.name : "Nome não encontrado",
-  //       };
-  //     });
-
-  //     // Ordenar e setar os pedidos
-  //     const sortedOrders = ordersWithUsers.sort((a, b) => {
-  //       const dateA = new Date(
-  //         a.date.replace(
-  //           /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
-  //           "$3-$2-$1T$4:$5"
-  //         )
-  //       );
-  //       const dateB = new Date(
-  //         b.date.replace(
-  //           /(\d{2})\/(\d{2})\/(\d{4}):(\d{2}):(\d{2})/,
-  //           "$3-$2-$1T$4:$5"
-  //         )
-  //       );
-  //       return dateB - dateA;
-  //     });
-
-  //     setOrders(sortedOrders);
-  //   } catch (error) {
-  //     console.error("Error fetching orders:", error);
-  //   }
-  // };
+  const [search, setSearch] = useState("");
 
   const handleToast = async (products) => {
     let productArray = [];
@@ -160,6 +119,17 @@ function OrderPage() {
     setVisibleOrders(allOrders.slice(0, newPageSize));
   };
 
+  const handleSearch = async (text) => {
+    const result = allOrders.filter((order) => {
+      return (
+        order.username.toLowerCase().includes(text.toLowerCase()) ||
+        order.paymentIntent.toLowerCase().includes(text.toLowerCase())
+      );
+    });
+
+    setVisibleOrders(result);
+  };
+
   return (
     <>
       <Navbar />
@@ -174,6 +144,32 @@ function OrderPage() {
         >
           Gerenciar pedidos
         </h1>
+
+        <div
+          className="search"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "20px",
+            gap: "10px",
+          }}
+        >
+          <label style={{ color: "white" }}>
+            Pesquisar pedido pelo código ou nome do comprador:
+          </label>
+          <input
+            type="text"
+            value={search}
+            placeholder="Digite o código ou nome do comprador aqui"
+            onChange={(e) => {
+              e.preventDefault();
+              setSearch(e.target.value);
+              handleSearch(e.target.value);
+            }}
+          />
+        </div>
 
         <table style={{ marginTop: "13px" }}>
           <thead>
