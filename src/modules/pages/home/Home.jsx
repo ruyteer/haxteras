@@ -20,6 +20,11 @@ import Painel from "../chat/Painel";
 import { usePopup } from "../../../CartPopupModalContext";
 import Loading from "../../components/loading/Loading";
 import { useLoading } from "../../../LoadingProvider";
+import {
+  PrismicRichText,
+  PrismicText,
+  useFirstPrismicDocument,
+} from "@prismicio/react";
 
 const url = import.meta.env.VITE_URL;
 
@@ -93,6 +98,9 @@ function NewsProduct({ result }) {
 }
 
 function Home() {
+  const [document] = useFirstPrismicDocument("homepage");
+  console.log(document);
+
   const [botType, setBotType] = useState(true);
   const [newsProduct, setNewsProduct] = useState([{ images: [], price: 0 }]);
   const { loading, showLoading, closeLoading } = useLoading();
@@ -132,10 +140,15 @@ function Home() {
       <div className="home">
         <div className="left-section">
           <div className="box-news">
-            <h2>Teras em Geral</h2>
+            <h2>{document && <PrismicText field={document.data.newsbox} />}</h2>
           </div>
-          <h2 className="title">
-            Teras em promoções <br /> Aproveitem o desconto!
+          <h2
+            className="title"
+            style={{
+              maxWidth: `${document && document.data.maxwidth[0].text}px`,
+            }}
+          >
+            {document && <PrismicText field={document.data.newstext} />}
           </h2>
 
           <div className="items">
