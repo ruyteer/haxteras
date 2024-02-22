@@ -44,7 +44,7 @@ function QuantityInput() {
 
 function BotSection({ effectClass }) {
   const [dashbotAvaiable, setDashbotAvaiable] = useState(false);
-  const [bot, setBot] = useState([{ price: 0, name: "A AD" }]);
+  const [bot, setBot] = useState([{ price: 0, name: "Dashbot 30D" }]);
 
   const handleGetBots = async () => {
     const response = await handleGetProductOfCategory("Dashbot");

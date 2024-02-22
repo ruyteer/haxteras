@@ -38,7 +38,7 @@ function QuantityInput() {
 }
 function NenBot({ effectClass }) {
   const [nenbotAvaiable, setNenbotAvaiable] = useState(false);
-  const [bot, setBot] = useState([{ price: 0, name: "A AD" }]);
+  const [bot, setBot] = useState([{ price: 0, name: "Nenbot 30D" }]);
 
   const handleGetBots = async () => {
     const response = await handleGetProductOfCategory("Nenbot");
