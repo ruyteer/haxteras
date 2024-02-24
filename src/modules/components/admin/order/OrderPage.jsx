@@ -50,6 +50,14 @@ function OrderPage() {
           theme: "dark",
           type: "success",
         });
+
+        const ordersUpdated = visibleOrders.filter(
+          (result) => result.id === id
+        );
+
+        ordersUpdated[0].status = "succeeded";
+
+        setVisibleOrders([...visibleOrders, ordersUpdated]);
       }
     } catch (error) {
       console.log(error);
@@ -97,6 +105,13 @@ function OrderPage() {
     };
 
     handleGetOrders();
+
+    const interval = setInterval(() => {
+      handleGetOrders();
+    }, 10000); // 60000 milissegundos = 1 minuto
+
+    // Retorna uma função de limpeza que limpa o intervalo quando o componente é desmontado
+    return () => clearInterval(interval);
   }, [pageSize]);
 
   const loadMoreOrders = () => {
@@ -124,6 +139,9 @@ function OrderPage() {
     });
     if (response.ok) {
       toast("Pedido excluído com sucesso!", { theme: "dark", type: "success" });
+
+      const updatedOrders = visibleOrders.filter((result) => result.id !== id);
+      setVisibleOrders(updatedOrders);
     }
   };
 
