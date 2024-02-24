@@ -23,7 +23,7 @@ export class WebhookController implements Controller {
       switch (event.type) {
         case "payment_intent.created":
           break;
-        case "payment_intent.payment_failed":
+
           const responseDataFailed = event.data.object;
 
           const intentDataFailed = await this.stripeServices.findIntent(
