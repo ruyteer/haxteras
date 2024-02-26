@@ -77,7 +77,7 @@
 
 .box-news {
   background-color: var(--amarelo);
-  width: 230px;
+  max-width: 310px;
   clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0 100%);
   text-align: center;
   padding: 5px;

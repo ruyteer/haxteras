@@ -1,0 +1,44 @@
+.order-table thead {
+  background-color: black;
+  text-align: center;
+}
+
+.order-table thead th {
+  text-align: center;
+  font-size: 15px;
+}
+
+.order-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.order-table tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+.order-table tbody td {
+  font-size: 15px;
+  text-align: center;
+  width: 100px;
+}
+
+.order-table .admin-button {
+  width: 80%;
+  height: 50px;
+  font-size: 10px;
+  text-align: center;
+  background-color: var(--amarelo);
+  color: black;
+  border: 1px solid black;
+}
+
+.show-more {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid black;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+}

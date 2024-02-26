@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import { toast } from "react-toastify";
 const url = import.meta.env.VITE_URL;
+import "./styles.css";
+import { Link } from "react-router-dom";
 
 function OrderPage() {
   const [orders, setOrders] = useState([{}]);
@@ -50,14 +52,14 @@ function OrderPage() {
           theme: "dark",
           type: "success",
         });
-
-        const ordersUpdated = visibleOrders.filter(
-          (result) => result.id === id
+        setVisibleOrders((prevOrders) =>
+          prevOrders.map((order) => {
+            if (order.id === id) {
+              return { ...order, status: "succeeded" };
+            }
+            return order;
+          })
         );
-
-        ordersUpdated[0].status = "succeeded";
-
-        setVisibleOrders([...visibleOrders, ordersUpdated]);
       }
     } catch (error) {
       console.log(error);
@@ -141,6 +143,7 @@ function OrderPage() {
       toast("Pedido excluído com sucesso!", { theme: "dark", type: "success" });
 
       const updatedOrders = visibleOrders.filter((result) => result.id !== id);
+
       setVisibleOrders(updatedOrders);
     }
   };
@@ -149,151 +152,157 @@ function OrderPage() {
     <>
       <Navbar />
       <div>
-        <h1
-          style={{
-            marginTop: "30px",
-            fontSize: "23px",
-            color: "white",
-            textAlign: "center",
-          }}
-        >
-          Gerenciar pedidos
-        </h1>
-
-        <div
-          className="search"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "20px",
-            gap: "10px",
-          }}
-        >
-          <label style={{ color: "white" }}>
-            Pesquisar pedido pelo código ou nome do comprador:
-          </label>
-          <input
-            type="text"
-            value={search}
-            placeholder="Digite o código ou nome do comprador aqui"
-            onChange={(e) => {
-              e.preventDefault();
-              setSearch(e.target.value);
-              handleSearch(e.target.value);
+        <div>
+          <h1
+            style={{
+              marginTop: "30px",
+              fontSize: "23px",
+              color: "white",
+              textAlign: "center",
             }}
-          />
-        </div>
+          >
+            Gerenciar pedidos
+          </h1>
 
-        <table style={{ marginTop: "13px" }}>
-          <thead>
-            <tr>
-              <th>Nome Comprador</th>
-              <th>Comprador</th>
-              <th>Status</th>
-              <th>Valor</th>
-              <th>Comprovante</th>
-              <th>Data</th>
-              <th>Produtos</th>
-              <th>Quantidade</th>
-              <th>Método de Pagamento</th>
-              <th>Código</th>
-              <th>Aprovar</th>
-              <th>Excluir</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visibleOrders.map((result) => (
+          <div
+            className="search"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "20px",
+              gap: "10px",
+            }}
+          >
+            <label style={{ color: "white" }}>
+              Pesquisar pedido pelo código ou nome do comprador:
+            </label>
+            <input
+              type="text"
+              value={search}
+              placeholder="Digite o código ou nome do comprador aqui"
+              onChange={(e) => {
+                e.preventDefault();
+                setSearch(e.target.value);
+                handleSearch(e.target.value);
+              }}
+            />
+          </div>
+
+          <table className="order-table" style={{ marginTop: "40px" }}>
+            <thead>
               <tr>
-                <td>
-                  <p style={{ textAlign: "center" }}>{result.username}</p>
-                </td>
-                <td>
-                  <a href={`/admin/dashboard/user/${result.userId}`}>
-                    Clique Aqui
-                  </a>
-                </td>
-                <td>
-                  {" "}
-                  {result.status === "succeeded" ? (
-                    <>Aprovada</>
-                  ) : result.status === "approved" ? (
-                    <>Aprovada</>
-                  ) : (
-                    <>Não autorizada</>
-                  )}{" "}
-                </td>
-                <td style={{ width: "100px" }}> R$ {result.amount} </td>
-                <td>
-                  {" "}
-                  <a href={`${result.voucher}`}>Clique Aqui</a>{" "}
-                </td>
-                <td> {result.date} </td>
-                <td>
-                  <button
-                    className="admin-button"
-                    onClick={() => handleToast(result.products)}
-                  >
-                    Clique aqui
-                  </button>
-                </td>
-                <td>{result.quantity}</td>
-                <td>
-                  {result.paymentMethod === "card"
-                    ? "Cartão de Crédito"
-                    : result.paymentMethod === "pix"
-                    ? "PIX"
-                    : "Mercado Pago"}
-                </td>
-                <td>
-                  {result.paymentMethod === "pix" ? (
-                    <>{result.paymentIntent}</>
-                  ) : result.paymentMethod === "mercadopago" ? (
-                    <>{result.paymentIntent}</>
-                  ) : (
-                    <></>
-                  )}
-                </td>
-                <td>
-                  {" "}
-                  {result.paymentMethod === "pix" ? (
-                    <>
-                      <button
-                        className="admin-button"
-                        onClick={(e) =>
-                          handleApprovePayment({
-                            id: result.id,
-                            products: result.products[0],
-                            quantity: result.quantity,
-                          })
-                        }
-                      >
-                        Aprovar pagamento
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </td>
-                <td>
-                  <button
-                    className="admin-button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDeleteOrder(result.id);
-                    }}
-                  >
-                    Excluir Pedido
-                  </button>
-                </td>
+                <th>Nome Comprador</th>
+                <th>Comprador</th>
+                <th>Status</th>
+                <th>Valor</th>
+                <th>Comprovante</th>
+                <th>Data</th>
+                <th>Produtos</th>
+                <th>Quantidade</th>
+                <th>Método de Pagamento</th>
+                <th>Código</th>
+                <th>Aprovar</th>
+                <th>Excluir</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {visibleOrders.map((result) => (
+                <tr>
+                  <td>
+                    <p style={{ textAlign: "center" }}>{result.username}</p>
+                  </td>
+                  <td>
+                    <Link to={`/admin/dashboard/user/${result.userId}`}>
+                      <button className="admin-button">Comprador</button>
+                    </Link>
+                  </td>
+                  <td>
+                    {" "}
+                    {result.status === "succeeded" ? (
+                      <>Aprovada</>
+                    ) : result.status === "approved" ? (
+                      <>Aprovada</>
+                    ) : (
+                      <>Não autorizada</>
+                    )}{" "}
+                  </td>
+                  <td style={{ width: "100px" }}> R$ {result.amount} </td>
+                  <td>
+                    {" "}
+                    <Link to={`${result.voucher}`}>
+                      <button className="admin-button">Clique aqui</button>
+                    </Link>
+                  </td>
+                  <td> {result.date} </td>
+                  <td>
+                    <button
+                      className="admin-button"
+                      onClick={() => handleToast(result.products)}
+                    >
+                      Produtos
+                    </button>
+                  </td>
+                  <td>{result.quantity}</td>
+                  <td>
+                    {result.paymentMethod === "card"
+                      ? "Cartão de Crédito"
+                      : result.paymentMethod === "pix"
+                      ? "PIX"
+                      : "Mercado Pago"}
+                  </td>
+                  <td>
+                    {result.paymentMethod === "pix" ? (
+                      <>{result.paymentIntent}</>
+                    ) : result.paymentMethod === "mercadopago" ? (
+                      <>{result.paymentIntent}</>
+                    ) : (
+                      <></>
+                    )}
+                  </td>
+                  <td>
+                    {" "}
+                    {result.paymentMethod === "pix" ? (
+                      <>
+                        <button
+                          className="admin-button"
+                          onClick={(e) =>
+                            handleApprovePayment({
+                              id: result.id,
+                              products: result.products[0],
+                              quantity: result.quantity,
+                            })
+                          }
+                        >
+                          Aprovar pagamento
+                        </button>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className="admin-button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDeleteOrder(result.id);
+                      }}
+                    >
+                      Excluir Pedido
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <div style={{ textAlign: "center", margin: "20px" }}>
-          <button onClick={loadMoreOrders}>Mostrar Mais</button>
+          <div style={{ textAlign: "center", margin: "20px" }}>
+            <button className="show-more" onClick={loadMoreOrders}>
+              Mostrar Mais
+            </button>
+          </div>
         </div>
       </div>
     </>

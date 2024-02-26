@@ -7,6 +7,12 @@ import { handleFindProduct } from "../../helpers/find-product";
 import { Link } from "react-router-dom";
 import { useCart } from "../../../CartProvider";
 import { usePopup } from "../../../CartPopupModalContext";
+import {
+  PrismicRichText,
+  PrismicText,
+  useFirstPrismicDocument,
+  usePrismicDocumentByID,
+} from "@prismicio/react";
 const url = import.meta.env.VITE_URL;
 
 export function QuantityInput({ onQuantityChange, itemId }) {
@@ -61,6 +67,7 @@ export function QuantityInput({ onQuantityChange, itemId }) {
 function MenuItems() {
   const [item, setItem] = useState([{}]);
   const { updateCart } = useCart();
+  const [document] = useFirstPrismicDocument("homepage");
 
   const [quantityMcd, setQuantity] = useState({});
   const { visible, showModal } = usePopup();
@@ -191,7 +198,10 @@ function MenuItems() {
             ))}
             <tr>
               <td>Crown</td>
-              <td>R$ 0.20</td>
+              <td>
+                R${" "}
+                {document && <PrismicText field={document.data.crownprice} />}
+              </td>
               <td className="responsive">
                 <QuantityInput />
               </td>
