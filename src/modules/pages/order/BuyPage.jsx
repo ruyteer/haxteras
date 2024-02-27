@@ -8,6 +8,7 @@ const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useLoading } from "../../../LoadingProvider";
+import { getClientIp } from "../../helpers/get-ip";
 initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
 function BuyPage() {
@@ -60,6 +61,8 @@ function BuyPage() {
 
   const handleFinishOrder = async (e) => {
     e.preventDefault();
+    const userIp = await getClientIp();
+    sessionStorage.setItem("userip", userIp);
 
     if (!emailVerify) {
       return alert("Salve o email primeiro!");
@@ -154,7 +157,7 @@ function BuyPage() {
     const number = document.getElementById("pix-number").value;
     const nickname = document.getElementById("pix-nick").value;
     const cpf = document.getElementById("pix-cpf").value;
-
+    const userIp = await getClientIp();
     try {
       const response = await fetch(`${url}/user/create`, {
         method: "POST",
@@ -202,6 +205,7 @@ function BuyPage() {
               paymentIntent: orderId,
               amount: (product.price * quantity).toFixed(2),
               date,
+              userIp,
             }),
           });
 
@@ -237,6 +241,8 @@ function BuyPage() {
     const number = document.getElementById("pix-number").value;
     const nickname = document.getElementById("pix-nick").value;
     const cpf = document.getElementById("pix-cpf").value;
+
+    const userIp = await getClientIp();
 
     try {
       const response = await fetch(`${url}/user/create`, {
@@ -284,6 +290,7 @@ function BuyPage() {
               paymentIntent: orderId,
               amount: (product.price * quantity).toFixed(2),
               date,
+              userIp,
             }),
           });
 
@@ -385,7 +392,7 @@ function BuyPage() {
                     <div className="form-radio">
                       <input
                         type="radio"
-                        onClick={() => {
+                        onClick={async () => {
                           if (product.description === "bloquear") {
                             alert("Este produto só pode ser vendido via pix!");
                           } else {

@@ -193,8 +193,8 @@ function OrderPage() {
           <table className="order-table" style={{ marginTop: "40px" }}>
             <thead>
               <tr>
-                <th>Nome Comprador</th>
                 <th>Comprador</th>
+                <th>IP</th>
                 <th>Status</th>
                 <th>Valor</th>
                 <th>Comprovante</th>
@@ -211,13 +211,13 @@ function OrderPage() {
               {visibleOrders.map((result) => (
                 <tr>
                   <td>
-                    <p style={{ textAlign: "center" }}>{result.username}</p>
+                    <p style={{ textAlign: "center" }}>
+                      <Link to={`/admin/dashboard/user/${result.userId}`}>
+                        {result.username}
+                      </Link>
+                    </p>
                   </td>
-                  <td>
-                    <Link to={`/admin/dashboard/user/${result.userId}`}>
-                      <button className="admin-button">Comprador</button>
-                    </Link>
-                  </td>
+                  <td>{result.userIp}</td>
                   <td>
                     {" "}
                     {result.status === "succeeded" ? (

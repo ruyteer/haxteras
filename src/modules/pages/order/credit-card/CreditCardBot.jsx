@@ -8,6 +8,7 @@ import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
 import { useParams } from "react-router-dom";
 import { getNowDate } from "../../../helpers/get-date";
+import { getClientIp } from "../../../helpers/get-ip";
 const stripePromise = loadStripe(stripeKey);
 
 function CreditCardBot({ botType }) {
@@ -15,8 +16,10 @@ function CreditCardBot({ botType }) {
   const botData = JSON.parse(sessionStorage.getItem("dashbotData"));
   const userId = localStorage.getItem("userId");
   const price = botData.price * botData.screen;
+
   const handleGetClientSecret = async () => {
     const price = botData.price * botData.screen;
+    const userIp = await getClientIp();
 
     try {
       const date = getNowDate();
@@ -37,6 +40,7 @@ function CreditCardBot({ botType }) {
           date,
           userId,
           productType: botType,
+          userIp,
         }),
       })
         .then((res) => res.json())

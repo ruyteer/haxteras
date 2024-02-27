@@ -21,6 +21,7 @@ function CardForm({ productId, quantity }) {
   const userId = localStorage.getItem("userId");
 
   const emailValue = JSON.parse(sessionStorage.getItem("userEmail"));
+  const userIp = sessionStorage.getItem("userip");
 
   useEffect(() => {
     if (!stripe) {

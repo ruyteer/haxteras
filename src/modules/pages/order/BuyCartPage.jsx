@@ -8,6 +8,7 @@ const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useLoading } from "../../../LoadingProvider";
+import { getClientIp } from "../../helpers/get-ip";
 initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
 function BuyCartPage() {
@@ -73,6 +74,8 @@ function BuyCartPage() {
 
   const handleFinishOrder = async (e) => {
     e.preventDefault();
+    const userIp = await getClientIp();
+    sessionStorage.setItem("userip", userIp);
 
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
 
@@ -128,7 +131,7 @@ function BuyCartPage() {
 
   const handleFinishPixOrder = async (e) => {
     e.preventDefault();
-
+    const userIp = await getClientIp();
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
     const name = document.getElementById("pix-name").value;
     const number = document.getElementById("pix-number").value;
@@ -184,6 +187,7 @@ function BuyCartPage() {
           formData.append("products", JSON.stringify([result.id]));
           formData.append("paymentMethod", "pix");
           formData.append("paymentIntent", orderId);
+          formData.append("userIp", userIp);
           formData.append(
             "amount",
             JSON.stringify(result.price * result.quantity)
@@ -258,6 +262,7 @@ function BuyCartPage() {
   const handleFinishMpOrder = async (e) => {
     e.preventDefault();
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
+    const userIp = await getClientIp();
 
     const name = document.getElementById("pix-name").value;
     const number = document.getElementById("pix-number").value;
@@ -306,6 +311,7 @@ function BuyCartPage() {
             formData.append("products", JSON.stringify([result.id]));
             formData.append("paymentMethod", "mercadopago");
             formData.append("paymentIntent", orderId);
+            formData.append("userIp", userIp);
             formData.append(
               "amount",
               JSON.stringify(result.price * result.quantity)

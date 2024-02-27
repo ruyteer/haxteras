@@ -16,6 +16,7 @@ function OneProductCreditCard() {
   const [clientSecret, setClientSecret] = useState("");
   const [product, setProduct] = useState({});
   const userId = localStorage.getItem("userId");
+  const userIp = sessionStorage.getItem("userip");
 
   const handleGetClientSecret = async () => {
     const response = await handleFindProduct(id);
@@ -41,6 +42,7 @@ function OneProductCreditCard() {
             },
           ],
           quantity,
+          userIp,
         }),
       })
         .then((res) => res.json())

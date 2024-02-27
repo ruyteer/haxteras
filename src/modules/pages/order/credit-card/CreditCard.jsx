@@ -7,6 +7,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { CardForm } from "../../../components/stripe-form/CardForm";
 import { AllHeader } from "../../../components";
 import { getNowDate } from "../../../helpers/get-date";
+import { getClientIp } from "../../../helpers/get-ip";
 const stripePromise = loadStripe(stripeKey);
 
 function CreditCard() {
@@ -18,7 +19,7 @@ function CreditCard() {
   const [quantityItem, setQuantityItem] = useState(0);
   const handleGetClientSecret = async () => {
     const { price } = JSON.parse(sessionStorage.getItem("total-price"));
-
+    const userIp = await getClientIp();
     try {
       const date = getNowDate();
       const items = JSON.parse(localStorage.getItem("cart"));
@@ -39,6 +40,7 @@ function CreditCard() {
         body: JSON.stringify({
           amount: price,
           paymentMethod: "card",
+          userIp,
           products: productsList,
           date,
           userId,
