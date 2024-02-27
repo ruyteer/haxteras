@@ -8,6 +8,7 @@ type OrderModel = {
   voucher: string;
   paymentIntent: string;
   quantity: number;
+  userIp?: string;
 };
 
 export interface OrderUseCases {

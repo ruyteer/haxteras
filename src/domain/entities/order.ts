@@ -6,4 +6,5 @@ export type Order = {
   voucher: string;
   paymentIntent: string;
   quantity: number;
+  userIp?: string;
 };

@@ -71,6 +71,7 @@ model Order {
   voucher String
   paymentIntent String
   quantity Int
+  userIp String?
   userId String
   user User @relation(fields: [userId], references: [id])
   products String[]

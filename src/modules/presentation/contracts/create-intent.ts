@@ -11,6 +11,7 @@ export type IntentData = {
   paymentMethod: string;
   products: ProductList[];
   productType: string;
+  userIp?: string;
 };
 
 export interface ICreateIntent {

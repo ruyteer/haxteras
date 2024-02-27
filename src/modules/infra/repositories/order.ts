@@ -20,6 +20,7 @@ export class OrderRepository implements IOrderRepository {
         status: order.status,
         voucher: order.voucher,
         quantity: order.quantity,
+        userIp: order.userIp,
       },
     });
     return orderCreated.id;

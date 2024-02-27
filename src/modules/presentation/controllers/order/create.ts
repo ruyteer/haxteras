@@ -19,6 +19,7 @@ export class CreateOrderController implements Controller {
         quantity,
         userId,
         amount,
+        userIp,
       } = req.body;
       const data = req.body;
       req.files = req.files || {};
@@ -42,6 +43,7 @@ export class CreateOrderController implements Controller {
             status: "pending",
             voucher: voucher[0],
             quantity: parseInt(quantity),
+            userIp,
           },
           [productId],
           userId
@@ -59,6 +61,7 @@ export class CreateOrderController implements Controller {
             status: "pending",
             voucher: voucher[0],
             quantity: parseInt(quantity),
+            userIp,
           },
           productsParse,
           userId

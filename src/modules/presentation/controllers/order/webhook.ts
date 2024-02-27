@@ -133,6 +133,7 @@ export class WebhookController implements Controller {
                 quantity: result.quantity,
                 status: responseData.status,
                 voucher: intentData.voucher,
+                userIp: metaData.userIp,
               };
               await this.orderServices.create(
                 orderData,
@@ -166,6 +167,7 @@ export class WebhookController implements Controller {
               quantity: parseInt(botProducts[0].mdc),
               status: responseData.status,
               voucher: intentData.voucher,
+              userIp: metaData.userIp,
             };
 
             const productId = `${botProducts[0].type} ${botProducts[0].day}`;

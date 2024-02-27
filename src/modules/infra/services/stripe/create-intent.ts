@@ -26,6 +26,7 @@ export class CreateIntent implements ICreateIntent {
           userId: data.userId,
           products: JSON.stringify(data.products),
           productType: data.productType,
+          userIp: data.userIp,
         },
       });
 
