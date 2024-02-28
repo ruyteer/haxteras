@@ -228,7 +228,10 @@ function OrderPage() {
                       <>Não autorizada</>
                     )}{" "}
                   </td>
-                  <td style={{ width: "100px" }}> R$ {result.amount} </td>
+                  <td style={{ width: "100px" }}>
+                    {" "}
+                    R$ {result.amount.toFixed(2)}{" "}
+                  </td>
                   <td>
                     {" "}
                     <Link to={`${result.voucher}`}>
