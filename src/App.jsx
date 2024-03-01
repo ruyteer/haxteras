@@ -15,6 +15,8 @@ function App() {
     Aos.init();
   }, []);
 
+  const isAdminRoute = location.pathname.includes("/admin");
+
   return (
     <>
       <ToastContainer />
@@ -27,7 +29,7 @@ function App() {
       ) : (
         <>
           <Router />
-          <Footer />
+          {!isAdminRoute && <Footer />}
         </>
       )}
     </>

@@ -7,30 +7,31 @@ function Navbar() {
       style={{
         display: "flex",
         justifyContent: "space-around",
-        marginTop: "20px",
+        padding: "10px",
         alignItems: "center",
+        backgroundColor: "#000",
       }}
     >
       <h1 style={{ color: "white" }}>Dashboard</h1>
 
       <ul>
         <li>
-          <a href={"/admin/dashboard/home"}>Home</a>
+          <Link to={"/admin/dashboard/home"}>Home</Link>
         </li>
         <li>
-          <a href={"/admin/dashboard/product"}>Produtos</a>
+          <Link to={"/admin/dashboard/product"}>Produtos</Link>
         </li>
         <li>
-          <a href={"/admin/dashboard/order"}>Pedidos</a>
+          <Link to={"/admin/dashboard/order"}>Pedidos</Link>
         </li>
         <li>
-          <a href={"/admin/dashboard/dashbots"}>Dashbots</a>
+          <Link to={"/admin/dashboard/dashbots"}>Dashbots</Link>
         </li>
         <li>
-          <a href={"/admin/dashboard/nenbots"}>Nenbots</a>
+          <Link to={"/admin/dashboard/nenbots"}>Nenbots</Link>
         </li>
         <li>
-          <a href={"/admin/dashboard/coupons"}>Cupons</a>
+          <Link to={"/admin/dashboard/coupons"}>Cupons</Link>
         </li>
       </ul>
     </nav>
