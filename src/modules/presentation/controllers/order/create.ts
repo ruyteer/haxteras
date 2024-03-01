@@ -1,4 +1,6 @@
+import { prisma } from "../../../../config/prisma-client";
 import { OrderServices } from "../../../data/services/order/order";
+import { sendDiscordMessage } from "../../../infra/services/bot/discord-webhook";
 import { IStripeServices } from "../../contracts/find-intent";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
@@ -49,6 +51,15 @@ export class CreateOrderController implements Controller {
           userId
         );
 
+        await sendDiscordMessage({
+          amount: parseFloat(amount),
+          orderId: paymentIntent,
+          paymentMethod,
+          productName: productId,
+          quantity,
+          status: "Pendente",
+        });
+
         return okResponse(orderId);
       } else {
         console.log(data);
@@ -66,6 +77,20 @@ export class CreateOrderController implements Controller {
           productsParse,
           userId
         );
+
+        const product = await prisma.product.findUnique({
+          where: { id: productsParse[0] },
+        });
+
+        await sendDiscordMessage({
+          amount: parseFloat(amount),
+          orderId: paymentIntent,
+          paymentMethod,
+          productName: product.name,
+          quantity,
+          status: "Pendente",
+        });
+
         return okResponse(orderId);
       }
     } catch (error) {

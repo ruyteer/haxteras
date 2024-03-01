@@ -1,4 +1,5 @@
 import { prisma } from "../../../../config/prisma-client";
+import { sendDiscordMessage } from "../../../infra/services/bot/discord-webhook";
 import { NodemailerServices } from "../../../infra/services/email/nodemailer-services";
 import { ICreateIntent } from "../../contracts/create-intent";
 import { badResponse, okResponse } from "../../helpers/http-response";
@@ -91,6 +92,15 @@ export class MPWebhook implements Controller {
           data: {
             stock: productData.stock - filteredItem[0].quantity,
           },
+        });
+
+        await sendDiscordMessage({
+          productName: productData.name,
+          amount: updatedOrder.amount,
+          orderId: updatedOrder.paymentIntent,
+          quantity: updatedOrder.quantity,
+          status: updatedOrder.status,
+          paymentMethod: "Mercado Pago",
         });
       });
 

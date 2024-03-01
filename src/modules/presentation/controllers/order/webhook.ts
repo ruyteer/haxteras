@@ -2,6 +2,7 @@ import { prisma } from "../../../../config/prisma-client";
 import { NenbotServices } from "../../../data/services/bot/nenbot";
 import { OrderServices } from "../../../data/services/order/order";
 import { UserServices } from "../../../data/services/user/user";
+import { sendDiscordMessage } from "../../../infra/services/bot/discord-webhook";
 import { IStripeServices } from "../../contracts/find-intent";
 import { INodemailerServices } from "../../contracts/nodemailer-services";
 import { badResponse, okResponse } from "../../helpers/http-response";
@@ -151,6 +152,15 @@ export class WebhookController implements Controller {
                   stock: productStock.stock - result.quantity,
                 },
               });
+
+              await sendDiscordMessage({
+                orderId: "-",
+                amount: result.price * result.quantity,
+                paymentMethod: metaData.paymentMethod,
+                quantity: result.quantity,
+                status: responseData.status,
+                productName: productStock.name,
+              });
             });
 
             const user = await this.userServices.findOne(metaData.userId);
@@ -177,6 +187,15 @@ export class WebhookController implements Controller {
               [productId],
               metaData.userId
             );
+
+            await sendDiscordMessage({
+              orderId: "-",
+              amount: responseData.amount / 100,
+              paymentMethod: metaData.paymentMethod,
+              quantity: botProducts[0].mdc,
+              status: responseData.status,
+              productName: productId,
+            });
 
             const user = await this.userServices.findOne(metaData.userId);
 
