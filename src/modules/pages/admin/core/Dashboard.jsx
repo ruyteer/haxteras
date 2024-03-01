@@ -73,29 +73,31 @@ function Dashboard() {
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
-            <h2>Quantia total vendida</h2>
-            <p>{totalSold.total.toFixed(2)}</p>
+            <h2>
+              Quantia <span>total</span> vendida
+            </h2>
+            <p>R$ {totalSold.total.toFixed(2)}</p>
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
             <h2>
               Quantia total <span>MP</span> vendida
             </h2>
-            <p>{totalSold.mpTotal.toFixed(2)}</p>
+            <p>R$ {totalSold.mpTotal.toFixed(2)}</p>
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
             <h2>
               Quantia total <span>Stripe</span> vendida
             </h2>
-            <p>{totalSold.stripeTotal.toFixed(2)}</p>
+            <p>R$ {totalSold.stripeTotal.toFixed(2)}</p>
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
             <h2>
               Quantia total <span>PIX</span> vendida
             </h2>
-            <p>{totalSold.pixTotal.toFixed(2)}</p>
+            <p>R$ {totalSold.pixTotal.toFixed(2)}</p>
           </div>
         </div>
       </div>
