@@ -127,28 +127,53 @@ function Dashboard() {
             <h2>
               Quantia <span>total</span> vendida
             </h2>
-            <p>R$ {totalSold.total.toFixed(2)}</p>
+            <p>
+              R${" "}
+              {totalSold.total.toLocaleString("pt-BR", {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
+            </p>
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
             <h2>
               Quantia total <span>MP</span> vendida
             </h2>
-            <p>R$ {totalSold.mpTotal.toFixed(2)}</p>
+            <p>
+              {" "}
+              R${" "}
+              {totalSold.mpTotal.toLocaleString("pt-BR", {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
+            </p>
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
             <h2>
               Quantia total <span>Stripe</span> vendida
             </h2>
-            <p>R$ {totalSold.stripeTotal.toFixed(2)}</p>
+            <p>
+              R${" "}
+              {totalSold.stripeTotal.toLocaleString("pt-BR", {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
+            </p>
           </div>
           <div className="dash-card">
             <h1>Pedidos</h1>
             <h2>
               Quantia total <span>PIX</span> vendida
             </h2>
-            <p>R$ {totalSold.pixTotal.toFixed(2)}</p>
+            <p>
+              R${" "}
+              {totalSold.pixTotal.toLocaleString("pt-BR", {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })}
+            </p>
           </div>
         </div>
 
