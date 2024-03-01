@@ -151,13 +151,19 @@ function OrderPage() {
   return (
     <>
       <Navbar />
-      <div>
-        <div>
+      <div
+        style={{
+          backgroundColor: "rgb(229, 229, 229)",
+          height: "110vh",
+          padding: "10px",
+        }}
+      >
+        <div style={{ backgroundColor: "rgb(229, 229, 229)" }}>
           <h1
             style={{
               marginTop: "30px",
               fontSize: "23px",
-              color: "white",
+              color: "black",
               textAlign: "center",
             }}
           >
@@ -175,12 +181,15 @@ function OrderPage() {
               gap: "10px",
             }}
           >
-            <label style={{ color: "white" }}>
+            <label style={{ color: "black" }}>
               Pesquisar pedido pelo código ou nome do comprador:
             </label>
             <input
               type="text"
               value={search}
+              style={{
+                padding: "10px",
+              }}
               placeholder="Digite o código ou nome do comprador aqui"
               onChange={(e) => {
                 e.preventDefault();
