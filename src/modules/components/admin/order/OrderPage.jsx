@@ -154,11 +154,17 @@ function OrderPage() {
       <div
         style={{
           backgroundColor: "rgb(229, 229, 229)",
-          height: "110vh",
+          height: "100%",
           padding: "10px",
         }}
       >
-        <div style={{ backgroundColor: "rgb(229, 229, 229)" }}>
+        <div
+          style={{
+            backgroundColor: "rgb(229, 229, 229)",
+            height: "100%",
+            padding: "10px",
+          }}
+        >
           <h1
             style={{
               marginTop: "30px",
