@@ -9,7 +9,7 @@ function OrderPage() {
   const [orders, setOrders] = useState([{}]);
   const [allOrders, setAllOrders] = useState([]); // Armazena todos os pedidos do backend
   const [visibleOrders, setVisibleOrders] = useState([]); // Pedidos a serem exibidos na página
-  const [pageSize, setPageSize] = useState(20); // Número de pedidos a serem exibidos por vez
+  const [pageSize, setPageSize] = useState(10); // Número de pedidos a serem exibidos por vez
   const [search, setSearch] = useState("");
 
   const handleToast = async (products) => {
