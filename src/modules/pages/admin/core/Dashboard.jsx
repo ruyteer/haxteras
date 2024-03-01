@@ -228,7 +228,7 @@ function Dashboard() {
                     ) : result.paymentMethod === "mercadopago" ? (
                       <>{result.paymentIntent}</>
                     ) : (
-                      <></>
+                      <>-</>
                     )}
                   </td>
                 </tr>

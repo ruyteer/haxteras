@@ -276,7 +276,7 @@ function OrderPage() {
                     ) : result.paymentMethod === "mercadopago" ? (
                       <>{result.paymentIntent}</>
                     ) : (
-                      <></>
+                      <>-</>
                     )}
                   </td>
                   <td>
