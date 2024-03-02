@@ -20,34 +20,6 @@ import { DeleteOrderController } from "../../../presentation/controllers/order/d
 
 const orderRoutes = Router();
 
-import Discord from "discord.js";
-
-orderRoutes.post("/discord", (req, res) => {
-  const webhookClient = new Discord.WebhookClient({
-    url: "https://discord.com/api/webhooks/1157042352863580201/NsQsjOhU-MnYs7ZhIA5HCl7s-h7qBFT27Beim4xfdGEae419fsZ_4uPp8UrJrW5TMzJC",
-  });
-
-  const messageEmbed = new Discord.EmbedBuilder()
-    .setColor("#fba901")
-    .setTitle("Novo pedido! 🎉")
-    .setURL("https://haxtera.com/admin/dashboard/order")
-    .setDescription("Um novo pedido foi realizado em nosso site!")
-    .addFields(
-      { name: "📦 Produto", value: "Camisa", inline: true },
-      { name: "💵 Preço", value: "$50.00", inline: true },
-      { name: "📊 Quantidade", value: "4", inline: true },
-      { name: "🧾 Status", value: "Aprovado", inline: true },
-      { name: "📍 ID do pedido", value: "42462", inline: true }
-    )
-    .setTimestamp();
-
-  webhookClient.send({
-    embeds: [messageEmbed],
-  });
-
-  res.send();
-});
-
 orderRoutes.post(
   "/create/intent",
 
