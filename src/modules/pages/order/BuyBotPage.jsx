@@ -11,6 +11,10 @@ import { useLoading } from "../../../LoadingProvider";
 import { getClientIp } from "../../helpers/get-ip";
 initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
 
+import validator from "validator";
+import { cpf } from "cpf-cnpj-validator";
+const validatorCpf = cpf;
+
 function BuyBotPage({ botType }) {
   const [emailVerify, setEmailVerify] = useState(false);
   const [emailValue, setEmailValue] = useState("");
@@ -54,9 +58,19 @@ function BuyBotPage({ botType }) {
     sessionStorage.setItem("userip", userIp);
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
 
+    const cpfValidator = validatorCpf.isValid(formData.cpf, true);
+    const phoneValidator = validator.isMobilePhone(formData.phone, "pt-BR");
+    if (!phoneValidator) {
+      return alert("Número de telefone inválido!");
+    }
+
     let cpf = formData.cpf;
     if (isGringo) {
       cpf = "0110";
+    } else {
+      if (!cpfValidator) {
+        return alert("CPF inválido!");
+      }
     }
 
     try {
@@ -153,6 +167,15 @@ function BuyBotPage({ botType }) {
     const cpf = document.getElementById("pix-cpf").value;
     const userIp = await getClientIp();
 
+    const cpfValidator = validatorCpf.isValid(cpf, true);
+    const phoneValidator = validator.isMobilePhone(number, "pt-BR");
+
+    if (!phoneValidator) {
+      return alert("Número de telefone inválido!");
+    } else if (!cpfValidator) {
+      return alert("CPF inválido!");
+    }
+
     try {
       const response = await fetch(`${url}/user/create`, {
         method: "POST",
@@ -244,6 +267,15 @@ function BuyBotPage({ botType }) {
     const number = document.getElementById("pix-number").value;
     const nickname = document.getElementById("pix-nick").value;
     const cpf = document.getElementById("pix-cpf").value;
+
+    const cpfValidator = validatorCpf.isValid(cpf, true);
+    const phoneValidator = validator.isMobilePhone(number, "pt-BR");
+
+    if (!phoneValidator) {
+      return alert("Número de telefone inválido!");
+    } else if (!cpfValidator) {
+      return alert("CPF inválido!");
+    }
 
     try {
       const response = await fetch(`${url}/user/create`, {
@@ -523,8 +555,6 @@ function BuyBotPage({ botType }) {
                       <label htmlFor="phone">Telefone</label>
                       <input
                         type="text"
-                        onChange={handlePhoneChange}
-                        value={formData.phone}
                         maxLength={11}
                         name="phone"
                         id="phone"
@@ -540,8 +570,6 @@ function BuyBotPage({ botType }) {
                           <label htmlFor="cpf">CPF</label>
                           <input
                             type="text"
-                            onChange={handleCPFChange}
-                            value={formData.cpf}
                             name="cpf"
                             id="cpf"
                             maxLength={11}
@@ -634,9 +662,7 @@ function BuyBotPage({ botType }) {
                       type="text"
                       name="cpf"
                       required
-                      onChange={handleCPFChange}
                       maxLength={11}
-                      value={formData.cpf}
                       placeholder="XXX.XXX.XXX-XX"
                       id="pix-cpf"
                     />
@@ -654,8 +680,6 @@ function BuyBotPage({ botType }) {
                     <input
                       type="text"
                       name="number"
-                      onChange={handlePhoneChange}
-                      value={formData.phone}
                       maxLength={11}
                       placeholder="DDD 9 XXXX-XXXX"
                       required
@@ -705,9 +729,7 @@ function BuyBotPage({ botType }) {
                           type="text"
                           name="cpf"
                           required
-                          onChange={handleCPFChange}
                           maxLength={11}
-                          value={formData.cpf}
                           placeholder="XXX.XXX.XXX-XX"
                           id="pix-cpf"
                         />
@@ -725,8 +747,6 @@ function BuyBotPage({ botType }) {
                         <input
                           type="text"
                           name="number"
-                          onChange={handlePhoneChange}
-                          value={formData.phone}
                           maxLength={11}
                           placeholder="DDD 9 XXXX-XXXX"
                           required

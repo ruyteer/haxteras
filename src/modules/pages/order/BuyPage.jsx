@@ -10,6 +10,9 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useLoading } from "../../../LoadingProvider";
 import { getClientIp } from "../../helpers/get-ip";
 initMercadoPago(import.meta.env.VITE_MERCADOPAGO);
+import validator from "validator";
+import { cpf } from "cpf-cnpj-validator";
+const validatorCpf = cpf;
 
 function BuyPage() {
   const { id, quantity } = useParams();
@@ -68,11 +71,21 @@ function BuyPage() {
       return alert("Salve o email primeiro!");
     }
 
+    const cpfValidator = validatorCpf.isValid(formData.cpf, true);
+    const phoneValidator = validator.isMobilePhone(formData.phone, "pt-BR");
+    if (!phoneValidator) {
+      return alert("Número de telefone inválido!");
+    }
     sessionStorage.setItem("userEmail", JSON.stringify(emailValue));
 
     let cpf = formData.cpf;
+
     if (isGringo) {
       cpf = "0110";
+    } else {
+      if (!cpfValidator) {
+        return alert("CPF inválido!");
+      }
     }
 
     try {
@@ -157,6 +170,16 @@ function BuyPage() {
     const number = document.getElementById("pix-number").value;
     const nickname = document.getElementById("pix-nick").value;
     const cpf = document.getElementById("pix-cpf").value;
+
+    const cpfValidator = validatorCpf.isValid(cpf, true);
+    const phoneValidator = validator.isMobilePhone(number, "pt-BR");
+
+    if (!phoneValidator) {
+      return alert("Número de telefone inválido!");
+    } else if (!cpfValidator) {
+      return alert("CPF inválido!");
+    }
+
     const userIp = await getClientIp();
     try {
       const response = await fetch(`${url}/user/create`, {
@@ -241,6 +264,15 @@ function BuyPage() {
     const number = document.getElementById("pix-number").value;
     const nickname = document.getElementById("pix-nick").value;
     const cpf = document.getElementById("pix-cpf").value;
+
+    const cpfValidator = validatorCpf.isValid(cpf, true);
+    const phoneValidator = validator.isMobilePhone(number, "pt-BR");
+
+    if (!phoneValidator) {
+      return alert("Número de telefone inválido!");
+    } else if (!cpfValidator) {
+      return alert("CPF inválido!");
+    }
 
     const userIp = await getClientIp();
 
@@ -487,6 +519,7 @@ function BuyPage() {
                           onChange={handleCEPChange}
                           value={formData.cep}
                           maxLength={8}
+                          minLength={8}
                           required
                           placeholder="XXXXXX-XXX"
                         />
@@ -508,6 +541,7 @@ function BuyPage() {
                           name="number"
                           id="number"
                           required
+                          maxLength={10}
                           placeholder="1"
                         />
                       </div>
@@ -545,9 +579,8 @@ function BuyPage() {
                         <label htmlFor="phone">Telefone</label>
                         <input
                           type="text"
-                          onChange={handlePhoneChange}
-                          value={formData.phone}
                           maxLength={11}
+                          minLength={10}
                           name="phone"
                           id="phone"
                           required
@@ -563,8 +596,6 @@ function BuyPage() {
                             <label htmlFor="cpf">CPF</label>
                             <input
                               type="text"
-                              onChange={handleCPFChange}
-                              value={formData.cpf}
                               name="cpf"
                               id="cpf"
                               maxLength={11}
@@ -657,9 +688,7 @@ function BuyPage() {
                         type="text"
                         name="cpf"
                         required
-                        onChange={handleCPFChange}
                         maxLength={11}
-                        value={formData.cpf}
                         placeholder="XXX.XXX.XXX-XX"
                         id="pix-cpf"
                       />
@@ -677,8 +706,6 @@ function BuyPage() {
                       <input
                         type="text"
                         name="number"
-                        onChange={handlePhoneChange}
-                        value={formData.phone}
                         maxLength={11}
                         placeholder="DDD 9 XXXX-XXXX"
                         required
@@ -728,9 +755,7 @@ function BuyPage() {
                             type="text"
                             name="cpf"
                             required
-                            onChange={handleCPFChange}
                             maxLength={11}
-                            value={formData.cpf}
                             placeholder="XXX.XXX.XXX-XX"
                             id="pix-cpf"
                           />
@@ -748,8 +773,6 @@ function BuyPage() {
                           <input
                             type="text"
                             name="number"
-                            onChange={handlePhoneChange}
-                            value={formData.phone}
                             maxLength={11}
                             placeholder="DDD 9 XXXX-XXXX"
                             required
