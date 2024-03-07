@@ -13,12 +13,18 @@ function Nenbot() {
   const [nenbot, setNenbot] = useState({});
   const [mcdValue, setMcdValue] = useState(1);
   const { showLoading } = useLoading();
+  const [keysNenbot, setKeysNenbot] = useState([{}]);
 
   const [price, setPrice] = useState(0);
 
   const handleGetNenbot = async () => {
     const response = await fetch(`${url}/product/${id}`);
     const responseJson = await response.json();
+    const keysResponse = await fetch(`${url}/nenbot`);
+    const keys = await keysResponse.json();
+    const filteredKeys = keys.filter((result) => result.days === parseInt(day));
+
+    setKeysNenbot(filteredKeys);
     setNenbot(responseJson);
   };
 
@@ -78,7 +84,15 @@ function Nenbot() {
     }
   };
   const handleIncrease = () => {
-    setMcdValue(mcdValue + 1);
+    if (keysNenbot.length < mcdValue + 1) {
+      toast(`Há apenas ${keysNenbot.length} no estoque!`, {
+        theme: "dark",
+        pauseOnHover: false,
+        type: "error",
+      });
+    } else {
+      setMcdValue(mcdValue + 1);
+    }
   };
 
   return (
@@ -122,16 +136,39 @@ function Nenbot() {
                   +
                 </button>
               </div>
-              <Link to={`/buy/nenbot/`}>
-                <button className="buy-button" onClick={handleSubmit}>
-                  COMPRAR
-                </button>
-              </Link>
-              <Link to={`/buy/nenbot/`}>
-                <button className="add-cart-button" onClick={handleSubmit}>
-                  <img src="/cart.svg" alt="Carrinho de Compras" />
-                </button>
-              </Link>
+              {keysNenbot.length < 1 ? (
+                <>
+                  <button style={{ color: "red" }} className="buy-button">
+                    COMPRAR
+                  </button>
+
+                  <button className="add-cart-button">
+                    <img
+                      src="/cart.svg"
+                      alt="Carrinho de Compras"
+                      onClick={(e) => {
+                        toast("Indisponível!", {
+                          theme: "dark",
+                          type: "error",
+                        });
+                      }}
+                    />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to={`/buy/nenbot/`}>
+                    <button className="buy-button" onClick={handleSubmit}>
+                      COMPRAR
+                    </button>
+                  </Link>
+                  <Link to={`/buy/nenbot/`}>
+                    <button className="add-cart-button" onClick={handleSubmit}>
+                      <img src="/cart.svg" alt="Carrinho de Compras" />
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
