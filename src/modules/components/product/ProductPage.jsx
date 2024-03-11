@@ -9,6 +9,7 @@ import { usePopup } from "../../../CartPopupModalContext";
 const local = import.meta.env.VITE_LOCAL;
 const url = import.meta.env.VITE_URL;
 import { useLoading } from "../../../LoadingProvider";
+import Term from "../terms/Term";
 
 function ProductPage() {
   const { id } = useParams();
@@ -17,6 +18,8 @@ function ProductPage() {
   const { cartItems, updateCart } = useCart();
   const { showModal } = usePopup();
   const { showLoading, closeLoading } = useLoading();
+
+  const [popup, setPopup] = useState({ open: false, link: "" });
 
   const handleDecrease = () => {
     if (mcdValue > 1) {
@@ -75,8 +78,8 @@ function ProductPage() {
   };
 
   const handlePreference = async (e) => {
-    showLoading();
     e.preventDefault();
+    setPopup({ open: true });
 
     const response = await fetch(`${url}/order/preference`, {
       method: "POST",
@@ -101,7 +104,7 @@ function ProductPage() {
 
     if (response.ok) {
       localStorage.setItem("preferenceId", responseJson);
-      window.location.href = `${local}/buy/${product.id}/${mcdValue}`;
+      setPopup({ open: true, link: `${local}/buy/${product.id}/${mcdValue}` });
     }
   };
 
@@ -111,6 +114,13 @@ function ProductPage() {
 
   return (
     <div className="product-page">
+      {popup.open ? (
+        <>
+          <Term link={popup.link} />
+        </>
+      ) : (
+        <></>
+      )}
       <img
         className="product-image"
         src={product.images[0]}

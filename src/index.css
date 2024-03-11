@@ -32,6 +32,24 @@ body {
   border: black 1px solid;
 }
 
+.terms-list ol {
+  margin-top: 30px;
+}
+
+.terms-list li {
+  margin-top: 20px;
+}
+
+.terms-list ol li h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.terms-list ol li p {
+  font-size: 15px;
+  margin-top: 15px;
+}
+
 @media (max-width: 768px) {
   nav ul {
     display: none;

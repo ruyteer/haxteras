@@ -3,6 +3,7 @@ import { AllHeader } from "../../components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLoading } from "../../../LoadingProvider";
+import Term from "../../components/terms/Term";
 const url = import.meta.env.VITE_URL;
 const local = import.meta.env.VITE_LOCAL;
 
@@ -13,6 +14,7 @@ function Dashbot() {
   const [price, setPrice] = useState(0);
   const [dashbot, setDashbot] = useState({ name: "A AD" });
   const { showLoading } = useLoading();
+  const [popup, setPopup] = useState({ open: false, link: "" });
 
   const handleGetPrice = async () => {
     const response = await fetch(`${url}/product/${day}`);
@@ -47,7 +49,7 @@ function Dashbot() {
   };
 
   const handleSubmit = async (e) => {
-    showLoading();
+    setPopup({ open: true });
     e.preventDefault();
 
     const data = {
@@ -83,14 +85,21 @@ function Dashbot() {
 
     if (response.ok) {
       localStorage.setItem("preferenceId", responseJson);
-      window.location.href = `${local}/buy/bot/dashbot`;
+
+      setPopup({ open: true, link: `${local}/buy/bot/dashbot` });
     }
   };
 
   return (
     <>
       <AllHeader />
-
+      {popup.open ? (
+        <>
+          <Term link={popup.link} />
+        </>
+      ) : (
+        <></>
+      )}
       <div className="dashbot">
         <div className="image">
           <img src="/bot-digimon.png" alt="Digimon" />

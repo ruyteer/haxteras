@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AllHeader } from "../../components";
 import { useLoading } from "../../../LoadingProvider";
+import Term from "../../components/terms/Term";
 const local = import.meta.env.VITE_LOCAL;
 const url = import.meta.env.VITE_URL;
 
@@ -16,6 +17,7 @@ function Nenbot() {
   const [keysNenbot, setKeysNenbot] = useState([{}]);
 
   const [price, setPrice] = useState(0);
+  const [popup, setPopup] = useState({ open: false, link: "" });
 
   const handleGetNenbot = async () => {
     const response = await fetch(`${url}/product/${id}`);
@@ -33,7 +35,7 @@ function Nenbot() {
   }, []);
 
   const handleSubmit = async (e) => {
-    showLoading();
+    setPopup({ open: true });
     e.preventDefault();
 
     const data = {
@@ -68,7 +70,8 @@ function Nenbot() {
 
     if (response.ok) {
       localStorage.setItem("preferenceId", responseJson);
-      window.location.href = `${local}/buy/bot/nenbot`;
+
+      setPopup({ open: true, link: `${local}/buy/bot/nenbot` });
     }
   };
 
@@ -99,6 +102,13 @@ function Nenbot() {
     <>
       <AllHeader />
       <div className="product-page">
+        {popup.open ? (
+          <>
+            <Term link={popup.link} />
+          </>
+        ) : (
+          <></>
+        )}
         <img
           className="product-image"
           src="/bot-digimon.png"
