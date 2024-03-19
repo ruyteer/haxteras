@@ -1,6 +1,7 @@
 import { prisma } from "../../../../config/prisma-client";
 import { OrderServices } from "../../../data/services/order/order";
 import { NodemailerServices } from "../../../infra/services/email/nodemailer-services";
+import { emitEvent } from "../../../server/socket";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
 
@@ -69,7 +70,7 @@ export class UpdateOrdersController implements Controller {
           });
         }
       }
-
+      emitEvent("approve payment", true);
       return okResponse();
     } catch (error) {
       return badResponse(error);
