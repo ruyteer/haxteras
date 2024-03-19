@@ -1,6 +1,7 @@
 import { prisma } from "../../../../config/prisma-client";
 import { sendDiscordMessage } from "../../../infra/services/bot/discord-webhook";
 import { NodemailerServices } from "../../../infra/services/email/nodemailer-services";
+import { emitEvent } from "../../../server/socket";
 import { ICreateIntent } from "../../contracts/create-intent";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
@@ -95,6 +96,14 @@ export class MPWebhook implements Controller {
         });
 
         await sendDiscordMessage({
+          productName: productData.name,
+          amount: updatedOrder.amount,
+          orderId: updatedOrder.paymentIntent,
+          quantity: updatedOrder.quantity,
+          status: updatedOrder.status,
+          paymentMethod: "Mercado Pago",
+        });
+        emitEvent("new order", {
           productName: productData.name,
           amount: updatedOrder.amount,
           orderId: updatedOrder.paymentIntent,

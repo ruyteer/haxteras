@@ -3,6 +3,7 @@ import { NenbotServices } from "../../../data/services/bot/nenbot";
 import { OrderServices } from "../../../data/services/order/order";
 import { UserServices } from "../../../data/services/user/user";
 import { sendDiscordMessage } from "../../../infra/services/bot/discord-webhook";
+import { emitEvent } from "../../../server/socket";
 import { IStripeServices } from "../../contracts/find-intent";
 import { INodemailerServices } from "../../contracts/nodemailer-services";
 import { badResponse, okResponse } from "../../helpers/http-response";
@@ -161,6 +162,14 @@ export class WebhookController implements Controller {
                 status: responseData.status,
                 productName: productStock.name,
               });
+              emitEvent("new order", {
+                orderId: "-",
+                amount: result.price * result.quantity,
+                paymentMethod: metaData.paymentMethod,
+                quantity: result.quantity,
+                status: responseData.status,
+                productName: productStock.name,
+              });
             });
 
             const user = await this.userServices.findOne(metaData.userId);
@@ -189,6 +198,14 @@ export class WebhookController implements Controller {
             );
 
             await sendDiscordMessage({
+              orderId: "-",
+              amount: responseData.amount / 100,
+              paymentMethod: metaData.paymentMethod,
+              quantity: botProducts[0].mdc,
+              status: responseData.status,
+              productName: productId,
+            });
+            emitEvent("new order", {
               orderId: "-",
               amount: responseData.amount / 100,
               paymentMethod: metaData.paymentMethod,

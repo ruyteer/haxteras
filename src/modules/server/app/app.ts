@@ -11,6 +11,7 @@ import {
 } from "./routes";
 import { newsletterRoutes } from "./routes/newsletter";
 import { adminLoginRouter } from "./routes/login-adm";
+
 const app = express();
 
 app.use(express.json());
