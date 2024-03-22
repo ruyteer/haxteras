@@ -11,7 +11,7 @@ export class UpdateProductController implements Controller {
       const data = req.body;
       const { id } = req.params;
       const image = req.files.firebaseUrl;
-      console.log(parseInt(data.stock));
+
       await this.productServices.update(
         {
           name: data.name,
