@@ -189,16 +189,30 @@ function ProductPage() {
               </button>
             </div>
 
-            <button className="buy-button" onClick={handlePreference}>
-              COMPRAR
-            </button>
+            {product.stockAvaiable ? (
+              <>
+                <button className="buy-button" onClick={handlePreference}>
+                  COMPRAR
+                </button>
 
-            <button
-              className="add-cart-button"
-              onClick={() => handleAddToCart(product.id)}
-            >
-              <img src="/cart.svg" alt="Carrinho de Compras" />
-            </button>
+                <button
+                  className="add-cart-button"
+                  onClick={() => handleAddToCart(product.id)}
+                >
+                  <img src="/cart.svg" alt="Carrinho de Compras" />
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="buy-button" style={{ color: "red" }}>
+                  COMPRAR
+                </button>
+
+                <button className="add-cart-button">
+                  <img src="/cart.svg" alt="Carrinho de Compras" />
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
