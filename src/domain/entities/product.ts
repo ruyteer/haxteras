@@ -4,5 +4,5 @@ export type Product = {
   stock: number;
   price: number;
   images?: string[];
-  avaiableStock: boolean;
+  stockAvaiable: boolean;
 };
