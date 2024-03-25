@@ -44,7 +44,7 @@ function TerasSection() {
                   <img src={result.images[0]} alt="Omegamon" />
                 </div>
                 <div className="card-title">
-                  {result.stock > 0 ? (
+                  {result.stockAvaiable ? (
                     <>
                       <h1> {result.description}</h1>
                     </>
@@ -58,28 +58,39 @@ function TerasSection() {
                   <p className="description">{result.name}</p>
                   <p className="price">R$ {result.price}</p>
                   <p className="unity-price">Preço da unidade</p>
-                  {result.stock > 0 ? (
+                  {result.stockAvaiable ? (
                     <>
                       <Link to={`/product/${result.id}`}>
                         <button>COMPRAR</button>
                       </Link>
+
+                      <p style={{ marginTop: "10px", fontSize: "13px" }}>
+                        {" "}
+                        Em estoque:{" "}
+                        <span
+                          className={result.stock > 0 ? "stock-teras" : ""}
+                          style={{ fontWeight: 600, fontSize: "15px" }}
+                        >
+                          {result.stock}
+                        </span>{" "}
+                      </p>
                     </>
                   ) : (
                     <>
                       <button style={{ color: "red" }}>INDISPONÍVEL</button>
+
+                      <p style={{ marginTop: "10px", fontSize: "13px" }}>
+                        {" "}
+                        Em estoque:{" "}
+                        <span
+                          className={result.stock > 0 ? "stock-teras" : ""}
+                          style={{ fontWeight: 600, fontSize: "15px" }}
+                        >
+                          0
+                        </span>{" "}
+                      </p>
                     </>
                   )}
-
-                  <p style={{ marginTop: "10px", fontSize: "13px" }}>
-                    {" "}
-                    Em estoque:{" "}
-                    <span
-                      className={result.stock > 0 ? "stock-teras" : ""}
-                      style={{ fontWeight: 600, fontSize: "15px" }}
-                    >
-                      {result.stock}
-                    </span>{" "}
-                  </p>
                 </div>
               </div>
             </>
@@ -100,7 +111,7 @@ function TerasSection() {
                   <img src={result.images[0]} alt="Omegamon" />
                 </div>
                 <div className="card-title">
-                  {result.stock > 0 ? (
+                  {result.stockAvaiable ? (
                     <>
                       <h1> {result.description}</h1>
                     </>
@@ -120,22 +131,32 @@ function TerasSection() {
                       <Link to={`/product/${result.id}`}>
                         <button>COMPRAR</button>
                       </Link>
+                      <p style={{ marginTop: "10px", fontSize: "13px" }}>
+                        {" "}
+                        Em estoque:{" "}
+                        <span
+                          className={result.stock > 0 ? "stock-teras" : ""}
+                          style={{ fontWeight: 600, fontSize: "15px" }}
+                        >
+                          {result.stock}
+                        </span>{" "}
+                      </p>
                     </>
                   ) : (
                     <>
                       <button style={{ color: "red" }}>INDISPONÍVEL</button>
+                      <p style={{ marginTop: "10px", fontSize: "13px" }}>
+                        {" "}
+                        Em estoque:{" "}
+                        <span
+                          className={result.stock > 0 ? "stock-teras" : ""}
+                          style={{ fontWeight: 600, fontSize: "15px" }}
+                        >
+                          0
+                        </span>{" "}
+                      </p>
                     </>
                   )}
-                  <p style={{ marginTop: "10px", fontSize: "13px" }}>
-                    {" "}
-                    Em estoque:{" "}
-                    <span
-                      className={result.stock > 0 ? "stock-teras" : ""}
-                      style={{ fontWeight: 600, fontSize: "15px" }}
-                    >
-                      0
-                    </span>{" "}
-                  </p>
                 </div>
               </div>
             </>
