@@ -11,6 +11,7 @@ import {
 import { upload } from "../../../infra/services/multer/multer-config";
 import { middleware } from "../adapters/middleware";
 import { makeUploadFile } from "../factories/middlewares/upload-file";
+import { prisma } from "../../../../config/prisma-client";
 
 const productRoutes = Router();
 
@@ -42,5 +43,12 @@ productRoutes.put(
   middleware(makeUploadFile()),
   controller(makeProductController(UpdateProductController))
 );
+productRoutes.put("/update/stock/:id", async (req, res) => {
+  const { stockAvaiable } = req.body;
+  const { id } = req.params;
+
+  await prisma.product.update({ where: { id }, data: { stockAvaiable } });
+  res.send();
+});
 
 export { productRoutes };
