@@ -19,6 +19,7 @@ export class UpdateProductController implements Controller {
           stock: parseInt(data.stock),
           description: data.description,
           images: image,
+          avaiableStock: data.avaiableStock,
         },
         id
       );

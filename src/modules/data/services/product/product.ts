@@ -67,7 +67,14 @@ export class ProductServices implements ProductUseCases {
       throw new MissingParamError("id");
     }
 
-    const checkFields = ["name", "description", "stock", "price", "images"];
+    const checkFields = [
+      "name",
+      "description",
+      "stock",
+      "price",
+      "images",
+      "avaiableStock",
+    ];
     const productData = {};
 
     for (const field of checkFields) {

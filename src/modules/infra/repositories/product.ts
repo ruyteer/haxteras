@@ -12,6 +12,7 @@ export class ProductRepository implements IProductRepository {
         price: data.price,
         stock: data.stock,
         images: data.images,
+        avaiableStock: true,
         categoryId,
       },
     });
