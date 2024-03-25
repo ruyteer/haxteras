@@ -18,7 +18,7 @@ export class CreateProductController implements Controller {
         stock: parseInt(data.stock),
         description: data.description,
         images: files,
-        avaiableStock: true,
+        stockAvaiable: true,
       });
 
       return okResponse();
