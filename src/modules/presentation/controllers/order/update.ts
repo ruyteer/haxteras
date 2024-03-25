@@ -71,6 +71,7 @@ export class UpdateOrdersController implements Controller {
         }
       }
       emitEvent("approve payment", true);
+      emitEvent("new order", true);
       return okResponse();
     } catch (error) {
       return badResponse(error);

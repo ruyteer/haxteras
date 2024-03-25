@@ -1,4 +1,5 @@
 import { OrderServices } from "../../../data/services/order/order";
+import { emitEvent } from "../../../server/socket";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
 
@@ -10,7 +11,7 @@ export class DeleteOrderController implements Controller {
       const { id } = req.params;
 
       await this.orderServices.delete(id);
-
+      emitEvent("new order", true);
       return okResponse();
     } catch (error) {
       return badResponse(error);

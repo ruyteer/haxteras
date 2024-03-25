@@ -1,5 +1,6 @@
 import { prisma } from "../../../../config/prisma-client";
 import { OrderServices } from "../../../data/services/order/order";
+import { emitEvent } from "../../../server/socket";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
 
@@ -21,6 +22,7 @@ export class SendOrderVoucherController implements Controller {
           data: { voucher: voucher[0] },
         });
       });
+      emitEvent("new order", true);
       return okResponse();
     } catch (error) {
       return badResponse(error);
