@@ -3,6 +3,10 @@
     {
       "name": "api",
       "script": "yarn dev"
+    },
+    {
+      "name": "studio",
+      "script": "yarn prisma studio"
     }
   ]
 }
