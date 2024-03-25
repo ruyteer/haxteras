@@ -156,9 +156,13 @@ function MenuItems() {
                     itemId={result.id}
                   />
                 </td>
-                <td>{result.stock} em estoque</td>
+                {result.stockAvaiable ? (
+                  <td>{result.stock} em estoque</td>
+                ) : (
+                  <td>0 em estoque</td>
+                )}
                 <td>
-                  {result.stock > 0 ? (
+                  {result.stockAvaiable ? (
                     <Link to={`/product/${result.id}`}>
                       <button className="button-table">Comprar</button>
                     </Link>
