@@ -115,7 +115,7 @@ function TerasSection() {
                   <p className="price">R$ {result.price}</p>
 
                   <p className="unity-price">Preço da unidade</p>
-                  {result.stock > 0 ? (
+                  {result.stockAvaiable ? (
                     <>
                       <Link to={`/product/${result.id}`}>
                         <button>COMPRAR</button>
@@ -133,7 +133,7 @@ function TerasSection() {
                       className={result.stock > 0 ? "stock-teras" : ""}
                       style={{ fontWeight: 600, fontSize: "15px" }}
                     >
-                      {result.stock}
+                      0
                     </span>{" "}
                   </p>
                 </div>

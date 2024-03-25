@@ -169,7 +169,7 @@ function MenuItems() {
                   )}
                 </td>
                 <td>
-                  {result.stock > 0 ? (
+                  {result.stockAvaiable ? (
                     <button
                       type="submit"
                       className="cart-button responsive"
