@@ -19,7 +19,7 @@ model Product {
   images String[]
   categoryId String
   category Category @relation(fields: [categoryId], references: [id])
-  avaiableStock Boolean
+  avaiableStock Boolean?
 }
 
 model Category {
