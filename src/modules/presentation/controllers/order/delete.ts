@@ -11,7 +11,7 @@ export class DeleteOrderController implements Controller {
       const { id } = req.params;
 
       await this.orderServices.delete(id);
-      emitEvent("new order", true);
+      emitEvent("new update", true);
       return okResponse();
     } catch (error) {
       return badResponse(error);

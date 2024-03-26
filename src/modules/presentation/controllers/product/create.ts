@@ -1,4 +1,5 @@
 import { ProductServices } from "../../../data/services/product/product";
+import { emitEvent } from "../../../server/socket";
 import { badResponse, okResponse } from "../../helpers/http-response";
 import { Controller, httpRequest, httpResponse } from "../../protocols";
 import { ProductViewModel } from "../../views/product";
@@ -20,6 +21,8 @@ export class CreateProductController implements Controller {
         images: files,
         stockAvaiable: true,
       });
+
+      emitEvent("new update", true);
 
       return okResponse();
     } catch (error) {
