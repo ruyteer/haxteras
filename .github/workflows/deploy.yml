@@ -14,8 +14,9 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.VPS_HOST }} # Adicione sua variável de ambiente para o endereço IP ou hostname da sua VPS
+          username: root
           password: ${{ vars.VPS_PASS }} # Adicione sua variável de ambiente para o nome de usuário da sua VPS
-          key: ${{ secrets.SSH_SSH_KEY }} # Adicione sua variável de ambiente para a chave SSH privada para acessar sua VPS
+          key: ${{ secrets.SERVER_SSH_KEY }} # Adicione sua variável de ambiente para a chave SSH privada para acessar sua VPS
           script: |
             cd ../home/backend
             git pull --no-rebase
