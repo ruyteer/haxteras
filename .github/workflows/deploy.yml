@@ -18,5 +18,5 @@ jobs:
           key: ${{ secrets.SSH_SSH_KEY }} # Adicione sua variável de ambiente para a chave SSH privada para acessar sua VPS
           script: |
             cd ../home/backend
-            git pull
+            git pull --no-rebase
             pm2 restart api
