@@ -20,5 +20,4 @@ jobs:
           script: |
             cd ../home/backend
             git pull --no-rebase
-            npm i pm2 -g
-            pm2 restart api
+            /usr/bin/pm2 restart api
